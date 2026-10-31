@@ -589,6 +589,251 @@ const server = http.createServer(async (req, res) => {
       return sendJson(200, db.auditLogs);
     }
 
+    // 17. Quotations & Online Accept (NEW-11, SUB-1)
+    if (apiPath === '/quotations' && method === 'GET') {
+      return sendJson(200, db.quotations || []);
+    }
+
+    const quoteTokenMatch = apiPath.match(/^\/quotations\/([^/]+)$/);
+    if (quoteTokenMatch && method === 'GET') {
+      const token = quoteTokenMatch[1];
+      const qt = (db.quotations || []).find(q => q.token === token || q.id === token);
+      if (!qt) return sendJson(404, { error: 'Quotation link invalid or expired' });
+      return sendJson(200, qt);
+    }
+
+    const quoteAcceptMatch = apiPath.match(/^\/quotations\/([^/]+)\/accept$/);
+    if (quoteAcceptMatch && method === 'POST') {
+      const token = quoteAcceptMatch[1];
+      const qt = (db.quotations || []).find(q => q.token === token || q.id === token);
+      if (!qt) return sendJson(404, { error: 'Quotation link invalid or expired' });
+
+      qt.status = 'confirmed';
+      qt.acceptedBy = body.acceptedBy || qt.customerEmail;
+      qt.acceptedAt = new Date().toISOString();
+
+      // Automatically spin up confirmed subscription
+      const newSub = {
+        id: 'sub_' + crypto.randomBytes(4).toString('hex'),
+        number: 'SUB-2026-' + Math.floor(100 + Math.random() * 900),
+        customerId: 'cust_starlight_04',
+        planId: qt.planId,
+        variantId: qt.variantId,
+        status: 'confirmed',
+        currency: qt.currency,
+        startDate: new Date().toISOString().split('T')[0],
+        expiryDate: '2027-11-01',
+        billingDay: 1,
+        paymentTerms: 'Due on receipt',
+        unitPriceMinor: qt.unitPriceMinor,
+        quantity: 1,
+        healthScore: 100,
+        healthReason: 'Newly confirmed via online quotation acceptance link.',
+        usageEventsCount: 0,
+        lastUsageAt: new Date().toISOString()
+      };
+      db.subscriptions.unshift(newSub);
+
+      logAudit(qt.acceptedBy, 'QUOTATION_ONLINE_ACCEPTED', qt.number, 'quotation', 'confirmed');
+      saveDatabase();
+      return sendJson(200, { success: true, quotation: qt, subscription: newSub });
+    }
+
+    // 18. Public Hosted Checkout (NEW-10)
+    if (apiPath === '/checkout' && method === 'POST') {
+      const { planId, variantId, currency, name, email, password, company, country, taxId, paymentMethod, discountCode } = body;
+
+      // AUTH-2 Password Validation
+      const hasUpper = /[A-Z]/.test(password || '');
+      const hasLower = /[a-z]/.test(password || '');
+      const hasSpecial = /[^A-Za-z0-9]/.test(password || '');
+      const isLengthValid = (password || '').length >= 9;
+
+      if (!isLengthValid || !hasUpper || !hasLower || !hasSpecial) {
+        return sendJson(400, {
+          error: 'Password must be 9 or more characters with an uppercase letter, a lowercase letter, and a special character (AUTH-2).'
+        });
+      }
+
+      // Check existing user
+      if (db.users.find(u => u.email.toLowerCase() === (email || '').toLowerCase())) {
+        return sendJson(400, { error: 'An account with this email already exists.' });
+      }
+
+      const plan = db.plans.find(p => p.id === planId) || db.plans[0];
+      const planPrice = plan.prices[currency] || plan.prices['INR'];
+      const extraVariantPrice = variantId === 'var_odoo' ? (currency === 'INR' ? 56000 : 700) : 0;
+      const subtotalMinor = planPrice + extraVariantPrice;
+
+      // Apply discount code if valid
+      let discountMinor = 0;
+      if (discountCode && discountCode.toUpperCase() === 'LAUNCH20') {
+        discountMinor = Math.round(subtotalMinor * 0.20);
+      }
+
+      // Compute regional taxes
+      let taxMinor = 0;
+      if (country === 'India') {
+        taxMinor = Math.round((subtotalMinor - discountMinor) * 0.18);
+      } else if (country === 'Germany' || country === 'France') {
+        taxMinor = Math.round((subtotalMinor - discountMinor) * 0.19);
+      }
+      const totalMinor = subtotalMinor - discountMinor + taxMinor;
+
+      // Create User
+      const newUserId = 'usr_cust_' + crypto.randomBytes(3).toString('hex');
+      const newUser = {
+        id: newUserId,
+        email,
+        name,
+        role: 'customer',
+        plainPassword: password,
+        passwordHash: '$2a$10$' + crypto.randomBytes(22).toString('hex')
+      };
+      db.users.push(newUser);
+
+      // Create Customer
+      const newCustId = 'cust_' + crypto.randomBytes(4).toString('hex');
+      const newCustomer = {
+        id: newCustId,
+        userId: newUserId,
+        name,
+        company: company || name,
+        email,
+        country: country || 'India',
+        billingCurrency: currency || 'INR',
+        taxId: taxId || 'N/A',
+        billingAddress: `${country || 'India'} Office`,
+        createdDate: new Date().toISOString().split('T')[0]
+      };
+      db.customers.push(newCustomer);
+
+      // Create Active Subscription
+      const newSubId = 'sub_' + crypto.randomBytes(4).toString('hex');
+      const newSub = {
+        id: newSubId,
+        number: 'SUB-2026-' + Math.floor(200 + Math.random() * 800),
+        customerId: newCustId,
+        planId: plan.id,
+        variantId: variantId || 'var_standard',
+        status: 'active',
+        currency: currency || 'INR',
+        startDate: new Date().toISOString().split('T')[0],
+        expiryDate: '2027-11-01',
+        billingDay: 1,
+        paymentTerms: 'Due on receipt',
+        unitPriceMinor: subtotalMinor,
+        quantity: 1,
+        spendCapMinor: 5000000,
+        healthScore: 100,
+        healthReason: 'New self-serve checkout subscriber. Healthy account.',
+        usageEventsCount: 0,
+        lastUsageAt: new Date().toISOString()
+      };
+      db.subscriptions.unshift(newSub);
+
+      // Create Paid First Invoice
+      const newInvId = 'inv_' + crypto.randomBytes(4).toString('hex');
+      const newInvoice = {
+        id: newInvId,
+        number: 'INV-2026-' + Math.floor(100 + Math.random() * 900),
+        subscriptionId: newSubId,
+        customerId: newCustId,
+        period: '2026-11',
+        status: 'paid',
+        currency: currency || 'INR',
+        lockedRateToBase: 1.0,
+        subtotalMinor,
+        discountMinor,
+        taxMinor,
+        totalMinor,
+        dueDate: new Date().toISOString().split('T')[0],
+        paidAt: new Date().toISOString(),
+        paymentFailedFlag: false,
+        lines: [
+          { description: `${plan.name} (Monthly)`, quantity: 1, unitPriceMinor: planPrice, amountMinor: planPrice },
+          ...(extraVariantPrice ? [{ description: 'Odoo Integrated Variant Addon', quantity: 1, unitPriceMinor: extraVariantPrice, amountMinor: extraVariantPrice }] : []),
+          ...(taxMinor ? [{ description: `Tax (${country === 'India' ? 'GST 18%' : 'VAT 19%'})`, quantity: 1, unitPriceMinor: taxMinor, amountMinor: taxMinor }] : [])
+        ]
+      };
+      db.invoices.unshift(newInvoice);
+
+      // Create Payment
+      const paymentRecord = {
+        id: 'pay_sbx_' + crypto.randomBytes(4).toString('hex'),
+        invoiceId: newInvId,
+        method: paymentMethod || 'Sandbox Hosted Checkout',
+        amountMinor: totalMinor,
+        currency: currency || 'INR',
+        provider: 'sandbox',
+        gatewayReference: 'sbx_chk_' + crypto.randomBytes(6).toString('hex'),
+        date: new Date().toISOString(),
+        note: 'Hosted checkout self-serve initial subscription payment'
+      };
+      db.payments.unshift(paymentRecord);
+
+      // Auto login user into session
+      currentSession.user = newUser;
+
+      logAudit(email, 'PUBLIC_CHECKOUT_COMPLETED', newSub.number, null, { totalMinor, currency });
+      saveDatabase();
+      return sendJson(200, { success: true, customer: newCustomer, subscription: newSub, invoice: newInvoice });
+    }
+
+    // 19. Add Staff Member (AUTH-5: Only Admin Can Add Staff)
+    if (apiPath === '/staff' && method === 'POST') {
+      if (currentSession.user.role !== 'admin') {
+        return sendJson(403, { error: 'Permission denied: Only the system admin can add a member of staff (AUTH-5).' });
+      }
+
+      const { email, name, password } = body;
+      const isLengthValid = (password || '').length >= 9;
+      const hasUpper = /[A-Z]/.test(password || '');
+      const hasLower = /[a-z]/.test(password || '');
+      const hasSpecial = /[^A-Za-z0-9]/.test(password || '');
+
+      if (!isLengthValid || !hasUpper || !hasLower || !hasSpecial) {
+        return sendJson(400, { error: 'Password must satisfy AUTH-2 (9+ characters, upper, lower, special character).' });
+      }
+
+      const newStaff = {
+        id: 'usr_staff_' + crypto.randomBytes(3).toString('hex'),
+        email,
+        name,
+        role: 'staff',
+        plainPassword: password,
+        passwordHash: '$2a$10$' + crypto.randomBytes(22).toString('hex')
+      };
+      db.users.push(newStaff);
+      logAudit(currentSession.user.email, 'STAFF_MEMBER_CREATED', email, null, { name, role: 'staff' });
+      saveDatabase();
+      return sendJson(200, { success: true, staff: newStaff });
+    }
+
+    // 20. Right-Sizing Suggestions (NEW-12)
+    if (apiPath === '/right-sizing' && method === 'GET') {
+      let suggestions = db.rightSizingSuggestions || [];
+      if (currentSession.user.role === 'customer') {
+        const cust = db.customers.find(c => c.userId === currentSession.user.id);
+        suggestions = suggestions.filter(s => s.customerId === (cust ? cust.id : ''));
+      }
+      return sendJson(200, suggestions);
+    }
+
+    // 21. Platform Settings (Section 9.5)
+    if (apiPath === '/settings' && method === 'GET') {
+      return sendJson(200, db.settings || {});
+    }
+    if (apiPath === '/settings' && method === 'POST') {
+      if (currentSession.user.role !== 'admin') {
+        return sendJson(403, { error: 'Admin permissions required to modify system settings.' });
+      }
+      db.settings = { ...db.settings, ...body };
+      logAudit(currentSession.user.email, 'SETTINGS_UPDATED', 'system', null, body);
+      saveDatabase();
+      return sendJson(200, { success: true, settings: db.settings });
+    }
+
     return sendJson(404, { error: 'API endpoint not found' });
   }
 
@@ -756,3 +1001,4 @@ const server = http.createServer(async (req, res) => {
 server.listen(PORT, () => {
   console.log(`[BrightLoop Subscriptions v2] Server running at http://localhost:${PORT}`);
 });
+

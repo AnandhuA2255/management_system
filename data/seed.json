@@ -589,5 +589,64 @@
     { "timestamp": "2026-10-31T09:12:00Z", "actor": "admin@brightloop.io", "action": "PLAN_UPDATE", "entity": "plan_enterprise", "before": "{ minQty: 1 }", "after": "{ minQty: 1, idlePolicy: enabled }" },
     { "timestamp": "2026-10-31T08:00:00Z", "actor": "cron.dunning", "action": "DUNNING_NOTIFICATION_SENT", "entity": "inv_2026_012", "before": "due", "after": "reminder_1_sent" },
     { "timestamp": "2026-10-31T06:00:00Z", "actor": "staff@brightloop.io", "action": "DRY_RUN_GENERATED", "entity": "run_2026_10_dry", "before": "none", "after": "pending_review" }
+  ],
+  "quotations": [
+    {
+      "id": "qt_2026_101",
+      "number": "QT-2026-101",
+      "token": "qt_tok_89a1f2b3c4d5",
+      "customerName": "Starlight Digital Media Ltd",
+      "customerEmail": "finance@starlightmedia.io",
+      "country": "India",
+      "currency": "INR",
+      "planId": "plan_growth",
+      "variantId": "var_odoo",
+      "unitPriceMinor": 1305900,
+      "validityDays": 14,
+      "validUntil": "2026-11-14",
+      "status": "quotation",
+      "acceptedBy": null,
+      "acceptedAt": null,
+      "lines": [
+        { "description": "Growth Pro Plan (Monthly)", "quantity": 1, "unitPriceMinor": 1249900, "amountMinor": 1249900 },
+        { "description": "Odoo Integrated Edition Variant Addon", "quantity": 1, "unitPriceMinor": 56000, "amountMinor": 56000 },
+        { "description": "India GST (18%)", "quantity": 1, "unitPriceMinor": 235062, "amountMinor": 235062 }
+      ],
+      "totalMinor": 1540962
+    }
+  ],
+  "settings": {
+    "dunning": {
+      "reminders": [-3, 0, 3, 7, 14],
+      "autoRetryGateway": true,
+      "finalAction": "flag_staff"
+    },
+    "paymentGateways": {
+      "activeProvider": "sandbox",
+      "sandbox": { "enabled": true, "label": "Built-in Sandbox Gateway" },
+      "razorpay": { "enabled": false, "keyId": "rzp_test_98A172c91B", "keySecret": "sec_rzp_mock_live", "webhookSecret": "whsec_rzp_77a1" },
+      "stripe": { "enabled": false, "publishableKey": "pk_test_51MockStripeKey", "secretKey": "sk_test_MockStripeSecret", "webhookSecret": "whsec_str_44b2" }
+    },
+    "assistant": {
+      "engine": "built_in_rules",
+      "externalLlmProvider": "disabled",
+      "dataRetentionDays": 90
+    }
+  },
+  "rightSizingSuggestions": [
+    {
+      "subscriptionId": "sub_acme_101",
+      "customerId": "cust_acme_01",
+      "message": "You used 8,420 of 10,000 API requests this month. Your Enterprise Scale Plan is optimized for your throughput.",
+      "type": "optimal"
+    },
+    {
+      "subscriptionId": "sub_nova_102",
+      "customerId": "cust_nova_02",
+      "message": "You are utilizing only 1,820 of 2,500 monthly units. Switching to Starter Plan could save you $90.00/month.",
+      "type": "savings_opportunity",
+      "potentialSavings": "$90.00/mo"
+    }
   ]
 }
+

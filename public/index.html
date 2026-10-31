@@ -64,7 +64,7 @@
 
     .tabular { font-variant-numeric: tabular-nums; }
 
-    /* Top Demo Switcher Banner */
+    /* Top Demo Persona Switcher Banner */
     .demo-bar {
       background: #000000;
       color: #FFFFFF;
@@ -78,7 +78,7 @@
       border-bottom: 1px solid rgba(255,255,255,0.1);
       z-index: 50;
     }
-    .demo-bar-left { display: flex; align-items: center; gap: 8px; }
+    .demo-bar-left { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
     .demo-bar-label { font-weight: 600; color: #A5B4FC; text-transform: uppercase; letter-spacing: 0.05em; font-size: 11px; }
     .demo-chips { display: flex; flex-wrap: wrap; gap: 8px; }
     .demo-chip-btn {
@@ -103,7 +103,7 @@
     .navbar {
       background: var(--surface);
       border-bottom: 1px solid var(--border);
-      padding: 16px 32px;
+      padding: 14px 28px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -114,7 +114,7 @@
     .logo-container {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
       text-decoration: none;
       color: var(--text);
       cursor: pointer;
@@ -122,18 +122,20 @@
     .nav-tabs {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
+      flex-wrap: wrap;
     }
     .nav-tab {
       background: none;
       border: none;
       color: var(--muted);
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 500;
-      padding: 8px 16px;
+      padding: 6px 14px;
       border-radius: 9999px;
       cursor: pointer;
       transition: all 0.15s ease;
+      white-space: nowrap;
     }
     .nav-tab:hover { color: var(--text); background: var(--bg); }
     .nav-tab.active {
@@ -148,7 +150,7 @@
     .nav-right {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
     }
 
     /* Buttons */
@@ -156,7 +158,7 @@
       font-family: 'Inter', sans-serif;
       font-size: 14px;
       font-weight: 600;
-      padding: 10px 20px;
+      padding: 9px 18px;
       border-radius: 9999px;
       cursor: pointer;
       border: 1px solid transparent;
@@ -189,13 +191,13 @@
       color: #FFFFFF;
     }
     .btn-danger:hover { background: #B91C1C; }
-    .btn-sm { padding: 6px 14px; font-size: 12px; }
+    .btn-sm { padding: 5px 12px; font-size: 12px; }
 
     /* Layout & Cards */
     .container {
       max-width: 1240px;
       margin: 0 auto;
-      padding: 32px 24px;
+      padding: 28px 20px;
       width: 100%;
       flex: 1;
     }
@@ -212,17 +214,17 @@
     .kpi-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 20px;
+      gap: 18px;
       margin-bottom: 24px;
     }
     .kpi-card {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius-card);
-      padding: 20px 24px;
+      padding: 20px 22px;
     }
-    .kpi-title { font-size: 13px; color: var(--muted); text-transform: uppercase; font-weight: 600; letter-spacing: 0.05em; margin-bottom: 6px; }
-    .kpi-val { font-size: 32px; font-family: 'Space Grotesk', sans-serif; font-weight: 700; color: var(--text); }
+    .kpi-title { font-size: 12px; color: var(--muted); text-transform: uppercase; font-weight: 600; letter-spacing: 0.05em; margin-bottom: 6px; }
+    .kpi-val { font-size: 30px; font-family: 'Space Grotesk', sans-serif; font-weight: 700; color: var(--text); }
     .kpi-sub { font-size: 12px; color: var(--secondary); margin-top: 4px; font-weight: 500; }
 
     /* Status Chips */
@@ -230,9 +232,9 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      padding: 4px 12px;
+      padding: 4px 10px;
       border-radius: 9999px;
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.03em;
@@ -257,29 +259,29 @@
     th {
       background: var(--bg);
       color: var(--muted);
-      font-size: 12px;
+      font-size: 11px;
       text-transform: uppercase;
       font-weight: 600;
-      padding: 14px 18px;
+      padding: 12px 16px;
       border-bottom: 1px solid var(--border);
     }
     td {
-      padding: 16px 18px;
-      font-size: 14px;
+      padding: 14px 16px;
+      font-size: 13px;
       border-bottom: 1px solid var(--border);
     }
     tr:last-child td { border-bottom: none; }
     tr:hover td { background: rgba(0,0,0,0.015); }
 
-    /* Idle / Dunning Alert Banners */
+    /* Alert Banners */
     .alert-banner {
       border-radius: var(--radius-card);
-      padding: 20px 24px;
+      padding: 18px 22px;
       margin-bottom: 24px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 20px;
+      gap: 16px;
     }
     .alert-idle {
       background: #FEF3C7;
@@ -301,12 +303,22 @@
       border-color: #DC2626;
       color: #FECACA;
     }
+    .alert-info {
+      background: #E0E7FF;
+      border: 1px solid #818CF8;
+      color: #3730A3;
+    }
+    [data-theme="dark"] .alert-info {
+      background: #1E1B4B;
+      border-color: #4F46E5;
+      color: #C7D2FE;
+    }
 
-    /* Modal */
+    /* Modals */
     .modal-backdrop {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.6);
+      background: rgba(0,0,0,0.65);
       backdrop-filter: blur(4px);
       display: none;
       align-items: center;
@@ -318,12 +330,12 @@
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius-card);
-      max-width: 650px;
+      max-width: 680px;
       width: 100%;
-      padding: 32px;
+      padding: 30px;
       max-height: 90vh;
       overflow-y: auto;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.25);
     }
 
     /* Assistant Drawer */
@@ -335,7 +347,7 @@
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius-card);
-      box-shadow: 0 12px 32px rgba(0,0,0,0.15);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.18);
       z-index: 80;
       display: none;
       flex-direction: column;
@@ -343,7 +355,7 @@
       overflow: hidden;
     }
     .assistant-header {
-      padding: 16px 20px;
+      padding: 14px 18px;
       background: #000000;
       color: #FFFFFF;
       display: flex;
@@ -351,16 +363,16 @@
       justify-content: space-between;
     }
     .assistant-body {
-      padding: 16px 20px;
+      padding: 14px 18px;
       flex: 1;
       overflow-y: auto;
       font-size: 13px;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 10px;
     }
     .assistant-msg {
-      padding: 12px 14px;
+      padding: 10px 14px;
       border-radius: 1rem;
       max-width: 90%;
     }
@@ -377,7 +389,7 @@
       border-bottom-left-radius: 4px;
     }
     .assistant-footer {
-      padding: 12px 16px;
+      padding: 10px 14px;
       border-top: 1px solid var(--border);
       display: flex;
       gap: 8px;
@@ -393,11 +405,26 @@
       outline: none;
     }
 
+    /* Password strength meter (AUTH-2) */
+    .pwd-meter {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 4px;
+      margin-top: 6px;
+    }
+    .pwd-bar {
+      height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+      transition: background-color 0.2s ease;
+    }
+    .pwd-bar.active { background: #10B981; }
+
     /* Footer */
     footer {
       border-top: 1px solid var(--border);
       background: var(--surface);
-      padding: 24px 32px;
+      padding: 22px 32px;
       text-align: center;
       font-size: 13px;
       color: var(--muted);
@@ -407,26 +434,26 @@
       display: inline-block;
       background: var(--bg);
       border: 1px solid var(--border);
-      padding: 4px 12px;
+      padding: 3px 12px;
       border-radius: 9999px;
       font-size: 11px;
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.05em;
-      margin-top: 8px;
+      margin-top: 6px;
     }
 
     /* Forms */
-    .form-group { margin-bottom: 16px; }
-    .form-label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; }
+    .form-group { margin-bottom: 14px; }
+    .form-label { display: block; font-size: 12px; font-weight: 600; margin-bottom: 4px; }
     .form-input, .form-select {
       width: 100%;
-      padding: 10px 16px;
+      padding: 9px 14px;
       border: 2px solid var(--border);
       border-radius: var(--radius-input);
       background: var(--bg);
       color: var(--text);
-      font-size: 14px;
+      font-size: 13px;
       outline: none;
     }
     .form-input:focus, .form-select:focus { border-color: var(--secondary); }
@@ -434,7 +461,7 @@
 </head>
 <body data-theme="light">
 
-  <!-- TOP DEMO SWITCHER BAR -->
+  <!-- TOP DEMO PERSONA SWITCHER BAR -->
   <div class="demo-bar">
     <div class="demo-bar-left">
       <span class="demo-bar-label">⚡ Switch Persona:</span>
@@ -467,14 +494,14 @@
   <header class="navbar">
     <div class="logo-container" onclick="showTab('dashboard')">
       <!-- Original Continuous Loop TT Mark (Section 9.3) -->
-      <svg width="34" height="34" viewBox="0 0 100 100" fill="none">
+      <svg width="32" height="32" viewBox="0 0 100 100" fill="none">
         <circle cx="50" cy="50" r="38" stroke="var(--primary)" stroke-width="11" stroke-linecap="round" stroke-dasharray="190 60"/>
         <circle cx="50" cy="50" r="38" stroke="var(--secondary)" stroke-width="11" stroke-linecap="round" stroke-dasharray="50 200"/>
         <text x="50" y="58" font-family="'Space Grotesk', sans-serif" font-weight="700" font-size="24" fill="var(--primary)" text-anchor="middle">TT</text>
       </svg>
       <div>
-        <span class="brand-font" style="font-size: 20px; letter-spacing: -0.02em;">BrightLoop</span>
-        <span style="font-size: 12px; color: var(--muted); margin-left: 6px; font-weight: 500;">Subscriptions</span>
+        <span class="brand-font" style="font-size: 19px; letter-spacing: -0.02em;">BrightLoop</span>
+        <span style="font-size: 11px; color: var(--muted); margin-left: 4px; font-weight: 500;">Subscriptions</span>
       </div>
     </div>
 
@@ -483,8 +510,11 @@
       <button class="nav-tab" onclick="showTab('subscriptions')">Subscriptions</button>
       <button class="nav-tab" onclick="showTab('invoices')">Invoices & Payments</button>
       <button class="nav-tab" onclick="showTab('dryrun')">Bill-Run (Dry Run)</button>
-      <button class="nav-tab" onclick="showTab('catalog')">Catalog & Plans</button>
+      <button class="nav-tab" onclick="showTab('pricing')">Public Pricing (NEW-10)</button>
+      <button class="nav-tab" onclick="showTab('quotations')">Quotations (NEW-11)</button>
+      <button class="nav-tab" onclick="showTab('catalog')">Catalog & Tax</button>
       <button class="nav-tab" onclick="showTab('services')">Demo Services (API)</button>
+      <button class="nav-tab" onclick="showTab('settings')">Settings & Staff (AUTH-5)</button>
     </nav>
 
     <div class="nav-right">
@@ -494,7 +524,7 @@
       <button class="btn btn-secondary btn-sm" onclick="toggleAssistant()" title="Open AI Billing Assistant (Ctrl+K)">
         <span>✨ Assistant (Ctrl+K)</span>
       </button>
-      <div id="currentUserBadge" style="font-size: 12px; font-weight: 600; background: var(--bg); padding: 6px 14px; border-radius: 9999px; border: 1px solid var(--border);">
+      <div id="currentUserBadge" style="font-size: 11px; font-weight: 600; background: var(--bg); padding: 5px 12px; border-radius: 9999px; border: 1px solid var(--border);">
         Admin
       </div>
     </div>
@@ -506,12 +536,15 @@
     <!-- CUSTOMER NOTIFICATION BANNER (When customer has idle/dunning alerts) -->
     <div id="customerAlertContainer" style="display: none;"></div>
 
+    <!-- RIGHT-SIZING SUGGESTIONS BANNER (NEW-12) -->
+    <div id="rightSizingContainer" style="display: none; margin-bottom: 20px;"></div>
+
     <!-- TAB 1: DASHBOARD -->
     <section id="tab-dashboard" class="tab-pane">
-      <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 24px;">
+      <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 22px;">
         <div>
           <h2>Revenue & Subscription Intelligence</h2>
-          <p style="color: var(--muted); font-size: 14px;">Real-time metrics, MRR movement, and proactive churn risk detection.</p>
+          <p style="color: var(--muted); font-size: 13px;">Real-time metrics, MRR movement, and proactive churn risk detection.</p>
         </div>
         <button class="btn btn-primary btn-sm" onclick="showTab('dryrun')">⚡ Run Billing Dry Run</button>
       </div>
@@ -539,28 +572,28 @@
         </div>
       </div>
 
-      <!-- MRR Movement Waterfall & Churn Risk -->
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+      <!-- MRR Movement Waterfall & Churn Risk (NEW-9) -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
         <div class="card">
-          <h3 style="margin-bottom: 16px;">MRR Movement Waterfall (v2)</h3>
-          <div style="display: flex; flex-direction: column; gap: 12px;">
-            <div style="display: flex; justify-content: space-between; font-size: 14px; border-bottom: 1px solid var(--border); padding-bottom: 8px;">
+          <h3 style="margin-bottom: 14px;">MRR Movement Waterfall (v2)</h3>
+          <div style="display: flex; flex-direction: column; gap: 10px;">
+            <div style="display: flex; justify-content: space-between; font-size: 13px; border-bottom: 1px solid var(--border); padding-bottom: 6px;">
               <span>New Subscriptions</span>
               <span class="tabular" style="color: #166534; font-weight: 600;">+₹34,99,900</span>
             </div>
-            <div style="display: flex; justify-content: space-between; font-size: 14px; border-bottom: 1px solid var(--border); padding-bottom: 8px;">
+            <div style="display: flex; justify-content: space-between; font-size: 13px; border-bottom: 1px solid var(--border); padding-bottom: 6px;">
               <span>Expansion (Brand Variants / Seats)</span>
               <span class="tabular" style="color: #166534; font-weight: 600;">+₹56,000</span>
             </div>
-            <div style="display: flex; justify-content: space-between; font-size: 14px; border-bottom: 1px solid var(--border); padding-bottom: 8px;">
+            <div style="display: flex; justify-content: space-between; font-size: 13px; border-bottom: 1px solid var(--border); padding-bottom: 6px;">
               <span>Contraction / Proration Credits</span>
               <span class="tabular" style="color: #DC2626; font-weight: 600;">-₹12,590</span>
             </div>
-            <div style="display: flex; justify-content: space-between; font-size: 14px; border-bottom: 1px solid var(--border); padding-bottom: 8px;">
+            <div style="display: flex; justify-content: space-between; font-size: 13px; border-bottom: 1px solid var(--border); padding-bottom: 6px;">
               <span>Churned Subscriptions</span>
               <span class="tabular" style="color: var(--muted); font-weight: 600;">₹0</span>
             </div>
-            <div style="display: flex; justify-content: space-between; font-size: 16px; font-weight: 700; padding-top: 4px;">
+            <div style="display: flex; justify-content: space-between; font-size: 15px; font-weight: 700; padding-top: 4px;">
               <span>Net Active MRR (Base INR)</span>
               <span class="tabular" id="mrrNetActive">₹35,43,310</span>
             </div>
@@ -568,8 +601,8 @@
         </div>
 
         <div class="card">
-          <h3 style="margin-bottom: 16px;">Proactive Churn Risk (NEW-9)</h3>
-          <div id="churnRiskList" style="display: flex; flex-direction: column; gap: 12px;">
+          <h3 style="margin-bottom: 14px;">Proactive Churn Risk (NEW-9)</h3>
+          <div id="churnRiskList" style="display: flex; flex-direction: column; gap: 10px;">
             <!-- Populated via API -->
           </div>
         </div>
@@ -578,10 +611,10 @@
 
     <!-- TAB 2: SUBSCRIPTIONS -->
     <section id="tab-subscriptions" class="tab-pane" style="display: none;">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px;">
         <div>
           <h2>Subscriptions Management</h2>
-          <p style="color: var(--muted); font-size: 14px;">Full lifecycle tracking: Draft, Quotation, Confirmed, Active, Paused, Closed.</p>
+          <p style="color: var(--muted); font-size: 13px;">Full lifecycle: Draft, Quotation, Confirmed, Active, Paused, Closed.</p>
         </div>
       </div>
 
@@ -607,10 +640,10 @@
 
     <!-- TAB 3: INVOICES & PAYMENTS -->
     <section id="tab-invoices" class="tab-pane" style="display: none;">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px;">
         <div>
           <h2>Invoices & Built-in Sandbox Payments</h2>
-          <p style="color: var(--muted); font-size: 14px;">Multi-currency billing, locked exchange rates, tax lines, and sandbox payment reconciliation.</p>
+          <p style="color: var(--muted); font-size: 13px;">Multi-currency billing, locked exchange rates, tax lines, and sandbox payment reconciliation.</p>
         </div>
       </div>
 
@@ -636,10 +669,10 @@
 
     <!-- TAB 4: BILL-RUN DRY RUN (NEW-8) -->
     <section id="tab-dryrun" class="tab-pane" style="display: none;">
-      <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 24px;">
+      <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 22px;">
         <div>
           <h2>Bill-Run Dry Run Engine (NEW-8)</h2>
-          <p style="color: var(--muted); font-size: 14px;">Preview upcoming invoices before dispatch. Flags unusual amount jumps, missing tax, and idle accounts.</p>
+          <p style="color: var(--muted); font-size: 13px;">Preview upcoming invoices before dispatch. Flags unusual amount jumps, missing tax, and idle accounts.</p>
         </div>
         <button class="btn btn-primary" onclick="generateDryRun()">⚡ Generate November 2026 Dry Run</button>
       </div>
@@ -649,48 +682,100 @@
       </div>
     </section>
 
-    <!-- TAB 5: CATALOG & PLANS -->
-    <section id="tab-catalog" class="tab-pane" style="display: none;">
-      <div style="margin-bottom: 24px;">
-        <h2>Products, Variants & Multi-Currency Plans</h2>
-        <p style="color: var(--muted); font-size: 14px;">10 Launch currencies (INR, USD, EUR, etc.), explicit minor unit pricing, and brand add-on variants.</p>
+    <!-- TAB 5: PUBLIC PRICING & HOSTED CHECKOUT (NEW-10) -->
+    <section id="tab-pricing" class="tab-pane" style="display: none;">
+      <div style="text-align: center; max-width: 720px; margin: 0 auto 32px auto;">
+        <h2>Simple, Transparent Multi-Currency Pricing</h2>
+        <p style="color: var(--muted); font-size: 14px; margin-top: 6px;">Pick a plan and get started in under 3 minutes with automated self-serve checkout.</p>
+
+        <!-- Currency Selector & Monthly/Yearly Toggle -->
+        <div style="display: flex; justify-content: center; align-items: center; gap: 16px; margin-top: 20px;">
+          <select id="pricingCurrencySelect" class="form-select" style="width: 140px;" onchange="renderPricingCards()">
+            <option value="INR" selected>INR (₹)</option>
+            <option value="USD">USD ($)</option>
+            <option value="EUR">EUR (€)</option>
+            <option value="GBP">GBP (£)</option>
+            <option value="AED">AED</option>
+            <option value="SGD">SGD (S$)</option>
+            <option value="AUD">AUD (A$)</option>
+            <option value="CAD">CAD (C$)</option>
+            <option value="JPY">JPY (¥)</option>
+            <option value="CHF">CHF</option>
+          </select>
+
+          <div style="background: var(--surface); border: 1px solid var(--border); padding: 4px; border-radius: 9999px; display: inline-flex;">
+            <button id="toggleMonthlyBtn" class="btn btn-sm btn-primary" onclick="setBillingCadence('monthly')">Monthly</button>
+            <button id="toggleYearlyBtn" class="btn btn-sm btn-secondary" onclick="setBillingCadence('yearly')">Yearly (Save 20%)</button>
+          </div>
+        </div>
       </div>
 
-      <div class="card" style="margin-bottom: 24px;">
-        <h3 style="margin-bottom: 16px;">Product Catalog & Brand Variants (PROD-1, PROD-2)</h3>
-        <div id="productsList" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px;">
+      <div id="pricingCardsGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-bottom: 32px;">
+        <!-- Populated dynamically -->
+      </div>
+    </section>
+
+    <!-- TAB 6: QUOTATIONS & ONLINE ACCEPT (NEW-11, SUB-1) -->
+    <section id="tab-quotations" class="tab-pane" style="display: none;">
+      <div style="margin-bottom: 22px;">
+        <h2>Branded Quotations with Online Acceptance (NEW-11)</h2>
+        <p style="color: var(--muted); font-size: 13px;">Reps send quotation links. Customers view lines, taxes, validity countdown, and accept online.</p>
+      </div>
+
+      <div id="quotationViewCard" class="card">
+        <!-- Loaded dynamically -->
+      </div>
+    </section>
+
+    <!-- TAB 7: CATALOG & TAX RULES -->
+    <section id="tab-catalog" class="tab-pane" style="display: none;">
+      <div style="margin-bottom: 22px;">
+        <h2>Products, Variants & Multi-Currency Rules</h2>
+        <p style="color: var(--muted); font-size: 13px;">10 Launch currencies, explicit minor unit pricing, and brand add-on variants (e.g. Odoo brand +₹560).</p>
+      </div>
+
+      <div class="card" style="margin-bottom: 22px;">
+        <h3 style="margin-bottom: 14px;">Product Catalog & Brand Variants (PROD-1, PROD-2)</h3>
+        <div id="productsList" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 14px;">
+          <!-- Populated via API -->
+        </div>
+      </div>
+
+      <div class="card" style="margin-bottom: 22px;">
+        <h3 style="margin-bottom: 14px;">Currencies & Base Conversion Rates (CUR-1 to CUR-8)</h3>
+        <div id="currenciesList" style="display: flex; flex-wrap: wrap; gap: 8px;">
           <!-- Populated via API -->
         </div>
       </div>
 
       <div class="card">
-        <h3 style="margin-bottom: 16px;">Currencies & Base Conversion Rates (CUR-1 to CUR-8)</h3>
-        <div id="currenciesList" style="display: flex; flex-wrap: wrap; gap: 10px;">
+        <h3 style="margin-bottom: 14px;">Tax Rules & Regional Breakdown (INV-2, Section 7.3)</h3>
+        <div id="taxRulesList" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px;">
           <!-- Populated via API -->
         </div>
       </div>
     </section>
 
-    <!-- TAB 6: DEMO SERVICES (API & WEBHOOKS PLAYGROUND) -->
+    <!-- TAB 8: DEMO SERVICES (API & WEBHOOKS PLAYGROUND) -->
     <section id="tab-services" class="tab-pane" style="display: none;">
-      <div style="margin-bottom: 24px;">
+      <div style="margin-bottom: 22px;">
         <h2>Services Using Our Platform (NEW-6 API & Webhooks)</h2>
-        <p style="color: var(--muted); font-size: 14px;">External services authenticated via Scoped API Keys, sending metered usage events with idempotency keys.</p>
+        <p style="color: var(--muted); font-size: 13px;">External services authenticated via Scoped API Keys, sending metered usage events with idempotency keys.</p>
       </div>
 
-      <div class="card" style="margin-bottom: 24px;">
-        <h3 style="margin-bottom: 16px;">Registered External Platform Services</h3>
-        <div id="servicesList" style="display: flex; flex-direction: column; gap: 16px;">
+      <div class="card" style="margin-bottom: 22px;">
+        <h3 style="margin-bottom: 14px;">Registered External Platform Services</h3>
+        <div id="servicesList" style="display: flex; flex-direction: column; gap: 14px;">
           <!-- Populated via API -->
         </div>
       </div>
 
       <!-- Live API Playground -->
       <div class="card">
-        <h3 style="margin-bottom: 16px;">Interactive REST API Playground: Send Metered Usage Event</h3>
-        <p style="font-size: 13px; color: var(--muted); margin-bottom: 16px;">Simulates an external cloud service calling <code>POST /api/v1/usage-events</code> with its Admin API Key and Idempotency Key.</p>
+        <h3 style="margin-bottom: 14px;">Interactive REST API Playground: Send Metered Usage Event</h3>
+        <p style="font-size: 13px; color: var(--muted); margin-bottom: 14px;">Simulates an external cloud service calling <code>POST /api/v1/usage-events</code> with its Admin API Key and Idempotency Key.</p>
 
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 18px;">
           <div>
             <div class="form-group">
               <label class="form-label">Calling Service</label>
@@ -718,26 +803,185 @@
 
           <div>
             <label class="form-label">Live API & Webhook Output</label>
-            <pre id="apiOutputConsole" style="background: #000000; color: #10B981; padding: 16px; border-radius: 1rem; font-size: 12px; font-family: monospace; height: 210px; overflow-y: auto;">// Ready for simulated service transactions...</pre>
+            <pre id="apiOutputConsole" style="background: #000000; color: #10B981; padding: 14px; border-radius: 1rem; font-size: 12px; font-family: monospace; height: 210px; overflow-y: auto;">// Ready for simulated service transactions...</pre>
           </div>
         </div>
       </div>
     </section>
 
+    <!-- TAB 9: SETTINGS & STAFF MANAGEMENT (AUTH-5, Section 9.5) -->
+    <section id="tab-settings" class="tab-pane" style="display: none;">
+      <div style="margin-bottom: 22px;">
+        <h2>Settings & Platform Controls</h2>
+        <p style="color: var(--muted); font-size: 13px;">Staff management (AUTH-5), dunning schedules, gateway keys, and append-only audit trail.</p>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px;">
+        <!-- Add Staff Member (AUTH-5) -->
+        <div class="card">
+          <h3 style="margin-bottom: 12px;">Add Staff Member (AUTH-5)</h3>
+          <p style="font-size: 12px; color: var(--muted); margin-bottom: 14px;">Rule AUTH-5: Only the admin can add a member of staff.</p>
+
+          <div class="form-group">
+            <label class="form-label">Full Name</label>
+            <input type="text" id="staffNameInput" class="form-input" placeholder="e.g. Maya Patel">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email Address</label>
+            <input type="email" id="staffEmailInput" class="form-input" placeholder="e.g. maya@brightloop.io">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Password (AUTH-2 Rule)</label>
+            <input type="password" id="staffPasswordInput" class="form-input" placeholder="Min 9 chars, upper, lower, special" oninput="checkStaffPasswordStrength()">
+            <div class="pwd-meter">
+              <div id="pwdBar1" class="pwd-bar"></div>
+              <div id="pwdBar2" class="pwd-bar"></div>
+              <div id="pwdBar3" class="pwd-bar"></div>
+              <div id="pwdBar4" class="pwd-bar"></div>
+            </div>
+            <div id="pwdRuleText" style="font-size: 11px; color: var(--muted); margin-top: 4px;">Must have 9+ chars, 1 uppercase, 1 lowercase, 1 special char.</div>
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="createNewStaff()">Add Staff Member</button>
+        </div>
+
+        <!-- Dunning & Gateway Settings -->
+        <div class="card">
+          <h3 style="margin-bottom: 12px;">Dunning & Gateway Configuration</h3>
+          <div class="form-group">
+            <label class="form-label">Dunning Reminders Schedule</label>
+            <input type="text" class="form-input" value="-3, 0, 3, 7, 14 days" readonly>
+            <small style="color: var(--muted); font-size: 11px;">Automatic retry before next reminder; flags staff after day 14.</small>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Active Payment Gateway Provider</label>
+            <select class="form-select" id="gatewayActiveSelect" onchange="showNotification('Gateway switched to: ' + this.value)">
+              <option value="sandbox" selected>Built-in Sandbox Gateway (Default)</option>
+              <option value="razorpay">Razorpay Test Mode (INR-First)</option>
+              <option value="stripe">Stripe Test Mode (Global)</option>
+            </select>
+          </div>
+          <div style="background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 12px; font-size: 12px;">
+            <strong>Sandbox Mode Active:</strong> Ready for instant testing with built-in test cards and UPI.
+          </div>
+        </div>
+      </div>
+
+      <!-- Audit Log Table -->
+      <div class="card table-container">
+        <h3 style="margin-bottom: 14px;">Append-Only Audit Log</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Timestamp</th>
+              <th>Actor</th>
+              <th>Action</th>
+              <th>Entity</th>
+              <th>Details</th>
+            </tr>
+          </thead>
+          <tbody id="auditLogTableBody">
+            <!-- Populated via API -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
   </main>
+
+  <!-- HOSTED CHECKOUT MODAL (NEW-10) -->
+  <div id="hostedCheckoutModal" class="modal-backdrop">
+    <div class="modal">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+        <h3>⚡ Hosted Checkout (3-Step Flow)</h3>
+        <button onclick="closeHostedCheckoutModal()" style="background: none; border: none; font-size: 20px; cursor: pointer; color: var(--muted);">&times;</button>
+      </div>
+
+      <div id="checkoutSummaryBox" style="background: var(--bg); border: 1px solid var(--border); border-radius: 1rem; padding: 14px; margin-bottom: 16px;">
+        <!-- Filled dynamically -->
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+        <div class="form-group">
+          <label class="form-label">Full Name</label>
+          <input type="text" id="chkName" class="form-input" value="Siddharth Rao">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Company Name</label>
+          <input type="text" id="chkCompany" class="form-input" value="Vanguard Analytics">
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+        <div class="form-group">
+          <label class="form-label">Email Address</label>
+          <input type="email" id="chkEmail" class="form-input" value="siddharth@vanguard.io">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Country</label>
+          <select id="chkCountry" class="form-select" onchange="updateCheckoutTotal()">
+            <option value="India" selected>India (GST 18%)</option>
+            <option value="Germany">Germany (EU VAT 19%)</option>
+            <option value="United States">United States (0% Digital Tax)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Password (AUTH-2 Compliant)</label>
+        <input type="password" id="chkPassword" class="form-input" value="CustomerPass@2026!">
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+        <div class="form-group">
+          <label class="form-label">Tax ID / GSTIN</label>
+          <input type="text" id="chkTaxId" class="form-input" value="29AABCU9603R1ZM">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Discount Code</label>
+          <div style="display: flex; gap: 6px;">
+            <input type="text" id="chkDiscountCode" class="form-input" placeholder="e.g. LAUNCH20" value="LAUNCH20">
+            <button class="btn btn-secondary btn-sm" onclick="updateCheckoutTotal()">Apply</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Sandbox Payment Method</label>
+        <div style="background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 12px; font-size: 12px;">
+          <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+            <input type="radio" name="chkPayMethod" value="Sandbox Card" checked>
+            <span>💳 Test Visa Card (<code>4111 2222 3333 4444</code>) — Instant Success</span>
+          </label>
+          <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; margin-top: 8px;">
+            <input type="radio" name="chkPayMethod" value="Sandbox UPI">
+            <span>📱 Sandbox UPI QR (Instant Auto-Reconcile)</span>
+          </label>
+          <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; margin-top: 8px; color: #DC2626;">
+            <input type="radio" name="chkPayMethod" value="Sandbox Decline Card">
+            <span>⚠️ Deliberate Failure Card (<code>4000 0000 0000 0002</code>) — Test Dunning</span>
+          </label>
+        </div>
+      </div>
+
+      <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+        <button class="btn btn-secondary" onclick="closeHostedCheckoutModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="submitHostedCheckout()">Pay & Start Subscription</button>
+      </div>
+    </div>
+  </div>
 
   <!-- CREDENTIALS MODAL -->
   <div id="credentialsModal" class="modal-backdrop">
     <div class="modal">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px;">
         <h3>🔑 Platform Credentials & Demo Services Directory</h3>
         <button onclick="closeCredentialsModal()" style="background: none; border: none; font-size: 20px; cursor: pointer; color: var(--muted);">&times;</button>
       </div>
 
-      <div style="display: flex; flex-direction: column; gap: 20px;">
+      <div style="display: flex; flex-direction: column; gap: 16px;">
         <!-- Highest Admin -->
-        <div style="background: var(--bg); padding: 16px; border-radius: 1rem; border: 1px solid var(--border);">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+        <div style="background: var(--bg); padding: 14px; border-radius: 1rem; border: 1px solid var(--border);">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
             <strong style="color: #4F46E5;">👑 Highest Admin (Super Admin)</strong>
             <button class="btn btn-secondary btn-sm" onclick="switchUser('admin'); closeCredentialsModal();">Login as Admin</button>
           </div>
@@ -746,8 +990,8 @@
         </div>
 
         <!-- Staff -->
-        <div style="background: var(--bg); padding: 16px; border-radius: 1rem; border: 1px solid var(--border);">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+        <div style="background: var(--bg); padding: 14px; border-radius: 1rem; border: 1px solid var(--border);">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
             <strong>💼 Internal Staff / Finance Lead</strong>
             <button class="btn btn-secondary btn-sm" onclick="switchUser('staff'); closeCredentialsModal();">Login as Staff</button>
           </div>
@@ -757,23 +1001,23 @@
 
         <!-- Normal Users -->
         <div>
-          <h4 style="margin-bottom: 10px;">Normal Users (Customers with Demo Data)</h4>
-          <div style="display: flex; flex-direction: column; gap: 10px;">
-            <div style="background: var(--bg); padding: 12px 16px; border-radius: 1rem; border: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+          <h4 style="margin-bottom: 8px;">Normal Users (Customers with Demo Data)</h4>
+          <div style="display: flex; flex-direction: column; gap: 8px;">
+            <div style="background: var(--bg); padding: 10px 14px; border-radius: 1rem; border: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
               <div>
                 <strong>Acme Corp (Priya Sharma)</strong> — 🇮🇳 Active
                 <p style="font-size: 12px; color: var(--muted);"><code>priya@acmecorp.com</code> · <code>CustomerPass@2026!</code></p>
               </div>
               <button class="btn btn-secondary btn-sm" onclick="switchUser('priya@acmecorp.com'); closeCredentialsModal();">Login</button>
             </div>
-            <div style="background: var(--bg); padding: 12px 16px; border-radius: 1rem; border: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+            <div style="background: var(--bg); padding: 10px 14px; border-radius: 1rem; border: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
               <div>
                 <strong>Nova Global Ltd (David Miller)</strong> — 🇺🇸 Dunning Overdue
                 <p style="font-size: 12px; color: var(--muted);"><code>david@novaglobal.com</code> · <code>CustomerPass@2026!</code></p>
               </div>
               <button class="btn btn-secondary btn-sm" onclick="switchUser('david@novaglobal.com'); closeCredentialsModal();">Login</button>
             </div>
-            <div style="background: var(--bg); padding: 12px 16px; border-radius: 1rem; border: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+            <div style="background: var(--bg); padding: 10px 14px; border-radius: 1rem; border: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
               <div>
                 <strong>Apex Dynamics (Elena Rostova)</strong> — 🇩🇪 Idle Warning
                 <p style="font-size: 12px; color: var(--muted);"><code>elena@apexdynamics.eu</code> · <code>CustomerPass@2026!</code></p>
@@ -785,8 +1029,8 @@
 
         <!-- Platform Services -->
         <div>
-          <h4 style="margin-bottom: 10px;">External Services Using Our Platform</h4>
-          <div style="background: var(--bg); padding: 14px; border-radius: 1rem; border: 1px solid var(--border); font-size: 12px;">
+          <h4 style="margin-bottom: 8px;">External Services Using Our Platform</h4>
+          <div style="background: var(--bg); padding: 12px; border-radius: 1rem; border: 1px solid var(--border); font-size: 12px;">
             <p><strong>BrightCloud Compute:</strong> API Key <code>bk_live_compute_9f82a17c4b6e821d3e</code></p>
             <p style="margin-top: 4px;"><strong>BrightDesk CRM:</strong> API Key <code>bk_live_crm_718a93bc28d115e4</code></p>
             <p style="margin-top: 4px;"><strong>BrightMetrics:</strong> API Key <code>bk_live_analytics_44e991fa8c02</code></p>
@@ -799,11 +1043,11 @@
   <!-- PRORATION PLAN CHANGE MODAL (NEW-2) -->
   <div id="prorationModal" class="modal-backdrop">
     <div class="modal">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
         <h3>Change Subscription Plan (With Proration Preview)</h3>
         <button onclick="closeProrationModal()" style="background: none; border: none; font-size: 20px; cursor: pointer; color: var(--muted);">&times;</button>
       </div>
-      <p style="font-size: 13px; color: var(--muted); margin-bottom: 16px;">
+      <p style="font-size: 13px; color: var(--muted); margin-bottom: 14px;">
         Proration rule: <code>credit = old price &times; unused days &divide; 30</code>, <code>charge = new price &times; remaining days &divide; 30</code>.
       </p>
 
@@ -816,7 +1060,7 @@
         </select>
       </div>
 
-      <div id="prorationPreviewBox" style="background: var(--bg); border: 1px solid var(--border); border-radius: 1rem; padding: 16px; margin-bottom: 20px;">
+      <div id="prorationPreviewBox" style="background: var(--bg); border: 1px solid var(--border); border-radius: 1rem; padding: 14px; margin-bottom: 18px;">
         <!-- Filled dynamically -->
       </div>
 
@@ -859,13 +1103,14 @@
     <div class="concept-tag">Concept Proposal to BrightLoop · Oct 31, 2026</div>
   </footer>
 
-  <!-- CLIENT-SIDE SCRIPT -->
+  <!-- CLIENT SCRIPT -->
   <script>
     let currentSession = null;
     let catalog = null;
     let selectedSubForProration = null;
+    let billingCadence = 'monthly';
+    let checkoutPlanTarget = null;
 
-    // Load initial data
     async function init() {
       await loadSession();
       await loadCatalog();
@@ -873,7 +1118,11 @@
       await loadSubscriptions();
       await loadInvoices();
       await loadDryRun();
+      await loadQuotations();
       await loadServices();
+      await loadRightSizing();
+      await loadAuditLog();
+      renderPricingCards();
 
       // Keyboard shortcut Ctrl+K
       document.addEventListener('keydown', (e) => {
@@ -911,7 +1160,8 @@
         await loadSubscriptions();
         await loadInvoices();
         await loadDashboard();
-        showNotification(`Switched role to: ${data.user.name} (${data.user.role.toUpperCase()})`);
+        await loadRightSizing();
+        showNotification(`Switched persona to: ${data.user.name} (${data.user.role.toUpperCase()})`);
       }
     }
 
@@ -936,14 +1186,14 @@
         container.innerHTML = `
           <div class="alert-banner alert-idle">
             <div>
-              <strong style="font-size: 16px;">⚠️ Inactivity Notice on ${idleSub.number} (${idleSub.plan ? idleSub.plan.name : 'Subscription'})</strong>
-              <p style="font-size: 13px; margin-top: 4px;">
-                You have not used this subscription for 32 days. In accordance with BrightLoop policy (NEW-1), it will auto-close in 4 days unless action is taken.
+              <strong style="font-size: 15px;">⚠️ Inactivity Notice on ${idleSub.number} (${idleSub.plan ? idleSub.plan.name : 'Subscription'})</strong>
+              <p style="font-size: 13px; margin-top: 3px;">
+                Zero usage recorded for 32 days. In accordance with BrightLoop policy (NEW-1), it will auto-close in 4 days unless action is taken.
               </p>
             </div>
             <div style="display: flex; gap: 8px;">
               <button class="btn btn-primary btn-sm" onclick="subAction('${idleSub.id}', 'keep')">Keep Active</button>
-              <button class="btn btn-secondary btn-sm" onclick="subAction('${idleSub.id}', 'pause')">Pause Subscription</button>
+              <button class="btn btn-secondary btn-sm" onclick="subAction('${idleSub.id}', 'pause')">Pause</button>
               <button class="btn btn-danger btn-sm" onclick="subAction('${idleSub.id}', 'cancel')">Cancel</button>
             </div>
           </div>
@@ -953,9 +1203,9 @@
         container.innerHTML = `
           <div class="alert-banner alert-danger">
             <div>
-              <strong style="font-size: 16px;">🚨 Action Required: Invoice ${failedInv.number} Payment Overdue</strong>
-              <p style="font-size: 13px; margin-top: 4px;">
-                Payment attempt for ${failedInv.currency} ${(failedInv.totalMinor / 100).toFixed(2)} failed. Dunning Sequence #1 initiated. Please update payment method.
+              <strong style="font-size: 15px;">🚨 Action Required: Invoice ${failedInv.number} Payment Overdue</strong>
+              <p style="font-size: 13px; margin-top: 3px;">
+                Payment attempt for ${failedInv.currency} ${(failedInv.totalMinor / 100).toFixed(2)} failed. Dunning Sequence #1 initiated. Please settle overdue invoice.
               </p>
             </div>
             <div>
@@ -968,6 +1218,29 @@
       }
     }
 
+    // Right-Sizing Suggestions (NEW-12)
+    async function loadRightSizing() {
+      const res = await fetch('/api/v1/right-sizing');
+      const suggestions = await res.json();
+      const container = document.getElementById('rightSizingContainer');
+
+      if (!suggestions || suggestions.length === 0) {
+        container.style.display = 'none';
+        return;
+      }
+
+      container.style.display = 'block';
+      container.innerHTML = suggestions.map(s => `
+        <div class="alert-banner alert-info">
+          <div>
+            <strong>💡 Right-Sizing Suggestion (NEW-12)</strong>
+            <p style="font-size: 13px; margin-top: 3px;">${s.message}</p>
+          </div>
+          ${s.potentialSavings ? `<span class="chip chip-active">Potential Savings: ${s.potentialSavings}</span>` : `<span class="chip chip-confirm">Tier Optimal</span>`}
+        </div>
+      `).join('');
+    }
+
     // Dashboard Data
     async function loadDashboard() {
       const res = await fetch('/api/v1/dashboard/summary');
@@ -977,13 +1250,12 @@
       document.getElementById('kpiOutstanding').textContent = `₹${(data.kpis.outstandingBaseINR / 100).toLocaleString('en-IN')}`;
       document.getElementById('kpiIdleWatch').textContent = data.kpis.idleSubscriptions;
 
-      // Render Churn risk list
       const churnContainer = document.getElementById('churnRiskList');
       churnContainer.innerHTML = (data.churnRisk || []).map(item => `
-        <div style="background: var(--bg); border: 1px solid var(--border); border-radius: 1rem; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center;">
+        <div style="background: var(--bg); border: 1px solid var(--border); border-radius: 1rem; padding: 12px 14px; display: flex; justify-content: space-between; align-items: center;">
           <div>
-            <div style="font-weight: 600; font-size: 14px;">${item.customerName}</div>
-            <div style="font-size: 12px; color: var(--muted); margin-top: 2px;">${item.healthReason}</div>
+            <div style="font-weight: 600; font-size: 13px;">${item.customerName}</div>
+            <div style="font-size: 11px; color: var(--muted); margin-top: 2px;">${item.healthReason}</div>
           </div>
           <div style="text-align: right;">
             <div class="chip ${item.healthScore < 40 ? 'chip-overdue' : 'chip-idle'}">Score: ${item.healthScore}</div>
@@ -1095,13 +1367,13 @@
               <h3>Dry Run: ${run.id} (Period: ${run.period})</h3>
               <p style="font-size: 13px; color: var(--muted); margin-top: 4px;">Status: <span class="chip chip-confirm">${run.status}</span> · Projected Total: ₹${(run.totalProjectedMinorINR / 100).toLocaleString('en-IN')}</p>
             </div>
-            <button class="btn btn-primary btn-sm" onclick="showNotification('Dry Run Invoices Approved for Dispatch!')">Approve All Clean Invoices</button>
+            <button class="btn btn-primary btn-sm" onclick="showNotification('Dry Run Invoices Approved for Dispatch!')">Approve Clean Invoices</button>
           </div>
 
           <h4 style="margin-bottom: 12px; color: #DC2626;">Automated Anomaly Flags Detected (${run.flags.length})</h4>
           <div style="display: flex; flex-direction: column; gap: 10px;">
             ${run.flags.map(flag => `
-              <div style="background: var(--bg); border: 1px solid var(--border); border-left: 4px solid ${flag.severity === 'danger' ? '#DC2626' : '#F59E0B'}; border-radius: 8px; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center;">
+              <div style="background: var(--bg); border: 1px solid var(--border); border-left: 4px solid ${flag.severity === 'danger' ? '#DC2626' : '#F59E0B'}; border-radius: 8px; padding: 12px 14px; display: flex; justify-content: space-between; align-items: center;">
                 <div>
                   <strong>${flag.subscription}</strong>
                   <div style="font-size: 13px; color: var(--text); margin-top: 2px;">${flag.message}</div>
@@ -1121,22 +1393,216 @@
       showNotification('Generated fresh November 2026 dry run with anomaly detection.');
     }
 
-    // Catalog & Currencies
+    // Public Pricing Page (NEW-10)
+    function setBillingCadence(cadence) {
+      billingCadence = cadence;
+      document.getElementById('toggleMonthlyBtn').className = `btn btn-sm ${cadence === 'monthly' ? 'btn-primary' : 'btn-secondary'}`;
+      document.getElementById('toggleYearlyBtn').className = `btn btn-sm ${cadence === 'yearly' ? 'btn-primary' : 'btn-secondary'}`;
+      renderPricingCards();
+    }
+
+    function renderPricingCards() {
+      if (!catalog || !catalog.plans) return;
+      const currency = document.getElementById('pricingCurrencySelect').value;
+      const container = document.getElementById('pricingCardsGrid');
+
+      container.innerHTML = catalog.plans.map(p => {
+        let priceMinor = p.prices[currency] || p.prices['INR'];
+        if (billingCadence === 'yearly') {
+          priceMinor = Math.round(priceMinor * 0.80);
+        }
+        const isHighlight = p.id === 'plan_growth';
+
+        return `
+          <div class="card" style="border: 2px solid ${isHighlight ? 'var(--secondary)' : 'var(--border)'}; position: relative; display: flex; flex-direction: column;">
+            ${isHighlight ? `<div style="position: absolute; top: -12px; right: 20px; background: var(--secondary); color: #fff; font-size: 10px; font-weight: 700; padding: 2px 10px; border-radius: 9999px; text-transform: uppercase;">Most Popular</div>` : ''}
+            <h3>${p.name}</h3>
+            <p style="font-size: 13px; color: var(--muted); margin-top: 4px;">Ideal for growing businesses and tech infrastructure.</p>
+            <div style="margin: 20px 0;">
+              <span class="tabular font-bold" style="font-size: 32px; font-family: 'Space Grotesk';">${formatCurrency(priceMinor, currency)}</span>
+              <span style="font-size: 13px; color: var(--muted);">/ ${billingCadence === 'yearly' ? 'mo (billed yearly)' : 'mo'}</span>
+            </div>
+            <ul style="list-style: none; font-size: 13px; display: flex; flex-direction: column; gap: 8px; margin-bottom: 24px;">
+              <li>✓ Multi-Currency Billing & Invoices</li>
+              <li>✓ Meter: ${p.meter.unit} (${p.meter.allowance} allowance)</li>
+              <li>✓ Idle Auto-End Policy (${p.idlePolicy.daysIdle} days limit)</li>
+              <li>✓ Spend Cap Alert (${formatCurrency(p.spendCapPolicy.defaultCapMinor, currency)})</li>
+              <li>✓ Scoped REST API & Webhooks Access</li>
+            </ul>
+            <button class="btn ${isHighlight ? 'btn-primary' : 'btn-secondary'}" style="margin-top: auto; width: 100%;" onclick="openHostedCheckout('${p.id}')">
+              Get Started with ${p.name}
+            </button>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Hosted Checkout Flow (NEW-10)
+    function openHostedCheckout(planId) {
+      checkoutPlanTarget = catalog.plans.find(p => p.id === planId) || catalog.plans[0];
+      document.getElementById('hostedCheckoutModal').style.display = 'flex';
+      updateCheckoutTotal();
+    }
+    function closeHostedCheckoutModal() {
+      document.getElementById('hostedCheckoutModal').style.display = 'none';
+    }
+
+    function updateCheckoutTotal() {
+      if (!checkoutPlanTarget) return;
+      const currency = document.getElementById('pricingCurrencySelect').value;
+      const country = document.getElementById('chkCountry').value;
+      const discountCode = document.getElementById('chkDiscountCode').value.trim().toUpperCase();
+
+      let basePriceMinor = checkoutPlanTarget.prices[currency] || checkoutPlanTarget.prices['INR'];
+      let discountMinor = discountCode === 'LAUNCH20' ? Math.round(basePriceMinor * 0.20) : 0;
+      let taxMinor = 0;
+      if (country === 'India') taxMinor = Math.round((basePriceMinor - discountMinor) * 0.18);
+      else if (country === 'Germany') taxMinor = Math.round((basePriceMinor - discountMinor) * 0.19);
+
+      let totalMinor = basePriceMinor - discountMinor + taxMinor;
+
+      document.getElementById('checkoutSummaryBox').innerHTML = `
+        <div style="display: flex; justify-content: space-between; font-size: 13px;">
+          <span>Plan: <strong>${checkoutPlanTarget.name}</strong></span>
+          <span>${formatCurrency(basePriceMinor, currency)}</span>
+        </div>
+        ${discountMinor ? `<div style="display: flex; justify-content: space-between; font-size: 13px; color: #166534; margin-top: 4px;"><span>Promo (LAUNCH20 -20%):</span><span>-${formatCurrency(discountMinor, currency)}</span></div>` : ''}
+        <div style="display: flex; justify-content: space-between; font-size: 13px; margin-top: 4px;">
+          <span>Estimated Taxes (${country}):</span>
+          <span>${formatCurrency(taxMinor, currency)}</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 15px; font-weight: 700; border-top: 1px solid var(--border); padding-top: 8px; margin-top: 8px;">
+          <span>Total Payable Today:</span>
+          <span style="color: var(--secondary);">${formatCurrency(totalMinor, currency)}</span>
+        </div>
+      `;
+    }
+
+    async function submitHostedCheckout() {
+      const payload = {
+        planId: checkoutPlanTarget.id,
+        variantId: 'var_standard',
+        currency: document.getElementById('pricingCurrencySelect').value,
+        name: document.getElementById('chkName').value,
+        company: document.getElementById('chkCompany').value,
+        email: document.getElementById('chkEmail').value,
+        password: document.getElementById('chkPassword').value,
+        country: document.getElementById('chkCountry').value,
+        taxId: document.getElementById('chkTaxId').value,
+        discountCode: document.getElementById('chkDiscountCode').value,
+        paymentMethod: document.querySelector('input[name="chkPayMethod"]:checked')?.value || 'Sandbox Instant Payment'
+      };
+
+      const res = await fetch('/api/v1/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+
+      if (!res.ok) {
+        showNotification('Checkout Error: ' + (data.error || 'Failed to complete checkout'));
+        return;
+      }
+
+      closeHostedCheckoutModal();
+      showNotification(`🎉 Congratulations! Your subscription ${data.subscription.number} is live, and invoice ${data.invoice.number} has been settled via Sandbox Gateway!`);
+      await loadSession();
+      await loadSubscriptions();
+      await loadInvoices();
+      await loadDashboard();
+      showTab('subscriptions');
+    }
+
+    // Quotations (NEW-11)
+    async function loadQuotations() {
+      const res = await fetch('/api/v1/quotations');
+      const quotations = await res.json();
+      const card = document.getElementById('quotationViewCard');
+      const qt = quotations[0];
+
+      if (!qt) {
+        card.innerHTML = `<p style="color: var(--muted);">No quotations available.</p>`;
+        return;
+      }
+
+      card.innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1px solid var(--border); padding-bottom: 16px; margin-bottom: 16px;">
+          <div>
+            <h3>${qt.number} — Proposal for ${qt.customerName}</h3>
+            <p style="font-size: 13px; color: var(--muted); margin-top: 3px;">Recipient: <code>${qt.customerEmail}</code> · Valid until: <strong>${qt.validUntil}</strong></p>
+          </div>
+          <div>
+            <span class="chip ${qt.status === 'confirmed' ? 'chip-active' : 'chip-confirm'}">${qt.status}</span>
+          </div>
+        </div>
+
+        <h4 style="margin-bottom: 10px;">Proposed Subscription Scope</h4>
+        <div class="table-container" style="margin-bottom: 16px;">
+          <table>
+            <thead>
+              <tr><th>Item</th><th style="text-align: right;">Qty</th><th style="text-align: right;">Amount</th></tr>
+            </thead>
+            <tbody>
+              ${qt.lines.map(l => `
+                <tr>
+                  <td>${l.description}</td>
+                  <td style="text-align: right;">${l.quantity}</td>
+                  <td style="text-align: right;">${formatCurrency(l.amountMinor, qt.currency)}</td>
+                </tr>
+              `).join('')}
+              <tr style="font-weight: 700;">
+                <td colspan="2">Total Committed Value</td>
+                <td style="text-align: right;">${formatCurrency(qt.totalMinor, qt.currency)}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div style="font-size: 12px; color: var(--muted);">
+            Acceptance moves quotation directly into a Confirmed Subscription with automatic payment scheduling.
+          </div>
+          ${qt.status !== 'confirmed' ? `
+            <button class="btn btn-primary" onclick="acceptQuotation('${qt.token}')">✍️ Accept & Confirm Quotation</button>
+          ` : `
+            <span class="chip chip-active">✓ Accepted by ${qt.acceptedBy}</span>
+          `}
+        </div>
+      `;
+    }
+
+    async function acceptQuotation(token) {
+      const res = await fetch(`/api/v1/quotations/${token}/accept`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ acceptedBy: 'Starlight Operations Rep' })
+      });
+      const data = await res.json();
+      if (data.success) {
+        showNotification(`Quotation confirmed! New subscription created: ${data.subscription.number}`);
+        await loadQuotations();
+        await loadSubscriptions();
+        await loadDashboard();
+      }
+    }
+
+    // Catalog & Tax Rules
     async function loadCatalog() {
       const res = await fetch('/api/v1/catalog');
       catalog = await res.json();
 
       const prodContainer = document.getElementById('productsList');
       prodContainer.innerHTML = catalog.products.map(p => `
-        <div style="background: var(--bg); border: 1px solid var(--border); border-radius: 1rem; padding: 16px;">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+        <div style="background: var(--bg); border: 1px solid var(--border); border-radius: 1rem; padding: 14px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
             <strong>${p.name}</strong>
             <span class="chip chip-draft">${p.type}</span>
           </div>
           <p style="font-size: 12px; color: var(--muted);">${p.notes}</p>
-          <div style="margin-top: 10px; font-size: 13px;">Base Price: ₹${(p.salesPrice / 100).toLocaleString('en-IN')}</div>
+          <div style="margin-top: 8px; font-size: 13px;">Base Price: ₹${(p.salesPrice / 100).toLocaleString('en-IN')}</div>
           ${p.variants && p.variants.length > 0 ? `
-            <div style="margin-top: 8px; font-size: 12px; color: var(--secondary);">
+            <div style="margin-top: 6px; font-size: 11px; color: var(--secondary);">
               Variants: ${p.variants.map(v => `${v.name} (+₹${v.extraPrice / 100})`).join(', ')}
             </div>
           ` : ''}
@@ -1145,8 +1611,17 @@
 
       const currContainer = document.getElementById('currenciesList');
       currContainer.innerHTML = catalog.currencies.map(c => `
-        <div style="background: var(--bg); border: 1px solid var(--border); padding: 8px 14px; border-radius: 9999px; font-size: 12px; font-weight: 600;">
+        <div style="background: var(--bg); border: 1px solid var(--border); padding: 6px 12px; border-radius: 9999px; font-size: 12px; font-weight: 600;">
           ${c.code} (${c.symbol}) · Rate: ${c.rateToBase}
+        </div>
+      `).join('');
+
+      const taxContainer = document.getElementById('taxRulesList');
+      taxContainer.innerHTML = catalog.taxRules.map(t => `
+        <div style="background: var(--bg); border: 1px solid var(--border); border-radius: 1rem; padding: 12px 14px;">
+          <strong>${t.name}</strong>
+          <div style="font-size: 12px; color: var(--muted); margin-top: 2px;">Region: ${t.region} | Rate: ${t.rate}%</div>
+          <div style="font-size: 11px; color: var(--secondary); margin-top: 4px;">HSN/SAC: ${t.hsn} | CGST: ${t.cgst}% SGST: ${t.sgst}% IGST: ${t.igst}%</div>
         </div>
       `).join('');
     }
@@ -1158,13 +1633,13 @@
 
       const container = document.getElementById('servicesList');
       container.innerHTML = services.map(s => `
-        <div style="background: var(--bg); border: 1px solid var(--border); border-radius: 1rem; padding: 18px;">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-            <strong style="font-size: 16px;">${s.serviceName}</strong>
+        <div style="background: var(--bg); border: 1px solid var(--border); border-radius: 1rem; padding: 16px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+            <strong style="font-size: 15px;">${s.serviceName}</strong>
             <span class="chip chip-active">ACTIVE CLIENT</span>
           </div>
-          <p style="font-size: 13px; color: var(--muted); margin-bottom: 10px;">${s.description}</p>
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 10px; font-size: 12px;">
+          <p style="font-size: 12px; color: var(--muted); margin-bottom: 8px;">${s.description}</p>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 8px; font-size: 11px;">
             <div><strong>Admin API Key:</strong> <code>${s.adminApiKey}</code></div>
             <div><strong>Webhook Secret:</strong> <code>${s.webhookSecret}</code></div>
             <div><strong>Authorized Scopes:</strong> <code>${s.scopes.join(', ')}</code></div>
@@ -1212,6 +1687,62 @@
       });
       const data = await res.json();
       consoleEl.textContent = `[Webhook Delivery Payload]\n` + JSON.stringify(data, null, 2);
+    }
+
+    // Staff Creation with AUTH-2 Password Meter
+    function checkStaffPasswordStrength() {
+      const pwd = document.getElementById('staffPasswordInput').value;
+      const hasUpper = /[A-Z]/.test(pwd);
+      const hasLower = /[a-z]/.test(pwd);
+      const hasSpecial = /[^A-Za-z0-9]/.test(pwd);
+      const isLen = pwd.length >= 9;
+
+      document.getElementById('pwdBar1').className = `pwd-bar ${isLen ? 'active' : ''}`;
+      document.getElementById('pwdBar2').className = `pwd-bar ${hasUpper ? 'active' : ''}`;
+      document.getElementById('pwdBar3').className = `pwd-bar ${hasLower ? 'active' : ''}`;
+      document.getElementById('pwdBar4').className = `pwd-bar ${hasSpecial ? 'active' : ''}`;
+    }
+
+    async function createNewStaff() {
+      const name = document.getElementById('staffNameInput').value;
+      const email = document.getElementById('staffEmailInput').value;
+      const password = document.getElementById('staffPasswordInput').value;
+
+      const res = await fetch('/api/v1/staff', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, password })
+      });
+      const data = await res.json();
+
+      if (!res.ok) {
+        showNotification('Error: ' + data.error);
+        return;
+      }
+
+      showNotification(`Staff member ${data.staff.name} successfully created!`);
+      document.getElementById('staffNameInput').value = '';
+      document.getElementById('staffEmailInput').value = '';
+      document.getElementById('staffPasswordInput').value = '';
+      checkStaffPasswordStrength();
+      await loadAuditLog();
+    }
+
+    // Audit Log
+    async function loadAuditLog() {
+      const res = await fetch('/api/v1/audit-log');
+      const logs = await res.json();
+      const tbody = document.getElementById('auditLogTableBody');
+
+      tbody.innerHTML = logs.slice(0, 15).map(l => `
+        <tr>
+          <td><small>${l.timestamp}</small></td>
+          <td><strong>${l.actor}</strong></td>
+          <td><span class="chip chip-draft">${l.action}</span></td>
+          <td><code>${l.entity}</code></td>
+          <td><small>${l.after}</small></td>
+        </tr>
+      `).join('');
     }
 
     // AI Assistant
@@ -1336,7 +1867,7 @@
     // Helper: Money Formatter
     function formatCurrency(minor, currencyCode) {
       const decimals = currencyCode === 'JPY' ? 0 : 2;
-      const symbol = currencyCode === 'INR' ? '₹' : currencyCode === 'USD' ? '$' : currencyCode === 'EUR' ? '€' : currencyCode + ' ';
+      const symbol = currencyCode === 'INR' ? '₹' : currencyCode === 'USD' ? '$' : currencyCode === 'EUR' ? '€' : currencyCode === 'GBP' ? '£' : currencyCode + ' ';
       return `${symbol}${(minor / Math.pow(10, decimals)).toLocaleString(undefined, { minimumFractionDigits: decimals })}`;
     }
 

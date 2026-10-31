@@ -148,3 +148,4 @@ Then open your browser at:
 `http://localhost:3000`
 
 Use the **Quick Demo Switcher Bar** at the top of the interface to jump instantly between **Super Admin**, **Staff**, **Acme Corp**, **Nova Global**, **Apex Dynamics**, and the **External Services API Playground** without retyping credentials.
+
