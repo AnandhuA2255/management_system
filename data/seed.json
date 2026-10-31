@@ -1,0 +1,593 @@
+{
+  "system": {
+    "name": "BrightLoop Subscriptions",
+    "version": "2.0.0",
+    "baseCurrency": "INR",
+    "conceptNote": "BrightLoop Subscriptions Concept Prototype v2"
+  },
+  "credentialsGuide": {
+    "highestAdmin": {
+      "role": "Super Admin (Full Control)",
+      "email": "admin@brightloop.io",
+      "password": "AdminPassword@2026!",
+      "description": "Unrestricted access to all data, staff management, catalog, tax rules, discount rules, currencies, payment gateway keys, and dry run approvals."
+    },
+    "internalStaff": {
+      "role": "Internal Staff / Finance Lead",
+      "email": "staff@brightloop.io",
+      "password": "StaffPassword@2026!",
+      "description": "Manage quotations, customer subscriptions, dry runs, record payments, view financial reports and use the billing assistant."
+    },
+    "normalUsers": [
+      {
+        "name": "Acme Corp (Priya Sharma)",
+        "email": "priya@acmecorp.com",
+        "password": "CustomerPass@2026!",
+        "country": "India",
+        "currency": "INR",
+        "taxId": "29AABCU9603R1ZM",
+        "state": "Active Customer (Enterprise Plan + Odoo Brand Variant)",
+        "highlights": "Active subscription with live usage meter (840/1,000 API units), 3 invoices (all paid), UPI & card sandbox payments."
+      },
+      {
+        "name": "Nova Global Ltd (David Miller)",
+        "email": "david@novaglobal.com",
+        "password": "CustomerPass@2026!",
+        "country": "United States",
+        "currency": "USD",
+        "taxId": "US-EIN-98-7654321",
+        "state": "Dunning Warning (Invoice Payment Failed)",
+        "highlights": "Growth Tier subscription ($149/mo), recent invoice payment failed, Dunning Reminder #1 sent, proration credit available."
+      },
+      {
+        "name": "Apex Dynamics (Elena Rostova)",
+        "email": "elena@apexdynamics.eu",
+        "password": "CustomerPass@2026!",
+        "country": "Germany",
+        "currency": "EUR",
+        "taxId": "DE987654321",
+        "state": "Idle Subscription Warning (NEW-1)",
+        "highlights": "Pro Plan (€299/mo) flagged idle due to 30 days without API usage. Warning banner active with Keep, Pause, or Cancel options."
+      }
+    ],
+    "platformServices": [
+      {
+        "serviceName": "BrightCloud Compute & Storage Service",
+        "serviceId": "srv_compute_engine_01",
+        "adminApiKey": "bk_live_compute_9f82a17c4b6e821d3e",
+        "webhookSecret": "whsec_compute_b8a3e72c8194",
+        "scopes": ["usage:write", "subscriptions:read", "customers:read"],
+        "webhookUrl": "https://compute.brightcloud.internal/webhooks/billing",
+        "description": "Reports real-time compute hours and storage TB usage for metered billing. Triggered spend-cap alerts at 85%."
+      },
+      {
+        "serviceName": "BrightDesk Support & CRM Platform",
+        "serviceId": "srv_desk_crm_02",
+        "adminApiKey": "bk_live_crm_718a93bc28d115e4",
+        "webhookSecret": "whsec_crm_55f1a942bc30",
+        "scopes": ["subscriptions:write", "customers:write", "invoices:read", "usage:write"],
+        "webhookUrl": "https://desk.brightloop.internal/api/webhooks/billing",
+        "description": "Automates agent seat license provisioning and synchronizes customer quotation approvals."
+      },
+      {
+        "serviceName": "BrightMetrics Data & Telemetry Engine",
+        "serviceId": "srv_metrics_engine_03",
+        "adminApiKey": "bk_live_analytics_44e991fa8c02",
+        "webhookSecret": "whsec_analytics_812c33ba0981",
+        "scopes": ["reports:read", "invoices:read", "usage:write"],
+        "webhookUrl": "https://metrics.brightloop.internal/hooks",
+        "description": "Consumes billing metrics and injects daily API transaction events with idempotency keys."
+      }
+    ]
+  },
+  "currencies": [
+    { "code": "INR", "symbol": "₹", "decimals": 2, "enabled": true, "rateToBase": 1.0, "isBase": true },
+    { "code": "USD", "symbol": "$", "decimals": 2, "enabled": true, "rateToBase": 84.50, "isBase": false },
+    { "code": "EUR", "symbol": "€", "decimals": 2, "enabled": true, "rateToBase": 91.20, "isBase": false },
+    { "code": "GBP", "symbol": "£", "decimals": 2, "enabled": true, "rateToBase": 109.40, "isBase": false },
+    { "code": "AED", "symbol": "AED", "decimals": 2, "enabled": true, "rateToBase": 23.01, "isBase": false },
+    { "code": "SGD", "symbol": "S$", "decimals": 2, "enabled": true, "rateToBase": 63.80, "isBase": false },
+    { "code": "AUD", "symbol": "A$", "decimals": 2, "enabled": true, "rateToBase": 55.40, "isBase": false },
+    { "code": "CAD", "symbol": "C$", "decimals": 2, "enabled": true, "rateToBase": 61.30, "isBase": false },
+    { "code": "JPY", "symbol": "¥", "decimals": 0, "enabled": true, "rateToBase": 0.55, "isBase": false },
+    { "code": "CHF", "symbol": "CHF", "decimals": 2, "enabled": true, "rateToBase": 97.10, "isBase": false }
+  ],
+  "taxRules": [
+    { "id": "tax_in_cgst_sgst", "name": "India GST (Intra-State: CGST + SGST)", "region": "India (Same State)", "rate": 18.0, "inclusive": false, "cgst": 9.0, "sgst": 9.0, "igst": 0.0, "hsn": "998315" },
+    { "id": "tax_in_igst", "name": "India GST (Inter-State: IGST)", "region": "India (Other States)", "rate": 18.0, "inclusive": false, "cgst": 0.0, "sgst": 0.0, "igst": 18.0, "hsn": "998315" },
+    { "id": "tax_eu_vat", "name": "EU Standard VAT", "region": "European Union", "rate": 19.0, "inclusive": false, "cgst": 0.0, "sgst": 0.0, "igst": 0.0, "hsn": "998315" },
+    { "id": "tax_us_exempt", "name": "US Digital Services (No Sales Tax)", "region": "United States", "rate": 0.0, "inclusive": false, "cgst": 0.0, "sgst": 0.0, "igst": 0.0, "hsn": "998315" }
+  ],
+  "products": [
+    {
+      "id": "prod_bright_suite",
+      "name": "BrightLoop Core Platform",
+      "type": "Service",
+      "salesPrice": 999900,
+      "costPrice": 250000,
+      "hsn": "998315",
+      "notes": "End-to-end recurring subscription and business billing engine",
+      "variants": [
+        { "id": "var_standard", "name": "Standard Brand Edition", "extraPrice": 0 },
+        { "id": "var_odoo", "name": "Odoo Integrated Edition", "extraPrice": 56000 }
+      ]
+    },
+    {
+      "id": "prod_meter_api",
+      "name": "API Metered Throughput",
+      "type": "Usage",
+      "salesPrice": 500,
+      "costPrice": 100,
+      "hsn": "998313",
+      "notes": "Metered API transactions per 1,000 calls",
+      "variants": []
+    },
+    {
+      "id": "prod_agent_seats",
+      "name": "Dedicated Support & CRM Seat",
+      "type": "Seat",
+      "salesPrice": 150000,
+      "costPrice": 40000,
+      "hsn": "998314",
+      "notes": "Seat license for BrightDesk agents",
+      "variants": []
+    }
+  ],
+  "plans": [
+    {
+      "id": "plan_starter",
+      "name": "Starter Plan",
+      "period": "monthly",
+      "minQuantity": 1,
+      "public": true,
+      "autoCloseAtEnd": false,
+      "canCloseEarly": true,
+      "canPause": true,
+      "canRenew": true,
+      "idlePolicy": { "enabled": true, "daysIdle": 30, "graceDays": 7 },
+      "meter": { "unit": "API Requests", "allowance": 500, "overageUnitMinor": 200 },
+      "spendCapPolicy": { "enabled": true, "defaultCapMinor": 1000000, "action": "block" },
+      "prices": {
+        "INR": 499900,
+        "USD": 5900,
+        "EUR": 5500,
+        "GBP": 4900,
+        "AED": 22000,
+        "SGD": 8000,
+        "AUD": 9000,
+        "CAD": 8000,
+        "JPY": 9000,
+        "CHF": 5800
+      }
+    },
+    {
+      "id": "plan_growth",
+      "name": "Growth Pro Plan",
+      "period": "monthly",
+      "minQuantity": 1,
+      "public": true,
+      "autoCloseAtEnd": false,
+      "canCloseEarly": true,
+      "canPause": true,
+      "canRenew": true,
+      "idlePolicy": { "enabled": true, "daysIdle": 30, "graceDays": 7 },
+      "meter": { "unit": "API Requests", "allowance": 2500, "overageUnitMinor": 150 },
+      "spendCapPolicy": { "enabled": true, "defaultCapMinor": 2500000, "action": "flag" },
+      "prices": {
+        "INR": 1249900,
+        "USD": 14900,
+        "EUR": 13900,
+        "GBP": 11900,
+        "AED": 55000,
+        "SGD": 20000,
+        "AUD": 22500,
+        "CAD": 20000,
+        "JPY": 22500,
+        "CHF": 14500
+      }
+    },
+    {
+      "id": "plan_enterprise",
+      "name": "Enterprise Scale Plan",
+      "period": "monthly",
+      "minQuantity": 1,
+      "public": true,
+      "autoCloseAtEnd": false,
+      "canCloseEarly": true,
+      "canPause": true,
+      "canRenew": true,
+      "idlePolicy": { "enabled": true, "daysIdle": 45, "graceDays": 14 },
+      "meter": { "unit": "API Requests", "allowance": 10000, "overageUnitMinor": 100 },
+      "spendCapPolicy": { "enabled": true, "defaultCapMinor": 10000000, "action": "flag" },
+      "prices": {
+        "INR": 3499900,
+        "USD": 41900,
+        "EUR": 38900,
+        "GBP": 33900,
+        "AED": 154000,
+        "SGD": 56000,
+        "AUD": 63000,
+        "CAD": 56500,
+        "JPY": 63000,
+        "CHF": 40500
+      }
+    }
+  ],
+  "discounts": [
+    {
+      "id": "disc_launch",
+      "code": "LAUNCH20",
+      "type": "percentage",
+      "value": 20,
+      "minPurchase": 0,
+      "startDate": "2026-01-01",
+      "endDate": "2026-12-31",
+      "usageLimit": 500,
+      "usedCount": 42,
+      "scope": "whole_subscription"
+    },
+    {
+      "id": "disc_flat500",
+      "code": "STARTUP500",
+      "type": "fixed",
+      "value": 50000,
+      "minPurchase": 400000,
+      "startDate": "2026-01-01",
+      "endDate": "2026-12-31",
+      "usageLimit": 200,
+      "usedCount": 18,
+      "scope": "whole_subscription"
+    }
+  ],
+  "users": [
+    {
+      "id": "usr_admin_01",
+      "email": "admin@brightloop.io",
+      "role": "admin",
+      "name": "System Super Admin",
+      "passwordHash": "$2a$10$wTqK4F.7Ztq7zGg8b4jH8eU3zVw6G8P7k9L1o2N3m4B5v6C7x8Z9a",
+      "plainPassword": "AdminPassword@2026!"
+    },
+    {
+      "id": "usr_staff_01",
+      "email": "staff@brightloop.io",
+      "role": "staff",
+      "name": "Finance & Operations Lead",
+      "passwordHash": "$2a$10$wTqK4F.7Ztq7zGg8b4jH8eU3zVw6G8P7k9L1o2N3m4B5v6C7x8Z9a",
+      "plainPassword": "StaffPassword@2026!"
+    },
+    {
+      "id": "usr_cust_01",
+      "email": "priya@acmecorp.com",
+      "role": "customer",
+      "name": "Priya Sharma",
+      "passwordHash": "$2a$10$wTqK4F.7Ztq7zGg8b4jH8eU3zVw6G8P7k9L1o2N3m4B5v6C7x8Z9a",
+      "plainPassword": "CustomerPass@2026!"
+    },
+    {
+      "id": "usr_cust_02",
+      "email": "david@novaglobal.com",
+      "role": "customer",
+      "name": "David Miller",
+      "passwordHash": "$2a$10$wTqK4F.7Ztq7zGg8b4jH8eU3zVw6G8P7k9L1o2N3m4B5v6C7x8Z9a",
+      "plainPassword": "CustomerPass@2026!"
+    },
+    {
+      "id": "usr_cust_03",
+      "email": "elena@apexdynamics.eu",
+      "role": "customer",
+      "name": "Elena Rostova",
+      "passwordHash": "$2a$10$wTqK4F.7Ztq7zGg8b4jH8eU3zVw6G8P7k9L1o2N3m4B5v6C7x8Z9a",
+      "plainPassword": "CustomerPass@2026!"
+    }
+  ],
+  "customers": [
+    {
+      "id": "cust_acme_01",
+      "userId": "usr_cust_01",
+      "name": "Acme Corp (Priya Sharma)",
+      "company": "Acme Software Solutions Pvt Ltd",
+      "email": "priya@acmecorp.com",
+      "country": "India",
+      "billingCurrency": "INR",
+      "taxId": "29AABCU9603R1ZM",
+      "billingAddress": "Brigade Gateway, 8th Floor, Rajajinagar, Bengaluru, KA 560055",
+      "createdDate": "2026-08-01"
+    },
+    {
+      "id": "cust_nova_02",
+      "userId": "usr_cust_02",
+      "name": "Nova Global Ltd (David Miller)",
+      "company": "Nova Global Technologies Inc",
+      "email": "david@novaglobal.com",
+      "country": "United States",
+      "billingCurrency": "USD",
+      "taxId": "US-EIN-98-7654321",
+      "billingAddress": "450 Mission Street, Suite 1200, San Francisco, CA 94105",
+      "createdDate": "2026-09-10"
+    },
+    {
+      "id": "cust_apex_03",
+      "userId": "usr_cust_03",
+      "name": "Apex Dynamics (Elena Rostova)",
+      "company": "Apex Dynamics GmbH",
+      "email": "elena@apexdynamics.eu",
+      "country": "Germany",
+      "billingCurrency": "EUR",
+      "taxId": "DE987654321",
+      "billingAddress": "Friedrichstraße 176, 10117 Berlin, Germany",
+      "createdDate": "2026-09-25"
+    }
+  ],
+  "subscriptions": [
+    {
+      "id": "sub_acme_101",
+      "number": "SUB-2026-101",
+      "customerId": "cust_acme_01",
+      "planId": "plan_enterprise",
+      "variantId": "var_odoo",
+      "status": "active",
+      "currency": "INR",
+      "startDate": "2026-08-01",
+      "expiryDate": "2027-08-01",
+      "billingDay": 1,
+      "paymentTerms": "Due on receipt",
+      "unitPriceMinor": 3555900,
+      "quantity": 1,
+      "spendCapMinor": 10000000,
+      "healthScore": 96,
+      "healthReason": "Healthy. Frequent daily usage, zero invoice failures, active 90+ days.",
+      "usageEventsCount": 8420,
+      "lastUsageAt": "2026-10-31T09:45:00Z"
+    },
+    {
+      "id": "sub_nova_102",
+      "number": "SUB-2026-102",
+      "customerId": "cust_nova_02",
+      "planId": "plan_growth",
+      "variantId": "var_standard",
+      "status": "active",
+      "currency": "USD",
+      "startDate": "2026-09-10",
+      "expiryDate": "2027-09-10",
+      "billingDay": 10,
+      "paymentTerms": "15 days",
+      "unitPriceMinor": 14900,
+      "quantity": 1,
+      "spendCapMinor": 2500000,
+      "healthScore": 48,
+      "healthReason": "At risk. Invoice INV-2026-012 payment failed 3 days ago. Dunning reminder 1 sent.",
+      "usageEventsCount": 1820,
+      "lastUsageAt": "2026-10-28T14:20:00Z"
+    },
+    {
+      "id": "sub_apex_103",
+      "number": "SUB-2026-103",
+      "customerId": "cust_apex_03",
+      "planId": "plan_growth",
+      "variantId": "var_standard",
+      "status": "idle",
+      "currency": "EUR",
+      "startDate": "2026-09-25",
+      "expiryDate": "2027-09-25",
+      "billingDay": 25,
+      "paymentTerms": "30 days",
+      "unitPriceMinor": 13900,
+      "quantity": 1,
+      "spendCapMinor": 2500000,
+      "idleWarningSentAt": "2026-10-26T00:00:00Z",
+      "idleGraceExpiresAt": "2026-11-02T23:59:59Z",
+      "healthScore": 25,
+      "healthReason": "Idle auto-end trigger. Zero API requests in past 32 days. 4 days grace period remaining.",
+      "usageEventsCount": 0,
+      "lastUsageAt": "2026-09-28T10:00:00Z"
+    }
+  ],
+  "invoices": [
+    {
+      "id": "inv_2026_001",
+      "number": "INV-2026-001",
+      "subscriptionId": "sub_acme_101",
+      "customerId": "cust_acme_01",
+      "period": "2026-08",
+      "status": "paid",
+      "currency": "INR",
+      "lockedRateToBase": 1.0,
+      "subtotalMinor": 3555900,
+      "taxMinor": 640062,
+      "discountMinor": 0,
+      "totalMinor": 4195962,
+      "dueDate": "2026-08-01",
+      "paidAt": "2026-08-01T11:20:00Z",
+      "paymentFailedFlag": false,
+      "lines": [
+        { "description": "Enterprise Scale Plan (Monthly)", "quantity": 1, "unitPriceMinor": 3499900, "amountMinor": 3499900 },
+        { "description": "Odoo Integrated Edition Variant Addon", "quantity": 1, "unitPriceMinor": 56000, "amountMinor": 56000 },
+        { "description": "India GST (Intra-State: CGST 9% + SGST 9%)", "quantity": 1, "unitPriceMinor": 640062, "amountMinor": 640062 }
+      ]
+    },
+    {
+      "id": "inv_2026_008",
+      "number": "INV-2026-008",
+      "subscriptionId": "sub_acme_101",
+      "customerId": "cust_acme_01",
+      "period": "2026-09",
+      "status": "paid",
+      "currency": "INR",
+      "lockedRateToBase": 1.0,
+      "subtotalMinor": 3555900,
+      "taxMinor": 640062,
+      "discountMinor": 711180,
+      "totalMinor": 3484782,
+      "dueDate": "2026-09-01",
+      "paidAt": "2026-09-01T10:15:00Z",
+      "paymentFailedFlag": false,
+      "lines": [
+        { "description": "Enterprise Scale Plan (Monthly)", "quantity": 1, "unitPriceMinor": 3499900, "amountMinor": 3499900 },
+        { "description": "Odoo Integrated Edition Variant Addon", "quantity": 1, "unitPriceMinor": 56000, "amountMinor": 56000 },
+        { "description": "Discount: LAUNCH20 (-20%)", "quantity": 1, "unitPriceMinor": -711180, "amountMinor": -711180 },
+        { "description": "India GST (Intra-State: CGST 9% + SGST 9%)", "quantity": 1, "unitPriceMinor": 640062, "amountMinor": 640062 }
+      ]
+    },
+    {
+      "id": "inv_2026_015",
+      "number": "INV-2026-015",
+      "subscriptionId": "sub_acme_101",
+      "customerId": "cust_acme_01",
+      "period": "2026-10",
+      "status": "confirmed",
+      "currency": "INR",
+      "lockedRateToBase": 1.0,
+      "subtotalMinor": 3555900,
+      "taxMinor": 640062,
+      "discountMinor": 0,
+      "totalMinor": 4195962,
+      "dueDate": "2026-11-05",
+      "paidAt": null,
+      "paymentFailedFlag": false,
+      "lines": [
+        { "description": "Enterprise Scale Plan (Monthly)", "quantity": 1, "unitPriceMinor": 3499900, "amountMinor": 3499900 },
+        { "description": "Odoo Integrated Edition Variant Addon", "quantity": 1, "unitPriceMinor": 56000, "amountMinor": 56000 },
+        { "description": "India GST (Intra-State: CGST 9% + SGST 9%)", "quantity": 1, "unitPriceMinor": 640062, "amountMinor": 640062 }
+      ]
+    },
+    {
+      "id": "inv_2026_004",
+      "number": "INV-2026-004",
+      "subscriptionId": "sub_nova_102",
+      "customerId": "cust_nova_02",
+      "period": "2026-09",
+      "status": "paid",
+      "currency": "USD",
+      "lockedRateToBase": 84.50,
+      "subtotalMinor": 14900,
+      "taxMinor": 0,
+      "discountMinor": 0,
+      "totalMinor": 14900,
+      "dueDate": "2026-09-25",
+      "paidAt": "2026-09-12T16:40:00Z",
+      "paymentFailedFlag": false,
+      "lines": [
+        { "description": "Growth Pro Plan (Monthly)", "quantity": 1, "unitPriceMinor": 14900, "amountMinor": 14900 }
+      ]
+    },
+    {
+      "id": "inv_2026_012",
+      "number": "INV-2026-012",
+      "subscriptionId": "sub_nova_102",
+      "customerId": "cust_nova_02",
+      "period": "2026-10",
+      "status": "confirmed",
+      "currency": "USD",
+      "lockedRateToBase": 84.50,
+      "subtotalMinor": 14900,
+      "taxMinor": 0,
+      "discountMinor": 0,
+      "totalMinor": 14900,
+      "dueDate": "2026-10-25",
+      "paidAt": null,
+      "paymentFailedFlag": true,
+      "dunningStatus": "Reminder #1 Sent (3 days overdue)",
+      "lines": [
+        { "description": "Growth Pro Plan (Monthly)", "quantity": 1, "unitPriceMinor": 14900, "amountMinor": 14900 }
+      ]
+    },
+    {
+      "id": "inv_2026_009",
+      "number": "INV-2026-009",
+      "subscriptionId": "sub_apex_103",
+      "customerId": "cust_apex_03",
+      "period": "2026-09",
+      "status": "paid",
+      "currency": "EUR",
+      "lockedRateToBase": 91.20,
+      "subtotalMinor": 13900,
+      "taxMinor": 2641,
+      "discountMinor": 0,
+      "totalMinor": 16541,
+      "dueDate": "2026-10-25",
+      "paidAt": "2026-09-26T08:11:00Z",
+      "paymentFailedFlag": false,
+      "lines": [
+        { "description": "Growth Pro Plan (Monthly)", "quantity": 1, "unitPriceMinor": 13900, "amountMinor": 13900 },
+        { "description": "EU Standard VAT (19%)", "quantity": 1, "unitPriceMinor": 2641, "amountMinor": 2641 }
+      ]
+    }
+  ],
+  "payments": [
+    {
+      "id": "pay_sandbox_001",
+      "invoiceId": "inv_2026_001",
+      "method": "UPI (Instant QR)",
+      "amountMinor": 4195962,
+      "currency": "INR",
+      "provider": "sandbox",
+      "gatewayReference": "pay_sbx_upi_981240182",
+      "date": "2026-08-01T11:20:00Z",
+      "note": "Payment auto-reconciled via Sandbox UPI webhook"
+    },
+    {
+      "id": "pay_sandbox_008",
+      "invoiceId": "inv_2026_008",
+      "method": "Corporate Credit Card",
+      "amountMinor": 3484782,
+      "currency": "INR",
+      "provider": "sandbox",
+      "gatewayReference": "pay_sbx_card_411122223",
+      "date": "2026-09-01T10:15:00Z",
+      "note": "Payment verified via Sandbox 3DS"
+    },
+    {
+      "id": "pay_sandbox_004",
+      "invoiceId": "inv_2026_004",
+      "method": "Visa Credit Card (USD)",
+      "amountMinor": 14900,
+      "currency": "USD",
+      "provider": "sandbox",
+      "gatewayReference": "pay_sbx_stripe_ch_3914a",
+      "date": "2026-09-12T16:40:00Z",
+      "note": "Automated recurring card debit"
+    },
+    {
+      "id": "pay_sandbox_009",
+      "invoiceId": "inv_2026_009",
+      "method": "SEPA Bank Transfer",
+      "amountMinor": 16541,
+      "currency": "EUR",
+      "provider": "sandbox",
+      "gatewayReference": "pay_sbx_sepa_88192301",
+      "date": "2026-09-26T08:11:00Z",
+      "note": "SEPA Direct Debit confirmed"
+    }
+  ],
+  "billRuns": [
+    {
+      "id": "run_2026_10_dry",
+      "mode": "dry",
+      "period": "2026-11",
+      "runAt": "2026-10-31T06:00:00Z",
+      "status": "pending_review",
+      "invoicesPrepared": 3,
+      "totalProjectedMinorINR": 5120000,
+      "flags": [
+        {
+          "subscription": "SUB-2026-103 (Apex Dynamics)",
+          "severity": "warning",
+          "code": "IDLE_PENDING_CLOSURE",
+          "message": "Subscription flagged as idle (32 days without usage). Invoicing should be held until grace period expires."
+        },
+        {
+          "subscription": "SUB-2026-102 (Nova Global Ltd)",
+          "severity": "danger",
+          "code": "OVERDUE_PAYMENT_UNRESOLVED",
+          "message": "Previous period invoice INV-2026-012 remains unpaid. Dunning sequence active."
+        }
+      ]
+    }
+  ],
+  "auditLogs": [
+    { "timestamp": "2026-10-31T09:12:00Z", "actor": "admin@brightloop.io", "action": "PLAN_UPDATE", "entity": "plan_enterprise", "before": "{ minQty: 1 }", "after": "{ minQty: 1, idlePolicy: enabled }" },
+    { "timestamp": "2026-10-31T08:00:00Z", "actor": "cron.dunning", "action": "DUNNING_NOTIFICATION_SENT", "entity": "inv_2026_012", "before": "due", "after": "reminder_1_sent" },
+    { "timestamp": "2026-10-31T06:00:00Z", "actor": "staff@brightloop.io", "action": "DRY_RUN_GENERATED", "entity": "run_2026_10_dry", "before": "none", "after": "pending_review" }
+  ]
+}

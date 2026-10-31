@@ -1,0 +1,24 @@
+{
+  "name": "brightloop-subscriptions",
+  "version": "2.0.0",
+  "description": "BrightLoop Subscriptions — End-to-end recurring subscription platform with multi-currency, sandbox gateway, AI billing assistant, and demo platform services.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AnandhuA2255/management_system.git"
+  },
+  "keywords": [
+    "subscriptions",
+    "billing",
+    "recurring",
+    "multi-currency",
+    "metered-billing",
+    "brightloop"
+  ],
+  "author": "BrightLoop",
+  "license": "ISC"
+}
