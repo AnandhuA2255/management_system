@@ -594,10 +594,11 @@
       "currency": "INR",
       "unitPriceMinor": 49900,
       "startDate": "2026-10-31",
-      "expiryDate": "2026-12-01",
+      "expiryDate": "2026-12-02",
       "healthScore": 98,
-      "healthReason": "Active partner subscription verified through BrightLoop hub",
-      "paymentMethod": "BrightLoop Consolidated Billing"
+      "healthReason": "Resumed. Billing dates advanced by 1 paused days (SUBST-4).",
+      "paymentMethod": "BrightLoop Consolidated Billing",
+      "pausedAt": null
     },
     {
       "id": "sub_8e395168",
@@ -685,10 +686,10 @@
       "customerId": "cust_apex_03",
       "planId": "plan_growth",
       "variantId": "var_standard",
-      "status": "paused",
+      "status": "active",
       "currency": "EUR",
       "startDate": "2026-09-25",
-      "expiryDate": "2027-09-25",
+      "expiryDate": "2027-09-26",
       "billingDay": 25,
       "paymentTerms": "30 days",
       "unitPriceMinor": 13900,
@@ -697,10 +698,10 @@
       "idleWarningSentAt": null,
       "idleGraceExpiresAt": null,
       "healthScore": 88,
-      "healthReason": "Paused by customer or staff. Billing runs skip this subscription (SUBST-3).",
+      "healthReason": "Resumed. Billing dates advanced by 1 paused days (SUBST-4).",
       "usageEventsCount": 0,
       "lastUsageAt": "2026-10-31T08:48:30.592Z",
-      "pausedAt": "2026-10-31T08:48:34.404Z"
+      "pausedAt": null
     }
   ],
   "invoices": [
@@ -1369,6 +1370,70 @@
   ],
   "auditLogs": [
     {
+      "timestamp": "2026-10-31T10:09:54.273Z",
+      "actor": "priya@acmecorp.com",
+      "action": "FORGOT_PASSWORD_REQUEST",
+      "entity": "auth",
+      "before": "null",
+      "after": "{\"token\":\"rst_292437f75934c8caac68e05f550dbf2a\"}"
+    },
+    {
+      "timestamp": "2026-10-31T10:09:10.179Z",
+      "actor": "staff@brightloop.io",
+      "action": "USER_LOGIN",
+      "entity": "session",
+      "before": "null",
+      "after": "staff"
+    },
+    {
+      "timestamp": "2026-10-31T10:09:10.166Z",
+      "actor": "priya@acmecorp.com",
+      "action": "USER_LOGIN",
+      "entity": "session",
+      "before": "null",
+      "after": "customer"
+    },
+    {
+      "timestamp": "2026-10-31T09:34:27.911Z",
+      "actor": "priya@acmecorp.com",
+      "action": "USER_LOGIN",
+      "entity": "session",
+      "before": "null",
+      "after": "customer"
+    },
+    {
+      "timestamp": "2026-10-31T09:33:44.746Z",
+      "actor": "staff@brightloop.io",
+      "action": "SUBSCRIPTION_RESUME",
+      "entity": "SUB-2026-103",
+      "before": "paused",
+      "after": "active"
+    },
+    {
+      "timestamp": "2026-10-31T09:33:34.790Z",
+      "actor": "staff@brightloop.io",
+      "action": "SUBSCRIPTION_RESUME",
+      "entity": "SUB-2026-213",
+      "before": "paused",
+      "after": "active"
+    },
+    {
+      "timestamp": "2026-10-31T09:33:31.246Z",
+      "actor": "staff@brightloop.io",
+      "action": "SUBSCRIPTION_PAUSE",
+      "entity": "SUB-2026-213",
+      "before": "active",
+      "after": "paused"
+    },
+    {
+      "timestamp": "2026-10-31T09:33:09.976Z",
+      "actor": "staff@brightloop.io",
+      "action": "USER_LOGIN",
+      "entity": "session",
+      "before": "null",
+      "after": "staff"
+    },
+    {
       "timestamp": "2026-10-31T09:28:19.816Z",
       "actor": "staff@brightloop.io",
       "action": "PAYMENT_REVERSED",
@@ -1916,6 +1981,18 @@
   ],
   "passwordResetTokens": [
     {
+      "token": "rst_292437f75934c8caac68e05f550dbf2a",
+      "email": "priya@acmecorp.com",
+      "expiresAt": 1793444994269,
+      "used": false
+    },
+    {
+      "token": "rst_f4a165eb2b4564972020d1082efadd17",
+      "email": "unknown@example.com",
+      "expiresAt": 1793444994262,
+      "used": false
+    },
+    {
       "token": "rst_a33f6154c9856cf17f7a7729ef6f17e2",
       "email": "priya@acmecorp.com",
       "expiresAt": 1793438022905,
@@ -1923,6 +2000,16 @@
     }
   ],
   "sentEmails": [
+    {
+      "id": "eml_0c4d0d84",
+      "to": "priya@acmecorp.com",
+      "from": "BrightLoop Subscriptions <notifications@brightloop.io>",
+      "subject": "Reset Your BrightLoop Password",
+      "html": "\n        <div style=\"font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; border: 1px solid #E5E7EB; border-radius: 8px;\">\n          <h2 style=\"color: #0F172A; margin-top: 0;\">Password Reset Request</h2>\n          <p>We received a request to reset your password for your BrightLoop account (<strong>priya@acmecorp.com</strong>).</p>\n          <p>Click the button below to choose a new password. This link is valid for 60 minutes:</p>\n          <p style=\"margin: 24px 0;\">\n            <a href=\"http://localhost:3000/#reset-password?token=rst_292437f75934c8caac68e05f550dbf2a\" style=\"display: inline-block; background: #4F46E5; color: #FFFFFF; padding: 10px 20px; border-radius: 6px; text-decoration: none; font-weight: 600;\">Reset Account Password</a>\n          </p>\n          <div style=\"background: #F8FAFC; border: 1px solid #E2E8F0; padding: 12px; border-radius: 6px; font-size: 13px;\">\n            <span>Verification Security Token:</span>\n            <code style=\"display: block; font-weight: 700; color: #0F172A; margin-top: 4px;\">rst_292437f75934c8caac68e05f550dbf2a</code>\n          </div>\n          <p style=\"font-size: 13px; color: #64748B; margin-top: 20px;\">If you did not request this reset, you can safely ignore this email.</p>\n          <hr style=\"border: none; border-top: 1px solid #E5E7EB; margin: 24px 0;\">\n          <p style=\"font-size: 12px; color: #64748B;\">BrightLoop Security Team · Automated Notification</p>\n        </div>\n      ",
+      "text": "\n        \n          Password Reset Request\n          We received a request to reset your password for your BrightLoop account (priya@acmecorp.com).\n          Click the button below to choose a new password. This link is valid for 60 minutes:\n          \n            Reset Account Password\n          \n          \n            Verification Security Token:\n            rst_292437f75934c8caac68e05f550dbf2a\n          \n          If you did not request this reset, you can safely ignore this email.\n          \n          BrightLoop Security Team · Automated Notification\n        \n      ",
+      "sentAt": "2026-10-31T10:09:54.270Z",
+      "status": "delivered"
+    },
     {
       "id": "eml_c5a0e906",
       "to": "priya@acmecorp.com",
