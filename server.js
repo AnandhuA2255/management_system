@@ -35,17 +35,31 @@ function saveDatabase() {
 
 loadDatabase();
 
-// In-memory active session (defaults to super admin for rapid developer exploration)
-let currentSession = {
-  user: db.users.find(u => u.role === 'admin') || db.users[0],
-  token: 'sess_' + crypto.randomBytes(8).toString('hex')
-};
+// In-memory active sessions map (token -> sessionData)
+const activeSessions = new Map();
+
+function getSessionFromRequest(req) {
+  const tokenHeader = req.headers['x-session-token'] || '';
+  const authHeader = req.headers['authorization'] || '';
+  let token = tokenHeader;
+  if (!token && authHeader.startsWith('Bearer sess_')) {
+    token = authHeader.replace('Bearer ', '').trim();
+  }
+  if (!token && req.headers['cookie']) {
+    const match = req.headers['cookie'].match(/bl_session=([^;]+)/);
+    if (match) token = match[1];
+  }
+  if (token && activeSessions.has(token)) {
+    return activeSessions.get(token);
+  }
+  return null;
+}
 
 // Log audit helper
 function logAudit(actor, action, entity, before, after) {
   const entry = {
     timestamp: new Date().toISOString(),
-    actor: actor || currentSession.user.email,
+    actor: actor || 'system@brightloop.io',
     action,
     entity,
     before: typeof before === 'object' ? JSON.stringify(before) : String(before || 'none'),
@@ -82,6 +96,15 @@ const server = http.createServer(async (req, res) => {
   const parsedUrl = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
   const pathname = parsedUrl.pathname;
   const method = req.method;
+
+  // Resolve active session from request token or cookie
+  const activeSession = getSessionFromRequest(req);
+  const currentSession = activeSession || {
+    user: { id: 'guest', email: 'guest@brightloop.io', name: 'Guest Visitor', role: 'guest' },
+    customer: null,
+    service: null,
+    token: null
+  };
 
   // CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -131,50 +154,60 @@ const server = http.createServer(async (req, res) => {
 
     // 1. Auth: Get Current Session
     if (apiPath === '/auth/me' && method === 'GET') {
-      const customer = db.customers.find(c => c.userId === currentSession.user.id);
-      return sendJson(200, {
-        user: {
-          id: currentSession.user.id,
-          email: currentSession.user.email,
-          name: currentSession.user.name,
-          role: currentSession.user.role
-        },
-        customer: customer || null
-      });
+      if (activeSession && activeSession.user) {
+        return sendJson(200, {
+          user: activeSession.user,
+          customer: activeSession.customer || null,
+          service: activeSession.service || null
+        });
+      }
+      return sendJson(200, { user: null, customer: null, service: null });
     }
 
-    // 2. Auth: Quick Switch (For demo convenience)
-    if (apiPath === '/auth/switch' && method === 'POST') {
-      const { target } = body; // 'admin', 'staff', or email
-      let targetUser = null;
-      if (target === 'admin') {
-        targetUser = db.users.find(u => u.role === 'admin');
-      } else if (target === 'staff') {
-        targetUser = db.users.find(u => u.role === 'staff');
-      } else {
-        targetUser = db.users.find(u => u.email === target || u.id === target);
-      }
-
-      if (targetUser) {
-        currentSession.user = targetUser;
-        const customer = db.customers.find(c => c.userId === targetUser.id);
-        logAudit(targetUser.email, 'DEMO_ROLE_SWITCH', 'session', null, targetUser.role);
-        return sendJson(200, { success: true, user: targetUser, customer });
-      }
-      return sendJson(404, { error: 'Target user not found' });
-    }
-
-    // 3. Auth: Login
+    // 2. Auth: Standard User Login (Customer, Staff, Admin)
     if (apiPath === '/auth/login' && method === 'POST') {
       const { email, password } = body;
-      const user = db.users.find(u => u.email.toLowerCase() === (email || '').toLowerCase());
+      const user = db.users.find(u => u.email.toLowerCase() === (email || '').toLowerCase().trim());
       if (!user || user.plainPassword !== password) {
         return sendJson(401, { error: 'Invalid email or password' });
       }
-      currentSession.user = user;
-      const customer = db.customers.find(c => c.userId === user.id);
-      logAudit(user.email, 'USER_LOGIN', 'session', null, 'authenticated');
-      return sendJson(200, { success: true, user, customer });
+      const token = 'sess_' + crypto.randomBytes(16).toString('hex');
+      const customer = db.customers.find(c => c.userId === user.id) || null;
+      const sessionData = { user, customer, token, createdAt: Date.now() };
+      activeSessions.set(token, sessionData);
+      logAudit(user.email, 'USER_LOGIN', 'session', null, user.role);
+      res.setHeader('Set-Cookie', `bl_session=${token}; Path=/; HttpOnly; SameSite=Lax`);
+      return sendJson(200, { success: true, token, user, customer });
+    }
+
+    // 3. Auth: External Service Admin Login (using Admin API Key)
+    if (apiPath === '/auth/service-login' && method === 'POST') {
+      const { apiKey } = body;
+      const service = db.credentialsGuide.platformServices.find(s => s.adminApiKey === (apiKey || '').trim());
+      if (!service) {
+        return sendJson(401, { error: 'Invalid service administrator API key' });
+      }
+      const token = 'sess_srv_' + crypto.randomBytes(16).toString('hex');
+      const serviceUser = {
+        id: service.serviceId,
+        name: service.serviceName,
+        email: service.webhookUrl,
+        role: 'service_admin'
+      };
+      const sessionData = { user: serviceUser, service, token, createdAt: Date.now() };
+      activeSessions.set(token, sessionData);
+      logAudit(service.serviceName, 'SERVICE_ADMIN_LOGIN', 'session', null, 'service_admin');
+      res.setHeader('Set-Cookie', `bl_session=${token}; Path=/; HttpOnly; SameSite=Lax`);
+      return sendJson(200, { success: true, token, user: serviceUser, service });
+    }
+
+    // 4. Auth: Logout
+    if (apiPath === '/auth/logout' && method === 'POST') {
+      if (activeSession && activeSession.token) {
+        activeSessions.delete(activeSession.token);
+      }
+      res.setHeader('Set-Cookie', 'bl_session=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly');
+      return sendJson(200, { success: true });
     }
 
     // 4. Credentials Guide
@@ -773,11 +806,14 @@ const server = http.createServer(async (req, res) => {
       db.payments.unshift(paymentRecord);
 
       // Auto login user into session
-      currentSession.user = newUser;
+      const token = 'sess_' + crypto.randomBytes(16).toString('hex');
+      const sessionData = { user: newUser, customer: newCustomer, token, createdAt: Date.now() };
+      activeSessions.set(token, sessionData);
+      res.setHeader('Set-Cookie', `bl_session=${token}; Path=/; HttpOnly; SameSite=Lax`);
 
       logAudit(email, 'PUBLIC_CHECKOUT_COMPLETED', newSub.number, null, { totalMinor, currency });
       saveDatabase();
-      return sendJson(200, { success: true, customer: newCustomer, subscription: newSub, invoice: newInvoice });
+      return sendJson(200, { success: true, token, user: newUser, customer: newCustomer, subscription: newSub, invoice: newInvoice });
     }
 
     // 19. Add Staff Member (AUTH-5: Only Admin Can Add Staff)

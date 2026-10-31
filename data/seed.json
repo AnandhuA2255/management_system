@@ -56,7 +56,11 @@
         "serviceId": "srv_compute_engine_01",
         "adminApiKey": "bk_live_compute_9f82a17c4b6e821d3e",
         "webhookSecret": "whsec_compute_b8a3e72c8194",
-        "scopes": ["usage:write", "subscriptions:read", "customers:read"],
+        "scopes": [
+          "usage:write",
+          "subscriptions:read",
+          "customers:read"
+        ],
         "webhookUrl": "https://compute.brightcloud.internal/webhooks/billing",
         "description": "Reports real-time compute hours and storage TB usage for metered billing. Triggered spend-cap alerts at 85%."
       },
@@ -65,7 +69,12 @@
         "serviceId": "srv_desk_crm_02",
         "adminApiKey": "bk_live_crm_718a93bc28d115e4",
         "webhookSecret": "whsec_crm_55f1a942bc30",
-        "scopes": ["subscriptions:write", "customers:write", "invoices:read", "usage:write"],
+        "scopes": [
+          "subscriptions:write",
+          "customers:write",
+          "invoices:read",
+          "usage:write"
+        ],
         "webhookUrl": "https://desk.brightloop.internal/api/webhooks/billing",
         "description": "Automates agent seat license provisioning and synchronizes customer quotation approvals."
       },
@@ -74,29 +83,143 @@
         "serviceId": "srv_metrics_engine_03",
         "adminApiKey": "bk_live_analytics_44e991fa8c02",
         "webhookSecret": "whsec_analytics_812c33ba0981",
-        "scopes": ["reports:read", "invoices:read", "usage:write"],
+        "scopes": [
+          "reports:read",
+          "invoices:read",
+          "usage:write"
+        ],
         "webhookUrl": "https://metrics.brightloop.internal/hooks",
         "description": "Consumes billing metrics and injects daily API transaction events with idempotency keys."
       }
     ]
   },
   "currencies": [
-    { "code": "INR", "symbol": "₹", "decimals": 2, "enabled": true, "rateToBase": 1.0, "isBase": true },
-    { "code": "USD", "symbol": "$", "decimals": 2, "enabled": true, "rateToBase": 84.50, "isBase": false },
-    { "code": "EUR", "symbol": "€", "decimals": 2, "enabled": true, "rateToBase": 91.20, "isBase": false },
-    { "code": "GBP", "symbol": "£", "decimals": 2, "enabled": true, "rateToBase": 109.40, "isBase": false },
-    { "code": "AED", "symbol": "AED", "decimals": 2, "enabled": true, "rateToBase": 23.01, "isBase": false },
-    { "code": "SGD", "symbol": "S$", "decimals": 2, "enabled": true, "rateToBase": 63.80, "isBase": false },
-    { "code": "AUD", "symbol": "A$", "decimals": 2, "enabled": true, "rateToBase": 55.40, "isBase": false },
-    { "code": "CAD", "symbol": "C$", "decimals": 2, "enabled": true, "rateToBase": 61.30, "isBase": false },
-    { "code": "JPY", "symbol": "¥", "decimals": 0, "enabled": true, "rateToBase": 0.55, "isBase": false },
-    { "code": "CHF", "symbol": "CHF", "decimals": 2, "enabled": true, "rateToBase": 97.10, "isBase": false }
+    {
+      "code": "INR",
+      "symbol": "₹",
+      "decimals": 2,
+      "enabled": true,
+      "rateToBase": 1,
+      "isBase": true
+    },
+    {
+      "code": "USD",
+      "symbol": "$",
+      "decimals": 2,
+      "enabled": true,
+      "rateToBase": 84.5,
+      "isBase": false
+    },
+    {
+      "code": "EUR",
+      "symbol": "€",
+      "decimals": 2,
+      "enabled": true,
+      "rateToBase": 91.2,
+      "isBase": false
+    },
+    {
+      "code": "GBP",
+      "symbol": "£",
+      "decimals": 2,
+      "enabled": true,
+      "rateToBase": 109.4,
+      "isBase": false
+    },
+    {
+      "code": "AED",
+      "symbol": "AED",
+      "decimals": 2,
+      "enabled": true,
+      "rateToBase": 23.01,
+      "isBase": false
+    },
+    {
+      "code": "SGD",
+      "symbol": "S$",
+      "decimals": 2,
+      "enabled": true,
+      "rateToBase": 63.8,
+      "isBase": false
+    },
+    {
+      "code": "AUD",
+      "symbol": "A$",
+      "decimals": 2,
+      "enabled": true,
+      "rateToBase": 55.4,
+      "isBase": false
+    },
+    {
+      "code": "CAD",
+      "symbol": "C$",
+      "decimals": 2,
+      "enabled": true,
+      "rateToBase": 61.3,
+      "isBase": false
+    },
+    {
+      "code": "JPY",
+      "symbol": "¥",
+      "decimals": 0,
+      "enabled": true,
+      "rateToBase": 0.55,
+      "isBase": false
+    },
+    {
+      "code": "CHF",
+      "symbol": "CHF",
+      "decimals": 2,
+      "enabled": true,
+      "rateToBase": 97.1,
+      "isBase": false
+    }
   ],
   "taxRules": [
-    { "id": "tax_in_cgst_sgst", "name": "India GST (Intra-State: CGST + SGST)", "region": "India (Same State)", "rate": 18.0, "inclusive": false, "cgst": 9.0, "sgst": 9.0, "igst": 0.0, "hsn": "998315" },
-    { "id": "tax_in_igst", "name": "India GST (Inter-State: IGST)", "region": "India (Other States)", "rate": 18.0, "inclusive": false, "cgst": 0.0, "sgst": 0.0, "igst": 18.0, "hsn": "998315" },
-    { "id": "tax_eu_vat", "name": "EU Standard VAT", "region": "European Union", "rate": 19.0, "inclusive": false, "cgst": 0.0, "sgst": 0.0, "igst": 0.0, "hsn": "998315" },
-    { "id": "tax_us_exempt", "name": "US Digital Services (No Sales Tax)", "region": "United States", "rate": 0.0, "inclusive": false, "cgst": 0.0, "sgst": 0.0, "igst": 0.0, "hsn": "998315" }
+    {
+      "id": "tax_in_cgst_sgst",
+      "name": "India GST (Intra-State: CGST + SGST)",
+      "region": "India (Same State)",
+      "rate": 18,
+      "inclusive": false,
+      "cgst": 9,
+      "sgst": 9,
+      "igst": 0,
+      "hsn": "998315"
+    },
+    {
+      "id": "tax_in_igst",
+      "name": "India GST (Inter-State: IGST)",
+      "region": "India (Other States)",
+      "rate": 18,
+      "inclusive": false,
+      "cgst": 0,
+      "sgst": 0,
+      "igst": 18,
+      "hsn": "998315"
+    },
+    {
+      "id": "tax_eu_vat",
+      "name": "EU Standard VAT",
+      "region": "European Union",
+      "rate": 19,
+      "inclusive": false,
+      "cgst": 0,
+      "sgst": 0,
+      "igst": 0,
+      "hsn": "998315"
+    },
+    {
+      "id": "tax_us_exempt",
+      "name": "US Digital Services (No Sales Tax)",
+      "region": "United States",
+      "rate": 0,
+      "inclusive": false,
+      "cgst": 0,
+      "sgst": 0,
+      "igst": 0,
+      "hsn": "998315"
+    }
   ],
   "products": [
     {
@@ -108,8 +231,16 @@
       "hsn": "998315",
       "notes": "End-to-end recurring subscription and business billing engine",
       "variants": [
-        { "id": "var_standard", "name": "Standard Brand Edition", "extraPrice": 0 },
-        { "id": "var_odoo", "name": "Odoo Integrated Edition", "extraPrice": 56000 }
+        {
+          "id": "var_standard",
+          "name": "Standard Brand Edition",
+          "extraPrice": 0
+        },
+        {
+          "id": "var_odoo",
+          "name": "Odoo Integrated Edition",
+          "extraPrice": 56000
+        }
       ]
     },
     {
@@ -144,9 +275,21 @@
       "canCloseEarly": true,
       "canPause": true,
       "canRenew": true,
-      "idlePolicy": { "enabled": true, "daysIdle": 30, "graceDays": 7 },
-      "meter": { "unit": "API Requests", "allowance": 500, "overageUnitMinor": 200 },
-      "spendCapPolicy": { "enabled": true, "defaultCapMinor": 1000000, "action": "block" },
+      "idlePolicy": {
+        "enabled": true,
+        "daysIdle": 30,
+        "graceDays": 7
+      },
+      "meter": {
+        "unit": "API Requests",
+        "allowance": 500,
+        "overageUnitMinor": 200
+      },
+      "spendCapPolicy": {
+        "enabled": true,
+        "defaultCapMinor": 1000000,
+        "action": "block"
+      },
       "prices": {
         "INR": 499900,
         "USD": 5900,
@@ -170,9 +313,21 @@
       "canCloseEarly": true,
       "canPause": true,
       "canRenew": true,
-      "idlePolicy": { "enabled": true, "daysIdle": 30, "graceDays": 7 },
-      "meter": { "unit": "API Requests", "allowance": 2500, "overageUnitMinor": 150 },
-      "spendCapPolicy": { "enabled": true, "defaultCapMinor": 2500000, "action": "flag" },
+      "idlePolicy": {
+        "enabled": true,
+        "daysIdle": 30,
+        "graceDays": 7
+      },
+      "meter": {
+        "unit": "API Requests",
+        "allowance": 2500,
+        "overageUnitMinor": 150
+      },
+      "spendCapPolicy": {
+        "enabled": true,
+        "defaultCapMinor": 2500000,
+        "action": "flag"
+      },
       "prices": {
         "INR": 1249900,
         "USD": 14900,
@@ -196,9 +351,21 @@
       "canCloseEarly": true,
       "canPause": true,
       "canRenew": true,
-      "idlePolicy": { "enabled": true, "daysIdle": 45, "graceDays": 14 },
-      "meter": { "unit": "API Requests", "allowance": 10000, "overageUnitMinor": 100 },
-      "spendCapPolicy": { "enabled": true, "defaultCapMinor": 10000000, "action": "flag" },
+      "idlePolicy": {
+        "enabled": true,
+        "daysIdle": 45,
+        "graceDays": 14
+      },
+      "meter": {
+        "unit": "API Requests",
+        "allowance": 10000,
+        "overageUnitMinor": 100
+      },
+      "spendCapPolicy": {
+        "enabled": true,
+        "defaultCapMinor": 10000000,
+        "action": "flag"
+      },
       "prices": {
         "INR": 3499900,
         "USD": 41900,
@@ -392,7 +559,7 @@
       "period": "2026-08",
       "status": "paid",
       "currency": "INR",
-      "lockedRateToBase": 1.0,
+      "lockedRateToBase": 1,
       "subtotalMinor": 3555900,
       "taxMinor": 640062,
       "discountMinor": 0,
@@ -401,9 +568,24 @@
       "paidAt": "2026-08-01T11:20:00Z",
       "paymentFailedFlag": false,
       "lines": [
-        { "description": "Enterprise Scale Plan (Monthly)", "quantity": 1, "unitPriceMinor": 3499900, "amountMinor": 3499900 },
-        { "description": "Odoo Integrated Edition Variant Addon", "quantity": 1, "unitPriceMinor": 56000, "amountMinor": 56000 },
-        { "description": "India GST (Intra-State: CGST 9% + SGST 9%)", "quantity": 1, "unitPriceMinor": 640062, "amountMinor": 640062 }
+        {
+          "description": "Enterprise Scale Plan (Monthly)",
+          "quantity": 1,
+          "unitPriceMinor": 3499900,
+          "amountMinor": 3499900
+        },
+        {
+          "description": "Odoo Integrated Edition Variant Addon",
+          "quantity": 1,
+          "unitPriceMinor": 56000,
+          "amountMinor": 56000
+        },
+        {
+          "description": "India GST (Intra-State: CGST 9% + SGST 9%)",
+          "quantity": 1,
+          "unitPriceMinor": 640062,
+          "amountMinor": 640062
+        }
       ]
     },
     {
@@ -414,7 +596,7 @@
       "period": "2026-09",
       "status": "paid",
       "currency": "INR",
-      "lockedRateToBase": 1.0,
+      "lockedRateToBase": 1,
       "subtotalMinor": 3555900,
       "taxMinor": 640062,
       "discountMinor": 711180,
@@ -423,10 +605,30 @@
       "paidAt": "2026-09-01T10:15:00Z",
       "paymentFailedFlag": false,
       "lines": [
-        { "description": "Enterprise Scale Plan (Monthly)", "quantity": 1, "unitPriceMinor": 3499900, "amountMinor": 3499900 },
-        { "description": "Odoo Integrated Edition Variant Addon", "quantity": 1, "unitPriceMinor": 56000, "amountMinor": 56000 },
-        { "description": "Discount: LAUNCH20 (-20%)", "quantity": 1, "unitPriceMinor": -711180, "amountMinor": -711180 },
-        { "description": "India GST (Intra-State: CGST 9% + SGST 9%)", "quantity": 1, "unitPriceMinor": 640062, "amountMinor": 640062 }
+        {
+          "description": "Enterprise Scale Plan (Monthly)",
+          "quantity": 1,
+          "unitPriceMinor": 3499900,
+          "amountMinor": 3499900
+        },
+        {
+          "description": "Odoo Integrated Edition Variant Addon",
+          "quantity": 1,
+          "unitPriceMinor": 56000,
+          "amountMinor": 56000
+        },
+        {
+          "description": "Discount: LAUNCH20 (-20%)",
+          "quantity": 1,
+          "unitPriceMinor": -711180,
+          "amountMinor": -711180
+        },
+        {
+          "description": "India GST (Intra-State: CGST 9% + SGST 9%)",
+          "quantity": 1,
+          "unitPriceMinor": 640062,
+          "amountMinor": 640062
+        }
       ]
     },
     {
@@ -437,7 +639,7 @@
       "period": "2026-10",
       "status": "confirmed",
       "currency": "INR",
-      "lockedRateToBase": 1.0,
+      "lockedRateToBase": 1,
       "subtotalMinor": 3555900,
       "taxMinor": 640062,
       "discountMinor": 0,
@@ -446,9 +648,24 @@
       "paidAt": null,
       "paymentFailedFlag": false,
       "lines": [
-        { "description": "Enterprise Scale Plan (Monthly)", "quantity": 1, "unitPriceMinor": 3499900, "amountMinor": 3499900 },
-        { "description": "Odoo Integrated Edition Variant Addon", "quantity": 1, "unitPriceMinor": 56000, "amountMinor": 56000 },
-        { "description": "India GST (Intra-State: CGST 9% + SGST 9%)", "quantity": 1, "unitPriceMinor": 640062, "amountMinor": 640062 }
+        {
+          "description": "Enterprise Scale Plan (Monthly)",
+          "quantity": 1,
+          "unitPriceMinor": 3499900,
+          "amountMinor": 3499900
+        },
+        {
+          "description": "Odoo Integrated Edition Variant Addon",
+          "quantity": 1,
+          "unitPriceMinor": 56000,
+          "amountMinor": 56000
+        },
+        {
+          "description": "India GST (Intra-State: CGST 9% + SGST 9%)",
+          "quantity": 1,
+          "unitPriceMinor": 640062,
+          "amountMinor": 640062
+        }
       ]
     },
     {
@@ -459,7 +676,7 @@
       "period": "2026-09",
       "status": "paid",
       "currency": "USD",
-      "lockedRateToBase": 84.50,
+      "lockedRateToBase": 84.5,
       "subtotalMinor": 14900,
       "taxMinor": 0,
       "discountMinor": 0,
@@ -468,7 +685,12 @@
       "paidAt": "2026-09-12T16:40:00Z",
       "paymentFailedFlag": false,
       "lines": [
-        { "description": "Growth Pro Plan (Monthly)", "quantity": 1, "unitPriceMinor": 14900, "amountMinor": 14900 }
+        {
+          "description": "Growth Pro Plan (Monthly)",
+          "quantity": 1,
+          "unitPriceMinor": 14900,
+          "amountMinor": 14900
+        }
       ]
     },
     {
@@ -479,7 +701,7 @@
       "period": "2026-10",
       "status": "confirmed",
       "currency": "USD",
-      "lockedRateToBase": 84.50,
+      "lockedRateToBase": 84.5,
       "subtotalMinor": 14900,
       "taxMinor": 0,
       "discountMinor": 0,
@@ -489,7 +711,12 @@
       "paymentFailedFlag": true,
       "dunningStatus": "Reminder #1 Sent (3 days overdue)",
       "lines": [
-        { "description": "Growth Pro Plan (Monthly)", "quantity": 1, "unitPriceMinor": 14900, "amountMinor": 14900 }
+        {
+          "description": "Growth Pro Plan (Monthly)",
+          "quantity": 1,
+          "unitPriceMinor": 14900,
+          "amountMinor": 14900
+        }
       ]
     },
     {
@@ -500,7 +727,7 @@
       "period": "2026-09",
       "status": "paid",
       "currency": "EUR",
-      "lockedRateToBase": 91.20,
+      "lockedRateToBase": 91.2,
       "subtotalMinor": 13900,
       "taxMinor": 2641,
       "discountMinor": 0,
@@ -509,8 +736,18 @@
       "paidAt": "2026-09-26T08:11:00Z",
       "paymentFailedFlag": false,
       "lines": [
-        { "description": "Growth Pro Plan (Monthly)", "quantity": 1, "unitPriceMinor": 13900, "amountMinor": 13900 },
-        { "description": "EU Standard VAT (19%)", "quantity": 1, "unitPriceMinor": 2641, "amountMinor": 2641 }
+        {
+          "description": "Growth Pro Plan (Monthly)",
+          "quantity": 1,
+          "unitPriceMinor": 13900,
+          "amountMinor": 13900
+        },
+        {
+          "description": "EU Standard VAT (19%)",
+          "quantity": 1,
+          "unitPriceMinor": 2641,
+          "amountMinor": 2641
+        }
       ]
     }
   ],
@@ -586,9 +823,46 @@
     }
   ],
   "auditLogs": [
-    { "timestamp": "2026-10-31T09:12:00Z", "actor": "admin@brightloop.io", "action": "PLAN_UPDATE", "entity": "plan_enterprise", "before": "{ minQty: 1 }", "after": "{ minQty: 1, idlePolicy: enabled }" },
-    { "timestamp": "2026-10-31T08:00:00Z", "actor": "cron.dunning", "action": "DUNNING_NOTIFICATION_SENT", "entity": "inv_2026_012", "before": "due", "after": "reminder_1_sent" },
-    { "timestamp": "2026-10-31T06:00:00Z", "actor": "staff@brightloop.io", "action": "DRY_RUN_GENERATED", "entity": "run_2026_10_dry", "before": "none", "after": "pending_review" }
+    {
+      "timestamp": "2026-10-31T06:14:17.426Z",
+      "actor": "david@novaglobal.com",
+      "action": "DEMO_ROLE_SWITCH",
+      "entity": "session",
+      "before": "null",
+      "after": "customer"
+    },
+    {
+      "timestamp": "2026-10-31T06:14:02.673Z",
+      "actor": "staff@brightloop.io",
+      "action": "DEMO_ROLE_SWITCH",
+      "entity": "session",
+      "before": "null",
+      "after": "staff"
+    },
+    {
+      "timestamp": "2026-10-31T09:12:00Z",
+      "actor": "admin@brightloop.io",
+      "action": "PLAN_UPDATE",
+      "entity": "plan_enterprise",
+      "before": "{ minQty: 1 }",
+      "after": "{ minQty: 1, idlePolicy: enabled }"
+    },
+    {
+      "timestamp": "2026-10-31T08:00:00Z",
+      "actor": "cron.dunning",
+      "action": "DUNNING_NOTIFICATION_SENT",
+      "entity": "inv_2026_012",
+      "before": "due",
+      "after": "reminder_1_sent"
+    },
+    {
+      "timestamp": "2026-10-31T06:00:00Z",
+      "actor": "staff@brightloop.io",
+      "action": "DRY_RUN_GENERATED",
+      "entity": "run_2026_10_dry",
+      "before": "none",
+      "after": "pending_review"
+    }
   ],
   "quotations": [
     {
@@ -608,24 +882,58 @@
       "acceptedBy": null,
       "acceptedAt": null,
       "lines": [
-        { "description": "Growth Pro Plan (Monthly)", "quantity": 1, "unitPriceMinor": 1249900, "amountMinor": 1249900 },
-        { "description": "Odoo Integrated Edition Variant Addon", "quantity": 1, "unitPriceMinor": 56000, "amountMinor": 56000 },
-        { "description": "India GST (18%)", "quantity": 1, "unitPriceMinor": 235062, "amountMinor": 235062 }
+        {
+          "description": "Growth Pro Plan (Monthly)",
+          "quantity": 1,
+          "unitPriceMinor": 1249900,
+          "amountMinor": 1249900
+        },
+        {
+          "description": "Odoo Integrated Edition Variant Addon",
+          "quantity": 1,
+          "unitPriceMinor": 56000,
+          "amountMinor": 56000
+        },
+        {
+          "description": "India GST (18%)",
+          "quantity": 1,
+          "unitPriceMinor": 235062,
+          "amountMinor": 235062
+        }
       ],
       "totalMinor": 1540962
     }
   ],
   "settings": {
     "dunning": {
-      "reminders": [-3, 0, 3, 7, 14],
+      "reminders": [
+        -3,
+        0,
+        3,
+        7,
+        14
+      ],
       "autoRetryGateway": true,
       "finalAction": "flag_staff"
     },
     "paymentGateways": {
       "activeProvider": "sandbox",
-      "sandbox": { "enabled": true, "label": "Built-in Sandbox Gateway" },
-      "razorpay": { "enabled": false, "keyId": "rzp_test_98A172c91B", "keySecret": "sec_rzp_mock_live", "webhookSecret": "whsec_rzp_77a1" },
-      "stripe": { "enabled": false, "publishableKey": "pk_test_51MockStripeKey", "secretKey": "sk_test_MockStripeSecret", "webhookSecret": "whsec_str_44b2" }
+      "sandbox": {
+        "enabled": true,
+        "label": "Built-in Sandbox Gateway"
+      },
+      "razorpay": {
+        "enabled": false,
+        "keyId": "rzp_test_98A172c91B",
+        "keySecret": "sec_rzp_mock_live",
+        "webhookSecret": "whsec_rzp_77a1"
+      },
+      "stripe": {
+        "enabled": false,
+        "publishableKey": "pk_test_51MockStripeKey",
+        "secretKey": "sk_test_MockStripeSecret",
+        "webhookSecret": "whsec_str_44b2"
+      }
     },
     "assistant": {
       "engine": "built_in_rules",
@@ -649,4 +957,3 @@
     }
   ]
 }
-

@@ -64,46 +64,11 @@
 
     .tabular { font-variant-numeric: tabular-nums; }
 
-    /* Top Demo Persona Switcher Banner */
-    .demo-bar {
-      background: #000000;
-      color: #FFFFFF;
-      padding: 10px 24px;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      font-size: 13px;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
-      z-index: 50;
-    }
-    .demo-bar-left { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-    .demo-bar-label { font-weight: 600; color: #A5B4FC; text-transform: uppercase; letter-spacing: 0.05em; font-size: 11px; }
-    .demo-chips { display: flex; flex-wrap: wrap; gap: 8px; }
-    .demo-chip-btn {
-      background: rgba(255,255,255,0.12);
-      color: #FFFFFF;
-      border: 1px solid rgba(255,255,255,0.2);
-      border-radius: 9999px;
-      padding: 4px 14px;
-      font-size: 12px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      transition: all 0.15s ease;
-    }
-    .demo-chip-btn:hover, .demo-chip-btn.active {
-      background: #4F46E5;
-      border-color: #818CF8;
-    }
-
-    /* Navbar */
+    /* Top Navbar */
     .navbar {
       background: var(--surface);
       border-bottom: 1px solid var(--border);
-      padding: 14px 28px;
+      padding: 14px 32px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -150,13 +115,13 @@
     .nav-right {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
     }
 
     /* Buttons */
     .btn {
       font-family: 'Inter', sans-serif;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 600;
       padding: 9px 18px;
       border-radius: 9999px;
@@ -197,7 +162,7 @@
     .container {
       max-width: 1240px;
       margin: 0 auto;
-      padding: 28px 20px;
+      padding: 32px 24px;
       width: 100%;
       flex: 1;
     }
@@ -330,9 +295,9 @@
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius-card);
-      max-width: 680px;
+      max-width: 580px;
       width: 100%;
-      padding: 30px;
+      padding: 32px;
       max-height: 90vh;
       overflow-y: auto;
       box-shadow: 0 20px 40px rgba(0,0,0,0.25);
@@ -424,12 +389,30 @@
     footer {
       border-top: 1px solid var(--border);
       background: var(--surface);
-      padding: 22px 32px;
-      text-align: center;
+      padding: 32px 32px 24px 32px;
       font-size: 13px;
       color: var(--muted);
       margin-top: auto;
     }
+    .footer-grid {
+      max-width: 1240px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1.5fr;
+      gap: 32px;
+      margin-bottom: 24px;
+      text-align: left;
+    }
+    .footer-col h4 {
+      font-size: 13px;
+      color: var(--text);
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .footer-col a { color: var(--muted); text-decoration: none; font-size: 13px; }
+    .footer-col a:hover { color: var(--text); text-decoration: underline; }
     .concept-tag {
       display: inline-block;
       background: var(--bg);
@@ -440,7 +423,6 @@
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.05em;
-      margin-top: 6px;
     }
 
     /* Forms */
@@ -448,7 +430,7 @@
     .form-label { display: block; font-size: 12px; font-weight: 600; margin-bottom: 4px; }
     .form-input, .form-select {
       width: 100%;
-      padding: 9px 14px;
+      padding: 10px 14px;
       border: 2px solid var(--border);
       border-radius: var(--radius-input);
       background: var(--bg);
@@ -457,42 +439,56 @@
       outline: none;
     }
     .form-input:focus, .form-select:focus { border-color: var(--secondary); }
+
+    /* Hero */
+    .hero-section {
+      text-align: center;
+      padding: 56px 20px 48px 20px;
+      max-width: 820px;
+      margin: 0 auto;
+    }
+    .hero-badge {
+      display: inline-block;
+      background: var(--chip-confirm-bg);
+      color: var(--chip-confirm-text);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 4px 14px;
+      border-radius: 9999px;
+      margin-bottom: 16px;
+    }
+    .hero-title {
+      font-size: 46px;
+      letter-spacing: -0.03em;
+      margin-bottom: 16px;
+      line-height: 1.15;
+    }
+    .hero-subtitle {
+      font-size: 16px;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 32px;
+    }
+
+    /* Standard Login Box */
+    .login-card {
+      max-width: 440px;
+      margin: 0 auto;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-card);
+      padding: 32px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+    }
   </style>
 </head>
 <body data-theme="light">
 
-  <!-- TOP DEMO PERSONA SWITCHER BAR -->
-  <div class="demo-bar">
-    <div class="demo-bar-left">
-      <span class="demo-bar-label">Switch Persona:</span>
-      <div class="demo-chips">
-        <button class="demo-chip-btn active" onclick="switchUser('admin')">
-          <span>Super Admin</span>
-        </button>
-        <button class="demo-chip-btn" onclick="switchUser('staff')">
-          <span>Staff (Finance)</span>
-        </button>
-        <button class="demo-chip-btn" onclick="switchUser('priya@acmecorp.com')">
-          <span>Acme Corp (India)</span>
-        </button>
-        <button class="demo-chip-btn" onclick="switchUser('david@novaglobal.com')">
-          <span>Nova Global (US)</span>
-        </button>
-        <button class="demo-chip-btn" onclick="switchUser('elena@apexdynamics.eu')">
-          <span>Apex Dynamics (EU)</span>
-        </button>
-      </div>
-    </div>
-    <div>
-      <button class="demo-chip-btn" onclick="openCredentialsModal()" style="background: rgba(255,255,255,0.25);">
-        <span>View All Credentials & API Keys</span>
-      </button>
-    </div>
-  </div>
-
-  <!-- NAVBAR -->
+  <!-- MAIN NAVIGATION BAR -->
   <header class="navbar">
-    <div class="logo-container" onclick="showTab('dashboard')">
+    <div class="logo-container" onclick="handleLogoClick()">
       <!-- Original Continuous Loop TT Mark (Section 9.3) -->
       <svg width="32" height="32" viewBox="0 0 100 100" fill="none">
         <circle cx="50" cy="50" r="38" stroke="var(--primary)" stroke-width="11" stroke-linecap="round" stroke-dasharray="190 60"/>
@@ -501,31 +497,33 @@
       </svg>
       <div>
         <span class="brand-font" style="font-size: 19px; letter-spacing: -0.02em;">BrightLoop</span>
-        <span style="font-size: 11px; color: var(--muted); margin-left: 4px; font-weight: 500;">Subscriptions</span>
+        <span style="font-size: 11px; color: var(--muted); margin-left: 4px; font-weight: 500;" id="portalTypeLabel">Subscriptions</span>
       </div>
     </div>
 
-    <nav class="nav-tabs" id="navTabsContainer">
-      <button class="nav-tab active" onclick="showTab('dashboard')">Dashboard</button>
-      <button class="nav-tab" onclick="showTab('subscriptions')">Subscriptions</button>
-      <button class="nav-tab" onclick="showTab('invoices')">Invoices & Payments</button>
-      <button class="nav-tab" onclick="showTab('dryrun')">Bill-Run (Dry Run)</button>
-      <button class="nav-tab" onclick="showTab('pricing')">Public Pricing (NEW-10)</button>
-      <button class="nav-tab" onclick="showTab('quotations')">Quotations (NEW-11)</button>
-      <button class="nav-tab" onclick="showTab('catalog')">Catalog & Tax</button>
-      <button class="nav-tab" onclick="showTab('services')">Demo Services (API)</button>
-      <button class="nav-tab" onclick="showTab('settings')">Settings & Staff (AUTH-5)</button>
+    <!-- Authenticated Navigation Tabs (Populated based on role) -->
+    <nav class="nav-tabs" id="navTabsContainer" style="display: none;">
+      <!-- Filled dynamically based on role -->
     </nav>
 
     <div class="nav-right">
       <button class="btn btn-secondary btn-sm" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
         <span id="themeIcon">Theme</span>
       </button>
-      <button class="btn btn-secondary btn-sm" onclick="toggleAssistant()" title="Open AI Billing Assistant (Ctrl+K)">
-        <span>Assistant (Ctrl+K)</span>
-      </button>
-      <div id="currentUserBadge" style="font-size: 11px; font-weight: 600; background: var(--bg); padding: 5px 12px; border-radius: 9999px; border: 1px solid var(--border);">
-        Admin
+
+      <!-- If Logged In -->
+      <div id="authNavUserArea" style="display: none; align-items: center; gap: 8px;">
+        <button class="btn btn-secondary btn-sm" onclick="toggleAssistant()" title="Open Assistant (Ctrl+K)">
+          <span>Assistant (Ctrl+K)</span>
+        </button>
+        <span id="currentUserNameDisplay" style="font-size: 12px; font-weight: 600; background: var(--bg); padding: 5px 12px; border-radius: 9999px; border: 1px solid var(--border);"></span>
+        <button class="btn btn-secondary btn-sm" onclick="logoutSession()">Sign Out</button>
+      </div>
+
+      <!-- If Logged Out -->
+      <div id="authNavGuestArea" style="display: flex; align-items: center; gap: 8px;">
+        <button class="btn btn-secondary btn-sm" onclick="showPublicLoginView()">Sign In</button>
+        <button class="btn btn-primary btn-sm" onclick="openHostedCheckout('plan_growth')">Get Started</button>
       </div>
     </div>
   </header>
@@ -533,366 +531,470 @@
   <!-- MAIN CONTAINER -->
   <main class="container">
 
-    <!-- CUSTOMER NOTIFICATION BANNER (When customer has idle/dunning alerts) -->
-    <div id="customerAlertContainer" style="display: none;"></div>
+    <!-- ========================================================= -->
+    <!-- 1. PUBLIC UNAUTHENTICATED VIEWS (Landing Page & Login)    -->
+    <!-- ========================================================= -->
+    <div id="view-public" style="display: block;">
 
-    <!-- RIGHT-SIZING SUGGESTIONS BANNER (NEW-12) -->
-    <div id="rightSizingContainer" style="display: none; margin-bottom: 20px;"></div>
-
-    <!-- TAB 1: DASHBOARD -->
-    <section id="tab-dashboard" class="tab-pane">
-      <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 22px;">
-        <div>
-          <h2>Revenue & Subscription Intelligence</h2>
-          <p style="color: var(--muted); font-size: 13px;">Real-time metrics, MRR movement, and proactive churn risk detection.</p>
-        </div>
-        <button class="btn btn-primary btn-sm" onclick="showTab('dryrun')">Run Billing Dry Run</button>
-      </div>
-
-      <div class="kpi-grid">
-        <div class="kpi-card">
-          <div class="kpi-title">Active Subscriptions</div>
-          <div class="kpi-val tabular" id="kpiActiveSubs">0</div>
-          <div class="kpi-sub">Across 3 regional markets</div>
-        </div>
-        <div class="kpi-card">
-          <div class="kpi-title">Monthly Recurring Revenue</div>
-          <div class="kpi-val tabular" id="kpiMrr">₹0</div>
-          <div class="kpi-sub" style="color: #166534;">+14.2% Net Growth QoQ</div>
-        </div>
-        <div class="kpi-card">
-          <div class="kpi-title">Outstanding Invoices</div>
-          <div class="kpi-val tabular" id="kpiOutstanding">₹0</div>
-          <div class="kpi-sub" style="color: #92400E;" id="kpiOverdueText">1 overdue account</div>
-        </div>
-        <div class="kpi-card">
-          <div class="kpi-title">Idle Auto-End Watch</div>
-          <div class="kpi-val tabular" id="kpiIdleWatch" style="color: #F59E0B;">1</div>
-          <div class="kpi-sub">1 flagged for inactivity</div>
+      <!-- Hero Section -->
+      <div class="hero-section">
+        <div class="hero-badge">Recurring Billing Platform</div>
+        <h1 class="hero-title">Automate your subscription revenue from quote to payment.</h1>
+        <p class="hero-subtitle">
+          BrightLoop Subscriptions provides multi-currency billing across 10 global currencies, pluggable payment gateways, automated tax calculation, usage metering, and intelligent customer lifecycle policies.
+        </p>
+        <div style="display: flex; justify-content: center; gap: 12px;">
+          <button class="btn btn-primary" onclick="showPublicLoginView()">Customer Account Sign In</button>
+          <button class="btn btn-secondary" onclick="document.getElementById('publicPricingSection').scrollIntoView({behavior: 'smooth'})">View Plans & Pricing</button>
         </div>
       </div>
 
-      <!-- MRR Movement Waterfall & Churn Risk (NEW-9) -->
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-        <div class="card">
-          <h3 style="margin-bottom: 14px;">MRR Movement Waterfall (v2)</h3>
-          <div style="display: flex; flex-direction: column; gap: 10px;">
-            <div style="display: flex; justify-content: space-between; font-size: 13px; border-bottom: 1px solid var(--border); padding-bottom: 6px;">
-              <span>New Subscriptions</span>
-              <span class="tabular" style="color: #166534; font-weight: 600;">+₹34,99,900</span>
-            </div>
-            <div style="display: flex; justify-content: space-between; font-size: 13px; border-bottom: 1px solid var(--border); padding-bottom: 6px;">
-              <span>Expansion (Brand Variants / Seats)</span>
-              <span class="tabular" style="color: #166534; font-weight: 600;">+₹56,000</span>
-            </div>
-            <div style="display: flex; justify-content: space-between; font-size: 13px; border-bottom: 1px solid var(--border); padding-bottom: 6px;">
-              <span>Contraction / Proration Credits</span>
-              <span class="tabular" style="color: #DC2626; font-weight: 600;">-₹12,590</span>
-            </div>
-            <div style="display: flex; justify-content: space-between; font-size: 13px; border-bottom: 1px solid var(--border); padding-bottom: 6px;">
-              <span>Churned Subscriptions</span>
-              <span class="tabular" style="color: var(--muted); font-weight: 600;">₹0</span>
-            </div>
-            <div style="display: flex; justify-content: space-between; font-size: 15px; font-weight: 700; padding-top: 4px;">
-              <span>Net Active MRR (Base INR)</span>
-              <span class="tabular" id="mrrNetActive">₹35,43,310</span>
-            </div>
+      <!-- Standard Customer Login Form Card -->
+      <div id="standardLoginCard" class="login-card" style="margin-bottom: 48px;">
+        <h3 style="margin-bottom: 6px; font-size: 20px;">Sign In to Your Account</h3>
+        <p style="font-size: 13px; color: var(--muted); margin-bottom: 20px;">
+          Enter your registered email and password to access your customer subscription portal.
+        </p>
+
+        <div id="loginErrorAlert" class="alert-banner alert-danger" style="display: none; padding: 10px 14px; font-size: 12px; margin-bottom: 14px;">
+          Invalid email or password. Please verify and try again.
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Email Address</label>
+          <input type="email" id="loginEmail" class="form-input" placeholder="name@company.com">
+        </div>
+        <div class="form-group">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+            <label class="form-label" style="margin-bottom: 0;">Password</label>
+            <a href="javascript:void(0)" onclick="alert('In accordance with AUTH-3, password reset links are dispatched to registered account emails.')" style="font-size: 11px; color: var(--secondary); text-decoration: none;">Forgot password?</a>
           </div>
+          <input type="password" id="loginPassword" class="form-input" placeholder="Enter your password" onkeydown="if(event.key==='Enter') executeLogin()">
         </div>
+        <button class="btn btn-primary" style="width: 100%; margin-top: 8px;" onclick="executeLogin()">Sign In</button>
 
-        <div class="card">
-          <h3 style="margin-bottom: 14px;">Proactive Churn Risk (NEW-9)</h3>
-          <div id="churnRiskList" style="display: flex; flex-direction: column; gap: 10px;">
-            <!-- Populated via API -->
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- TAB 2: SUBSCRIPTIONS -->
-    <section id="tab-subscriptions" class="tab-pane" style="display: none;">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px;">
-        <div>
-          <h2>Subscriptions Management</h2>
-          <p style="color: var(--muted); font-size: 13px;">Full lifecycle: Draft, Quotation, Confirmed, Active, Paused, Closed.</p>
+        <div style="text-align: center; margin-top: 18px; font-size: 12px; color: var(--muted);">
+          Don't have an active subscription? <a href="javascript:void(0)" onclick="openHostedCheckout('plan_growth')" style="color: var(--secondary); font-weight: 600;">Subscribe now</a>
         </div>
       </div>
 
-      <div class="card table-container">
-        <table>
-          <thead>
-            <tr>
-              <th>Number</th>
-              <th>Customer</th>
-              <th>Plan & Variant</th>
-              <th>Status</th>
-              <th>Currency & Price</th>
-              <th>Health / Usage</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody id="subscriptionsTableBody">
-            <!-- Populated via API -->
-          </tbody>
-        </table>
-      </div>
-    </section>
+      <!-- Public Pricing Section (NEW-10) -->
+      <div id="publicPricingSection" style="margin-bottom: 48px;">
+        <div style="text-align: center; max-width: 680px; margin: 0 auto 32px auto;">
+          <h2>Transparent, Predictable Subscription Pricing</h2>
+          <p style="color: var(--muted); font-size: 14px; margin-top: 6px;">
+            Multi-currency billing supported natively. Taxes calculated per region upon checkout.
+          </p>
 
-    <!-- TAB 3: INVOICES & PAYMENTS -->
-    <section id="tab-invoices" class="tab-pane" style="display: none;">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px;">
-        <div>
-          <h2>Invoices & Built-in Sandbox Payments</h2>
-          <p style="color: var(--muted); font-size: 13px;">Multi-currency billing, locked exchange rates, tax lines, and sandbox payment reconciliation.</p>
-        </div>
-      </div>
-
-      <div class="card table-container">
-        <table>
-          <thead>
-            <tr>
-              <th>Invoice #</th>
-              <th>Customer</th>
-              <th>Period</th>
-              <th>Status</th>
-              <th>Due Date</th>
-              <th>Total Amount</th>
-              <th>Payment & PDF</th>
-            </tr>
-          </thead>
-          <tbody id="invoicesTableBody">
-            <!-- Populated via API -->
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <!-- TAB 4: BILL-RUN DRY RUN (NEW-8) -->
-    <section id="tab-dryrun" class="tab-pane" style="display: none;">
-      <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 22px;">
-        <div>
-          <h2>Bill-Run Dry Run Engine (NEW-8)</h2>
-          <p style="color: var(--muted); font-size: 13px;">Preview upcoming invoices before dispatch. Flags unusual amount jumps, missing tax, and idle accounts.</p>
-        </div>
-        <button class="btn btn-primary" onclick="generateDryRun()">Generate November 2026 Dry Run</button>
-      </div>
-
-      <div id="dryRunContainer">
-        <!-- Populated via API -->
-      </div>
-    </section>
-
-    <!-- TAB 5: PUBLIC PRICING & HOSTED CHECKOUT (NEW-10) -->
-    <section id="tab-pricing" class="tab-pane" style="display: none;">
-      <div style="text-align: center; max-width: 720px; margin: 0 auto 32px auto;">
-        <h2>Simple, Transparent Multi-Currency Pricing</h2>
-        <p style="color: var(--muted); font-size: 14px; margin-top: 6px;">Pick a plan and get started in under 3 minutes with automated self-serve checkout.</p>
-
-        <!-- Currency Selector & Monthly/Yearly Toggle -->
-        <div style="display: flex; justify-content: center; align-items: center; gap: 16px; margin-top: 20px;">
-          <select id="pricingCurrencySelect" class="form-select" style="width: 140px;" onchange="renderPricingCards()">
-            <option value="INR" selected>INR (₹)</option>
-            <option value="USD">USD ($)</option>
-            <option value="EUR">EUR (€)</option>
-            <option value="GBP">GBP (£)</option>
-            <option value="AED">AED</option>
-            <option value="SGD">SGD (S$)</option>
-            <option value="AUD">AUD (A$)</option>
-            <option value="CAD">CAD (C$)</option>
-            <option value="JPY">JPY (¥)</option>
-            <option value="CHF">CHF</option>
-          </select>
-
-          <div style="background: var(--surface); border: 1px solid var(--border); padding: 4px; border-radius: 9999px; display: inline-flex;">
-            <button id="toggleMonthlyBtn" class="btn btn-sm btn-primary" onclick="setBillingCadence('monthly')">Monthly</button>
-            <button id="toggleYearlyBtn" class="btn btn-sm btn-secondary" onclick="setBillingCadence('yearly')">Yearly (Save 20%)</button>
-          </div>
-        </div>
-      </div>
-
-      <div id="pricingCardsGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-bottom: 32px;">
-        <!-- Populated dynamically -->
-      </div>
-    </section>
-
-    <!-- TAB 6: QUOTATIONS & ONLINE ACCEPT (NEW-11, SUB-1) -->
-    <section id="tab-quotations" class="tab-pane" style="display: none;">
-      <div style="margin-bottom: 22px;">
-        <h2>Branded Quotations with Online Acceptance (NEW-11)</h2>
-        <p style="color: var(--muted); font-size: 13px;">Reps send quotation links. Customers view lines, taxes, validity countdown, and accept online.</p>
-      </div>
-
-      <div id="quotationViewCard" class="card">
-        <!-- Loaded dynamically -->
-      </div>
-    </section>
-
-    <!-- TAB 7: CATALOG & TAX RULES -->
-    <section id="tab-catalog" class="tab-pane" style="display: none;">
-      <div style="margin-bottom: 22px;">
-        <h2>Products, Variants & Multi-Currency Rules</h2>
-        <p style="color: var(--muted); font-size: 13px;">10 Launch currencies, explicit minor unit pricing, and brand add-on variants (e.g. Odoo brand +₹560).</p>
-      </div>
-
-      <div class="card" style="margin-bottom: 22px;">
-        <h3 style="margin-bottom: 14px;">Product Catalog & Brand Variants (PROD-1, PROD-2)</h3>
-        <div id="productsList" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 14px;">
-          <!-- Populated via API -->
-        </div>
-      </div>
-
-      <div class="card" style="margin-bottom: 22px;">
-        <h3 style="margin-bottom: 14px;">Currencies & Base Conversion Rates (CUR-1 to CUR-8)</h3>
-        <div id="currenciesList" style="display: flex; flex-wrap: wrap; gap: 8px;">
-          <!-- Populated via API -->
-        </div>
-      </div>
-
-      <div class="card">
-        <h3 style="margin-bottom: 14px;">Tax Rules & Regional Breakdown (INV-2, Section 7.3)</h3>
-        <div id="taxRulesList" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px;">
-          <!-- Populated via API -->
-        </div>
-      </div>
-    </section>
-
-    <!-- TAB 8: DEMO SERVICES (API & WEBHOOKS PLAYGROUND) -->
-    <section id="tab-services" class="tab-pane" style="display: none;">
-      <div style="margin-bottom: 22px;">
-        <h2>Services Using Our Platform (NEW-6 API & Webhooks)</h2>
-        <p style="color: var(--muted); font-size: 13px;">External services authenticated via Scoped API Keys, sending metered usage events with idempotency keys.</p>
-      </div>
-
-      <div class="card" style="margin-bottom: 22px;">
-        <h3 style="margin-bottom: 14px;">Registered External Platform Services</h3>
-        <div id="servicesList" style="display: flex; flex-direction: column; gap: 14px;">
-          <!-- Populated via API -->
-        </div>
-      </div>
-
-      <!-- Live API Playground -->
-      <div class="card">
-        <h3 style="margin-bottom: 14px;">Interactive REST API Playground: Send Metered Usage Event</h3>
-        <p style="font-size: 13px; color: var(--muted); margin-bottom: 14px;">Simulates an external cloud service calling <code>POST /api/v1/usage-events</code> with its Admin API Key and Idempotency Key.</p>
-
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 18px;">
-          <div>
-            <div class="form-group">
-              <label class="form-label">Calling Service</label>
-              <select id="apiSimServiceSelect" class="form-select">
-                <option value="bk_live_compute_9f82a17c4b6e821d3e">BrightCloud Compute & Storage Service</option>
-                <option value="bk_live_crm_718a93bc28d115e4">BrightDesk Support & CRM Platform</option>
-                <option value="bk_live_analytics_44e991fa8c02">BrightMetrics Data & Telemetry Platform</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label class="form-label">Target Subscription</label>
-              <select id="apiSimSubSelect" class="form-select">
-                <option value="sub_acme_101">SUB-2026-101 (Acme Corp)</option>
-                <option value="sub_nova_102">SUB-2026-102 (Nova Global Ltd)</option>
-                <option value="sub_apex_103">SUB-2026-103 (Apex Dynamics)</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label class="form-label">Usage Units (e.g. API Calls / Hours)</label>
-              <input type="number" id="apiSimQuantity" class="form-input" value="150">
-            </div>
-            <button class="btn btn-primary" onclick="simulateApiUsageCall()">Send Authenticated API Event</button>
-            <button class="btn btn-secondary" onclick="simulateWebhookCall()" style="margin-left: 8px;">Simulate HMAC Webhook</button>
-          </div>
-
-          <div>
-            <label class="form-label">Live API & Webhook Output</label>
-            <pre id="apiOutputConsole" style="background: #000000; color: #10B981; padding: 14px; border-radius: 1rem; font-size: 12px; font-family: monospace; height: 210px; overflow-y: auto;">// Ready for simulated service transactions...</pre>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- TAB 9: SETTINGS & STAFF MANAGEMENT (AUTH-5, Section 9.5) -->
-    <section id="tab-settings" class="tab-pane" style="display: none;">
-      <div style="margin-bottom: 22px;">
-        <h2>Settings & Platform Controls</h2>
-        <p style="color: var(--muted); font-size: 13px;">Staff management (AUTH-5), dunning schedules, gateway keys, and append-only audit trail.</p>
-      </div>
-
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px;">
-        <!-- Add Staff Member (AUTH-5) -->
-        <div class="card">
-          <h3 style="margin-bottom: 12px;">Add Staff Member (AUTH-5)</h3>
-          <p style="font-size: 12px; color: var(--muted); margin-bottom: 14px;">Rule AUTH-5: Only the admin can add a member of staff.</p>
-
-          <div class="form-group">
-            <label class="form-label">Full Name</label>
-            <input type="text" id="staffNameInput" class="form-input" placeholder="e.g. Maya Patel">
-          </div>
-          <div class="form-group">
-            <label class="form-label">Email Address</label>
-            <input type="email" id="staffEmailInput" class="form-input" placeholder="e.g. maya@brightloop.io">
-          </div>
-          <div class="form-group">
-            <label class="form-label">Password (AUTH-2 Rule)</label>
-            <input type="password" id="staffPasswordInput" class="form-input" placeholder="Min 9 chars, upper, lower, special" oninput="checkStaffPasswordStrength()">
-            <div class="pwd-meter">
-              <div id="pwdBar1" class="pwd-bar"></div>
-              <div id="pwdBar2" class="pwd-bar"></div>
-              <div id="pwdBar3" class="pwd-bar"></div>
-              <div id="pwdBar4" class="pwd-bar"></div>
-            </div>
-            <div id="pwdRuleText" style="font-size: 11px; color: var(--muted); margin-top: 4px;">Must have 9+ chars, 1 uppercase, 1 lowercase, 1 special char.</div>
-          </div>
-          <button class="btn btn-primary btn-sm" onclick="createNewStaff()">Add Staff Member</button>
-        </div>
-
-        <!-- Dunning & Gateway Settings -->
-        <div class="card">
-          <h3 style="margin-bottom: 12px;">Dunning & Gateway Configuration</h3>
-          <div class="form-group">
-            <label class="form-label">Dunning Reminders Schedule</label>
-            <input type="text" class="form-input" value="-3, 0, 3, 7, 14 days" readonly>
-            <small style="color: var(--muted); font-size: 11px;">Automatic retry before next reminder; flags staff after day 14.</small>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Active Payment Gateway Provider</label>
-            <select class="form-select" id="gatewayActiveSelect" onchange="showNotification('Gateway switched to: ' + this.value)">
-              <option value="sandbox" selected>Built-in Sandbox Gateway (Default)</option>
-              <option value="razorpay">Razorpay Test Mode (INR-First)</option>
-              <option value="stripe">Stripe Test Mode (Global)</option>
+          <div style="display: flex; justify-content: center; align-items: center; gap: 14px; margin-top: 18px;">
+            <select id="pricingCurrencySelect" class="form-select" style="width: 140px;" onchange="renderPricingCards()">
+              <option value="INR" selected>INR (₹)</option>
+              <option value="USD">USD ($)</option>
+              <option value="EUR">EUR (€)</option>
+              <option value="GBP">GBP (£)</option>
+              <option value="AED">AED</option>
+              <option value="SGD">SGD (S$)</option>
+              <option value="AUD">AUD (A$)</option>
+              <option value="CAD">CAD (C$)</option>
+              <option value="JPY">JPY (¥)</option>
+              <option value="CHF">CHF</option>
             </select>
-          </div>
-          <div style="background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 12px; font-size: 12px;">
-            <strong>Sandbox Mode Active:</strong> Ready for instant testing with built-in test cards and UPI.
+
+            <div style="background: var(--surface); border: 1px solid var(--border); padding: 4px; border-radius: 9999px; display: inline-flex;">
+              <button id="toggleMonthlyBtn" class="btn btn-sm btn-primary" onclick="setBillingCadence('monthly')">Monthly</button>
+              <button id="toggleYearlyBtn" class="btn btn-sm btn-secondary" onclick="setBillingCadence('yearly')">Yearly (Save 20%)</button>
+            </div>
           </div>
         </div>
-      </div>
 
-      <!-- Audit Log Table -->
-      <div class="card table-container">
-        <h3 style="margin-bottom: 14px;">Append-Only Audit Log</h3>
-        <table>
-          <thead>
-            <tr>
-              <th>Timestamp</th>
-              <th>Actor</th>
-              <th>Action</th>
-              <th>Entity</th>
-              <th>Details</th>
-            </tr>
-          </thead>
-          <tbody id="auditLogTableBody">
+        <div id="pricingCardsGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px;">
+          <!-- Loaded dynamically -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- 2. AUTHENTICATED APP VIEWS                               -->
+    <!-- ========================================================= -->
+    <div id="view-authenticated" style="display: none;">
+
+      <!-- Customer Alert Banner (Idle notice & Dunning) -->
+      <div id="customerAlertContainer" style="display: none;"></div>
+
+      <!-- Right-Sizing Suggestions Banner (NEW-12) -->
+      <div id="rightSizingContainer" style="display: none; margin-bottom: 20px;"></div>
+
+      <!-- TAB: DASHBOARD (Admin & Staff) -->
+      <section id="tab-dashboard" class="tab-pane" style="display: none;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 22px;">
+          <div>
+            <h2>Financial & Subscription Overview</h2>
+            <p style="color: var(--muted); font-size: 13px;">Real-time metrics, MRR movement, and proactive churn risk detection.</p>
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="showTab('dryrun')">Run Billing Dry Run</button>
+        </div>
+
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <div class="kpi-title">Active Subscriptions</div>
+            <div class="kpi-val tabular" id="kpiActiveSubs">0</div>
+            <div class="kpi-sub">Across 3 regional markets</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-title">Monthly Recurring Revenue</div>
+            <div class="kpi-val tabular" id="kpiMrr">₹0</div>
+            <div class="kpi-sub" style="color: #166534;">+14.2% Net Growth QoQ</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-title">Outstanding Invoices</div>
+            <div class="kpi-val tabular" id="kpiOutstanding">₹0</div>
+            <div class="kpi-sub" style="color: #92400E;" id="kpiOverdueText">1 overdue account</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-title">Idle Auto-End Watch</div>
+            <div class="kpi-val tabular" id="kpiIdleWatch" style="color: #F59E0B;">1</div>
+            <div class="kpi-sub">1 flagged for inactivity</div>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+          <div class="card">
+            <h3 style="margin-bottom: 14px;">MRR Movement Waterfall</h3>
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+              <div style="display: flex; justify-content: space-between; font-size: 13px; border-bottom: 1px solid var(--border); padding-bottom: 6px;">
+                <span>New Subscriptions</span>
+                <span class="tabular" style="color: #166534; font-weight: 600;">+₹34,99,900</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; font-size: 13px; border-bottom: 1px solid var(--border); padding-bottom: 6px;">
+                <span>Expansion (Brand Variants / Seats)</span>
+                <span class="tabular" style="color: #166534; font-weight: 600;">+₹56,000</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; font-size: 13px; border-bottom: 1px solid var(--border); padding-bottom: 6px;">
+                <span>Contraction / Proration Credits</span>
+                <span class="tabular" style="color: #DC2626; font-weight: 600;">-₹12,590</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; font-size: 13px; border-bottom: 1px solid var(--border); padding-bottom: 6px;">
+                <span>Churned Subscriptions</span>
+                <span class="tabular" style="color: var(--muted); font-weight: 600;">₹0</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; font-size: 15px; font-weight: 700; padding-top: 4px;">
+                <span>Net Active MRR (Base INR)</span>
+                <span class="tabular" id="mrrNetActive">₹35,43,310</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3 style="margin-bottom: 14px;">Proactive Churn Risk (NEW-9)</h3>
+            <div id="churnRiskList" style="display: flex; flex-direction: column; gap: 10px;">
+              <!-- Populated via API -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB: SUBSCRIPTIONS (Customer sees own, Staff/Admin sees all) -->
+      <section id="tab-subscriptions" class="tab-pane" style="display: none;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px;">
+          <div>
+            <h2 id="subsHeaderTitle">Subscriptions</h2>
+            <p style="color: var(--muted); font-size: 13px;">Lifecycle tracking: Draft, Quotation, Confirmed, Active, Paused, Closed.</p>
+          </div>
+        </div>
+
+        <div class="card table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Number</th>
+                <th>Customer</th>
+                <th>Plan & Variant</th>
+                <th>Status</th>
+                <th>Currency & Price</th>
+                <th>Health / Usage</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="subscriptionsTableBody">
+              <!-- Populated via API -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- TAB: INVOICES & PAYMENTS -->
+      <section id="tab-invoices" class="tab-pane" style="display: none;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px;">
+          <div>
+            <h2>Invoices & Billing History</h2>
+            <p style="color: var(--muted); font-size: 13px;">Multi-currency invoices, locked exchange rates, tax lines, and payment status.</p>
+          </div>
+        </div>
+
+        <div class="card table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Invoice #</th>
+                <th>Customer</th>
+                <th>Period</th>
+                <th>Status</th>
+                <th>Due Date</th>
+                <th>Total Amount</th>
+                <th>Payment & PDF</th>
+              </tr>
+            </thead>
+            <tbody id="invoicesTableBody">
+              <!-- Populated via API -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- TAB: BILL-RUN DRY RUN (Admin/Staff only) -->
+      <section id="tab-dryrun" class="tab-pane" style="display: none;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 22px;">
+          <div>
+            <h2>Bill-Run Dry Run Engine (NEW-8)</h2>
+            <p style="color: var(--muted); font-size: 13px;">Preview upcoming invoices before dispatch. Flags unusual amount jumps, missing tax, and idle accounts.</p>
+          </div>
+          <button class="btn btn-primary" onclick="generateDryRun()">Generate November 2026 Dry Run</button>
+        </div>
+
+        <div id="dryRunContainer">
+          <!-- Populated via API -->
+        </div>
+      </section>
+
+      <!-- TAB: QUOTATIONS (Admin/Staff only) -->
+      <section id="tab-quotations" class="tab-pane" style="display: none;">
+        <div style="margin-bottom: 22px;">
+          <h2>Commercial Quotations & Proposals (NEW-11)</h2>
+          <p style="color: var(--muted); font-size: 13px;">Send proposal links. Customers view itemized lines, taxes, validity countdown, and accept online.</p>
+        </div>
+
+        <div id="quotationViewCard" class="card">
+          <!-- Loaded dynamically -->
+        </div>
+      </section>
+
+      <!-- TAB: CATALOG & TAX RULES (Admin/Staff) -->
+      <section id="tab-catalog" class="tab-pane" style="display: none;">
+        <div style="margin-bottom: 22px;">
+          <h2>Product Catalog & Multi-Currency Rules</h2>
+          <p style="color: var(--muted); font-size: 13px;">Launch currencies, minor unit pricing, and brand add-on variants (e.g. Odoo brand +₹560).</p>
+        </div>
+
+        <div class="card" style="margin-bottom: 22px;">
+          <h3 style="margin-bottom: 14px;">Products & Brand Variants (PROD-1, PROD-2)</h3>
+          <div id="productsList" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 14px;">
             <!-- Populated via API -->
-          </tbody>
-        </table>
-      </div>
-    </section>
+          </div>
+        </div>
 
+        <div class="card" style="margin-bottom: 22px;">
+          <h3 style="margin-bottom: 14px;">Currencies & Conversion Rates (CUR-1 to CUR-8)</h3>
+          <div id="currenciesList" style="display: flex; flex-wrap: wrap; gap: 8px;">
+            <!-- Populated via API -->
+          </div>
+        </div>
+
+        <div class="card">
+          <h3 style="margin-bottom: 14px;">Tax Rules & Regional Breakdown (INV-2)</h3>
+          <div id="taxRulesList" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px;">
+            <!-- Populated via API -->
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB: SERVICE GATEWAY VIEW (For Service Admins) -->
+      <section id="tab-services" class="tab-pane" style="display: none;">
+        <div style="margin-bottom: 22px;">
+          <h2>Developer & External Service Gateway (NEW-6)</h2>
+          <p style="color: var(--muted); font-size: 13px;">Authenticate client systems via Scoped API Keys to report metered usage events and verify HMAC signatures.</p>
+        </div>
+
+        <div class="card" style="margin-bottom: 22px;">
+          <h3 style="margin-bottom: 14px;">Active Service Profile</h3>
+          <div id="activeServiceProfileBox">
+            <!-- Filled dynamically -->
+          </div>
+        </div>
+
+        <!-- Live API Playground -->
+        <div class="card">
+          <h3 style="margin-bottom: 14px;">REST API Playground: Ingest Metered Usage Event</h3>
+          <p style="font-size: 13px; color: var(--muted); margin-bottom: 14px;">Dispatches authenticated <code>POST /api/v1/usage-events</code> with Idempotency Key.</p>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 18px;">
+            <div>
+              <div class="form-group">
+                <label class="form-label">Target Subscription</label>
+                <select id="apiSimSubSelect" class="form-select">
+                  <option value="sub_acme_101">SUB-2026-101 (Acme Corp)</option>
+                  <option value="sub_nova_102">SUB-2026-102 (Nova Global Ltd)</option>
+                  <option value="sub_apex_103">SUB-2026-103 (Apex Dynamics)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Usage Units</label>
+                <input type="number" id="apiSimQuantity" class="form-input" value="150">
+              </div>
+              <button class="btn btn-primary" onclick="simulateApiUsageCall()">Send Authenticated Event</button>
+              <button class="btn btn-secondary" onclick="simulateWebhookCall()" style="margin-left: 8px;">Simulate HMAC Webhook</button>
+            </div>
+
+            <div>
+              <label class="form-label">API Console Response</label>
+              <pre id="apiOutputConsole" style="background: #000000; color: #10B981; padding: 14px; border-radius: 1rem; font-size: 12px; font-family: monospace; height: 200px; overflow-y: auto;">// Ready for authenticated service event ingestion...</pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB: SETTINGS & STAFF MANAGEMENT (Admin only) -->
+      <section id="tab-settings" class="tab-pane" style="display: none;">
+        <div style="margin-bottom: 22px;">
+          <h2>System Administration & Settings</h2>
+          <p style="color: var(--muted); font-size: 13px;">Staff management (AUTH-5), dunning schedules, gateway keys, and append-only audit trail.</p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px;">
+          <!-- Add Staff Member (AUTH-5) -->
+          <div class="card">
+            <h3 style="margin-bottom: 12px;">Add Staff Member (AUTH-5)</h3>
+            <p style="font-size: 12px; color: var(--muted); margin-bottom: 14px;">Rule AUTH-5: Only the system admin can add a member of staff.</p>
+
+            <div class="form-group">
+              <label class="form-label">Full Name</label>
+              <input type="text" id="staffNameInput" class="form-input" placeholder="e.g. Maya Patel">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Email Address</label>
+              <input type="email" id="staffEmailInput" class="form-input" placeholder="e.g. maya@brightloop.io">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Password (AUTH-2 Rule)</label>
+              <input type="password" id="staffPasswordInput" class="form-input" placeholder="Min 9 chars, upper, lower, special" oninput="checkStaffPasswordStrength()">
+              <div class="pwd-meter">
+                <div id="pwdBar1" class="pwd-bar"></div>
+                <div id="pwdBar2" class="pwd-bar"></div>
+                <div id="pwdBar3" class="pwd-bar"></div>
+                <div id="pwdBar4" class="pwd-bar"></div>
+              </div>
+              <div id="pwdRuleText" style="font-size: 11px; color: var(--muted); margin-top: 4px;">Must have 9+ chars, 1 uppercase, 1 lowercase, 1 special char.</div>
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="createNewStaff()">Add Staff Member</button>
+          </div>
+
+          <!-- Dunning & Gateway Settings -->
+          <div class="card">
+            <h3 style="margin-bottom: 12px;">Dunning & Gateway Configuration</h3>
+            <div class="form-group">
+              <label class="form-label">Dunning Reminders Schedule</label>
+              <input type="text" class="form-input" value="-3, 0, 3, 7, 14 days" readonly>
+              <small style="color: var(--muted); font-size: 11px;">Automatic retry before next reminder; flags staff after day 14.</small>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Active Payment Gateway Provider</label>
+              <select class="form-select" id="gatewayActiveSelect" onchange="alert('Gateway provider updated to: ' + this.value)">
+                <option value="sandbox" selected>Built-in Sandbox Gateway (Default)</option>
+                <option value="razorpay">Razorpay Test Mode (INR-First)</option>
+                <option value="stripe">Stripe Test Mode (Global)</option>
+              </select>
+            </div>
+            <div style="background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 12px; font-size: 12px;">
+              <strong>Sandbox Mode Active:</strong> Direct checkout reconciliation enabled with test cards and UPI.
+            </div>
+          </div>
+        </div>
+
+        <!-- Audit Log Table -->
+        <div class="card table-container">
+          <h3 style="margin-bottom: 14px;">Append-Only Audit Log</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Timestamp</th>
+                <th>Actor</th>
+                <th>Action</th>
+                <th>Entity</th>
+                <th>Details</th>
+              </tr>
+            </thead>
+            <tbody id="auditLogTableBody">
+              <!-- Populated via API -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+    </div>
   </main>
+
+  <!-- ========================================================= -->
+  <!-- MODALS (Hosted Checkout, Admin Login, Service Login, etc) -->
+  <!-- ========================================================= -->
+
+  <!-- INTERNAL STAFF & ADMIN CONSOLE LOGIN MODAL -->
+  <div id="adminLoginModal" class="modal-backdrop">
+    <div class="modal" style="max-width: 440px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px;">
+        <div>
+          <span style="font-size: 10px; font-weight: 700; text-transform: uppercase; background: #1E1B4B; color: #818CF8; padding: 2px 8px; border-radius: 9999px;">Internal Access</span>
+          <h3 style="margin-top: 4px;">Management Console</h3>
+        </div>
+        <button onclick="closeAdminLoginModal()" style="background: none; border: none; font-size: 20px; cursor: pointer; color: var(--muted);">&times;</button>
+      </div>
+
+      <div id="adminLoginError" class="alert-banner alert-danger" style="display: none; padding: 8px 12px; font-size: 12px; margin-bottom: 12px;">
+        Invalid administrative credentials.
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Internal Email</label>
+        <input type="email" id="adminLoginEmail" class="form-input" placeholder="admin@brightloop.io">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input type="password" id="adminLoginPassword" class="form-input" placeholder="Password" onkeydown="if(event.key==='Enter') executeAdminLogin()">
+      </div>
+      <button class="btn btn-primary" style="width: 100%; margin-top: 8px;" onclick="executeAdminLogin()">Access Console</button>
+    </div>
+  </div>
+
+  <!-- SERVICE API GATEWAY LOGIN MODAL -->
+  <div id="serviceLoginModal" class="modal-backdrop">
+    <div class="modal" style="max-width: 480px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px;">
+        <div>
+          <span style="font-size: 10px; font-weight: 700; text-transform: uppercase; background: #451A03; color: #FDE68A; padding: 2px 8px; border-radius: 9999px;">Service Gateway</span>
+          <h3 style="margin-top: 4px;">Service Administrator Authentication</h3>
+        </div>
+        <button onclick="closeServiceLoginModal()" style="background: none; border: none; font-size: 20px; cursor: pointer; color: var(--muted);">&times;</button>
+      </div>
+
+      <p style="font-size: 12px; color: var(--muted); margin-bottom: 16px;">
+        Enter your assigned Service Admin API Key to access telemetry, send usage transactions, and monitor webhook logs.
+      </p>
+
+      <div id="serviceLoginError" class="alert-banner alert-danger" style="display: none; padding: 8px 12px; font-size: 12px; margin-bottom: 12px;">
+        Invalid service administrator API key.
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Service Admin API Key</label>
+        <input type="text" id="serviceApiKeyInput" class="form-input" placeholder="bk_live_compute_...">
+      </div>
+      <button class="btn btn-primary" style="width: 100%; margin-top: 8px;" onclick="executeServiceLogin()">Authenticate Service</button>
+    </div>
+  </div>
 
   <!-- HOSTED CHECKOUT MODAL (NEW-10) -->
   <div id="hostedCheckoutModal" class="modal-backdrop">
-    <div class="modal">
+    <div class="modal" style="max-width: 640px;">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-        <h3>Hosted Checkout (3-Step Flow)</h3>
+        <h3>Hosted Subscription Checkout</h3>
         <button onclick="closeHostedCheckoutModal()" style="background: none; border: none; font-size: 20px; cursor: pointer; color: var(--muted);">&times;</button>
       </div>
 
@@ -927,7 +1029,7 @@
       </div>
 
       <div class="form-group">
-        <label class="form-label">Password (AUTH-2 Compliant)</label>
+        <label class="form-label">Account Password (AUTH-2 Compliant)</label>
         <input type="password" id="chkPassword" class="form-input" value="CustomerPass@2026!">
       </div>
 
@@ -946,96 +1048,22 @@
       </div>
 
       <div class="form-group">
-        <label class="form-label">Sandbox Payment Method</label>
+        <label class="form-label">Payment Method</label>
         <div style="background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 12px; font-size: 12px;">
           <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
             <input type="radio" name="chkPayMethod" value="Sandbox Card" checked>
-            <span>Test Visa Card (<code>4111 2222 3333 4444</code>) — Instant Success</span>
+            <span>Test Card (4111 2222 3333 4444) — Instant Success</span>
           </label>
           <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; margin-top: 8px;">
             <input type="radio" name="chkPayMethod" value="Sandbox UPI">
-            <span>Sandbox UPI QR (Instant Auto-Reconcile)</span>
-          </label>
-          <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; margin-top: 8px; color: #DC2626;">
-            <input type="radio" name="chkPayMethod" value="Sandbox Decline Card">
-            <span>Deliberate Failure Card (<code>4000 0000 0000 0002</code>) — Test Dunning</span>
+            <span>UPI QR Flow (Instant Auto-Reconcile)</span>
           </label>
         </div>
       </div>
 
-      <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+      <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 18px;">
         <button class="btn btn-secondary" onclick="closeHostedCheckoutModal()">Cancel</button>
-        <button class="btn btn-primary" onclick="submitHostedCheckout()">Pay & Start Subscription</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- CREDENTIALS MODAL -->
-  <div id="credentialsModal" class="modal-backdrop">
-    <div class="modal">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px;">
-        <h3>Platform Credentials & Demo Services Directory</h3>
-        <button onclick="closeCredentialsModal()" style="background: none; border: none; font-size: 20px; cursor: pointer; color: var(--muted);">&times;</button>
-      </div>
-
-      <div style="display: flex; flex-direction: column; gap: 16px;">
-        <!-- Highest Admin -->
-        <div style="background: var(--bg); padding: 14px; border-radius: 1rem; border: 1px solid var(--border);">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-            <strong style="color: #4F46E5;">Highest Admin (Super Admin)</strong>
-            <button class="btn btn-secondary btn-sm" onclick="switchUser('admin'); closeCredentialsModal();">Login as Admin</button>
-          </div>
-          <p style="font-size: 13px;">Email: <code>admin@brightloop.io</code> | Password: <code>AdminPassword@2026!</code></p>
-          <p style="font-size: 12px; color: var(--muted); margin-top: 4px;">Full platform control: catalog, plans, currencies, tax rules, gateway keys, staff management, and dry run approvals.</p>
-        </div>
-
-        <!-- Staff -->
-        <div style="background: var(--bg); padding: 14px; border-radius: 1rem; border: 1px solid var(--border);">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-            <strong>Internal Staff / Finance Lead</strong>
-            <button class="btn btn-secondary btn-sm" onclick="switchUser('staff'); closeCredentialsModal();">Login as Staff</button>
-          </div>
-          <p style="font-size: 13px;">Email: <code>staff@brightloop.io</code> | Password: <code>StaffPassword@2026!</code></p>
-          <p style="font-size: 12px; color: var(--muted); margin-top: 4px;">Quotations, subscriptions, manual payments, dry runs, and reporting access.</p>
-        </div>
-
-        <!-- Normal Users -->
-        <div>
-          <h4 style="margin-bottom: 8px;">Normal Users (Customers with Demo Data)</h4>
-          <div style="display: flex; flex-direction: column; gap: 8px;">
-            <div style="background: var(--bg); padding: 10px 14px; border-radius: 1rem; border: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
-              <div>
-                <strong>Acme Corp (Priya Sharma)</strong> — Active (India)
-                <p style="font-size: 12px; color: var(--muted);"><code>priya@acmecorp.com</code> · <code>CustomerPass@2026!</code></p>
-              </div>
-              <button class="btn btn-secondary btn-sm" onclick="switchUser('priya@acmecorp.com'); closeCredentialsModal();">Login</button>
-            </div>
-            <div style="background: var(--bg); padding: 10px 14px; border-radius: 1rem; border: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
-              <div>
-                <strong>Nova Global Ltd (David Miller)</strong> — Dunning Overdue (US)
-                <p style="font-size: 12px; color: var(--muted);"><code>david@novaglobal.com</code> · <code>CustomerPass@2026!</code></p>
-              </div>
-              <button class="btn btn-secondary btn-sm" onclick="switchUser('david@novaglobal.com'); closeCredentialsModal();">Login</button>
-            </div>
-            <div style="background: var(--bg); padding: 10px 14px; border-radius: 1rem; border: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
-              <div>
-                <strong>Apex Dynamics (Elena Rostova)</strong> — Idle Warning (EU)
-                <p style="font-size: 12px; color: var(--muted);"><code>elena@apexdynamics.eu</code> · <code>CustomerPass@2026!</code></p>
-              </div>
-              <button class="btn btn-secondary btn-sm" onclick="switchUser('elena@apexdynamics.eu'); closeCredentialsModal();">Login</button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Platform Services -->
-        <div>
-          <h4 style="margin-bottom: 8px;">External Services Using Our Platform</h4>
-          <div style="background: var(--bg); padding: 12px; border-radius: 1rem; border: 1px solid var(--border); font-size: 12px;">
-            <p><strong>BrightCloud Compute:</strong> API Key <code>bk_live_compute_9f82a17c4b6e821d3e</code></p>
-            <p style="margin-top: 4px;"><strong>BrightDesk CRM:</strong> API Key <code>bk_live_crm_718a93bc28d115e4</code></p>
-            <p style="margin-top: 4px;"><strong>BrightMetrics:</strong> API Key <code>bk_live_analytics_44e991fa8c02</code></p>
-          </div>
-        </div>
+        <button class="btn btn-primary" onclick="submitHostedCheckout()">Pay &amp; Start Subscription</button>
       </div>
     </div>
   </div>
@@ -1044,11 +1072,11 @@
   <div id="prorationModal" class="modal-backdrop">
     <div class="modal">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
-        <h3>Change Subscription Plan (With Proration Preview)</h3>
+        <h3>Change Subscription Plan</h3>
         <button onclick="closeProrationModal()" style="background: none; border: none; font-size: 20px; cursor: pointer; color: var(--muted);">&times;</button>
       </div>
       <p style="font-size: 13px; color: var(--muted); margin-bottom: 14px;">
-        Proration rule: <code>credit = old price &times; unused days &divide; 30</code>, <code>charge = new price &times; remaining days &divide; 30</code>.
+        Proration formula: <code>credit = old price * unused days / 30</code>, <code>charge = new price * remaining days / 30</code>.
       </p>
 
       <div class="form-group">
@@ -1074,36 +1102,81 @@
   <!-- AI BILLING ASSISTANT DRAWER (NEW-7) -->
   <div id="assistantDrawer" class="assistant-drawer">
     <div class="assistant-header">
-      <div style="display: flex; align-items: center; gap: 8px;">
-        
-        <strong style="font-size: 14px;">Billing Assistant v2</strong>
-      </div>
+      <strong style="font-size: 14px;">Billing Assistant v2</strong>
       <button onclick="toggleAssistant()" style="background: none; border: none; color: #fff; font-size: 18px; cursor: pointer;">&times;</button>
     </div>
     <div class="assistant-body" id="assistantMessages">
       <div class="assistant-msg msg-bot">
-        Hello! I'm your BrightLoop Billing Assistant. You can ask me questions like:
+        Hello. I can assist you with your billing data:
         <br><br>
-        • "Show all my subscriptions"<br>
-        • "When is my next invoice?"<br>
-        • "How much have I paid this year?"<br>
-        • "Who is likely to churn?" (Staff only)<br>
-        • "Pause my subscription"
+        - "Show all my subscriptions"<br>
+        - "When is my next invoice?"<br>
+        - "How much have I paid this year?"<br>
+        - "Who is likely to churn?" (Staff only)<br>
+        - "Pause my subscription"
       </div>
     </div>
     <div class="assistant-footer">
-      <input type="text" id="assistantInput" class="assistant-input" placeholder="Ask a billing question..." onkeydown="if(event.key==='Enter') sendAssistantQuestion()">
+      <input type="text" id="assistantInput" class="assistant-input" placeholder="Ask a question..." onkeydown="if(event.key==='Enter') sendAssistantQuestion()">
       <button class="btn btn-primary btn-sm" onclick="sendAssistantQuestion()">Send</button>
     </div>
   </div>
 
-  <!-- FOOTER -->
+  <!-- REAL-WORLD PUBLIC FOOTER -->
   <footer>
-    <p><strong>BrightLoop Subscriptions</strong> — End-to-end recurring subscription platform.</p>
-    <div class="concept-tag">Concept Proposal to BrightLoop · Oct 31, 2026</div>
+    <div class="footer-grid">
+      <div class="footer-col">
+        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
+          <svg width="24" height="24" viewBox="0 0 100 100" fill="none">
+            <circle cx="50" cy="50" r="38" stroke="var(--primary)" stroke-width="11" stroke-linecap="round" stroke-dasharray="190 60"/>
+            <circle cx="50" cy="50" r="38" stroke="var(--secondary)" stroke-width="11" stroke-linecap="round" stroke-dasharray="50 200"/>
+            <text x="50" y="58" font-family="'Space Grotesk', sans-serif" font-weight="700" font-size="24" fill="var(--primary)" text-anchor="middle">TT</text>
+          </svg>
+          <strong style="color: var(--text);">BrightLoop Subscriptions</strong>
+        </div>
+        <p style="font-size: 12px; line-height: 1.6;">
+          End-to-end recurring subscription platform with multi-currency billing, tax calculation, and automated lifecycle management.
+        </p>
+        <div style="margin-top: 12px;">
+          <span class="concept-tag">Concept Proposal v2</span>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h4>Product</h4>
+        <ul>
+          <li><a href="javascript:void(0)" onclick="document.getElementById('publicPricingSection').scrollIntoView({behavior: 'smooth'})">Pricing & Plans</a></li>
+          <li><a href="javascript:void(0)" onclick="showPublicLoginView()">Customer Portal</a></li>
+          <li><a href="/invoices/inv_2026_001/print" target="_blank">PDF Invoice Spec</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Compliance</h4>
+        <ul>
+          <li><a href="javascript:void(0)">GST & Tax Rules</a></li>
+          <li><a href="javascript:void(0)">PCI-DSS SAQ A</a></li>
+          <li><a href="javascript:void(0)">Privacy & Audit</a></li>
+        </ul>
+      </div>
+
+      <!-- Discreet Internal / Admin Access Paths -->
+      <div class="footer-col">
+        <h4>System & Internal</h4>
+        <ul>
+          <li><a href="javascript:void(0)" onclick="openAdminLoginModal()" style="color: var(--secondary); font-weight: 600;">Internal Staff & Admin Console</a></li>
+          <li><a href="javascript:void(0)" onclick="openServiceLoginModal()">Service API Gateway</a></li>
+          <li><a href="/credentials.html" target="_blank" style="color: #9CA3AF;">Developer Credentials Directory</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div style="border-top: 1px solid var(--border); padding-top: 16px; text-align: center; font-size: 11px;">
+      &copy; 2026 BrightLoop Technologies Inc. All rights reserved.
+    </div>
   </footer>
 
-  <!-- CLIENT SCRIPT -->
+  <!-- CLIENT LOGIC SCRIPT -->
   <script>
     let currentSession = null;
     let catalog = null;
@@ -1114,14 +1187,6 @@
     async function init() {
       await loadSession();
       await loadCatalog();
-      await loadDashboard();
-      await loadSubscriptions();
-      await loadInvoices();
-      await loadDryRun();
-      await loadQuotations();
-      await loadServices();
-      await loadRightSizing();
-      await loadAuditLog();
       renderPricingCards();
 
       // Keyboard shortcut Ctrl+K
@@ -1133,42 +1198,196 @@
       });
     }
 
-    // Auth & Session
+    // Session Management
     async function loadSession() {
       const res = await fetch('/api/v1/auth/me');
-      currentSession = await res.json();
-      updateNavbarSession();
-      renderCustomerBanner();
-    }
+      const data = await res.json();
+      currentSession = data;
 
-    function updateNavbarSession() {
-      const badge = document.getElementById('currentUserBadge');
-      if (currentSession && currentSession.user) {
-        badge.textContent = `${currentSession.user.name} (${currentSession.user.role.toUpperCase()})`;
+      if (data.user) {
+        setupAuthenticatedUI(data);
+      } else {
+        setupPublicUI();
       }
     }
 
-    async function switchUser(target) {
-      const res = await fetch('/api/v1/auth/switch', {
+    function setupPublicUI() {
+      document.getElementById('view-public').style.display = 'block';
+      document.getElementById('view-authenticated').style.display = 'none';
+      document.getElementById('navTabsContainer').style.display = 'none';
+      document.getElementById('authNavGuestArea').style.display = 'flex';
+      document.getElementById('authNavUserArea').style.display = 'none';
+      document.getElementById('portalTypeLabel').textContent = 'Subscriptions';
+    }
+
+    function setupAuthenticatedUI(data) {
+      document.getElementById('view-public').style.display = 'none';
+      document.getElementById('view-authenticated').style.display = 'block';
+      document.getElementById('navTabsContainer').style.display = 'flex';
+      document.getElementById('authNavGuestArea').style.display = 'none';
+      document.getElementById('authNavUserArea').style.display = 'flex';
+      document.getElementById('currentUserNameDisplay').textContent = `${data.user.name} (${data.user.role.toUpperCase()})`;
+
+      const role = data.user.role;
+      const nav = document.getElementById('navTabsContainer');
+
+      if (role === 'customer') {
+        document.getElementById('portalTypeLabel').textContent = 'Customer Portal';
+        nav.innerHTML = `
+          <button class="nav-tab active" onclick="showTab('subscriptions')">My Subscriptions</button>
+          <button class="nav-tab" onclick="showTab('invoices')">Invoices & Receipts</button>
+        `;
+        document.getElementById('subsHeaderTitle').textContent = 'My Active Subscriptions';
+        loadSubscriptions();
+        loadInvoices();
+        loadRightSizing();
+        renderCustomerBanner();
+        showTab('subscriptions');
+      } else if (role === 'admin' || role === 'staff') {
+        document.getElementById('portalTypeLabel').textContent = role === 'admin' ? 'Super Admin Console' : 'Staff Operations Console';
+        let tabs = `
+          <button class="nav-tab active" onclick="showTab('dashboard')">Dashboard</button>
+          <button class="nav-tab" onclick="showTab('subscriptions')">Subscriptions</button>
+          <button class="nav-tab" onclick="showTab('invoices')">Invoices & Payments</button>
+          <button class="nav-tab" onclick="showTab('dryrun')">Bill-Run (Dry Run)</button>
+          <button class="nav-tab" onclick="showTab('quotations')">Quotations</button>
+          <button class="nav-tab" onclick="showTab('catalog')">Catalog & Tax</button>
+        `;
+        if (role === 'admin') {
+          tabs += `<button class="nav-tab" onclick="showTab('settings')">Settings & Staff (AUTH-5)</button>`;
+        }
+        nav.innerHTML = tabs;
+        document.getElementById('subsHeaderTitle').textContent = 'Client Subscriptions';
+        loadDashboard();
+        loadSubscriptions();
+        loadInvoices();
+        loadDryRun();
+        loadQuotations();
+        if (role === 'admin') loadAuditLog();
+        showTab('dashboard');
+      } else if (role === 'service_admin') {
+        document.getElementById('portalTypeLabel').textContent = 'Service API Gateway';
+        nav.innerHTML = `
+          <button class="nav-tab active" onclick="showTab('services')">Service Gateway & Telemetry</button>
+        `;
+        renderActiveServiceProfile(data.service);
+        showTab('services');
+      }
+    }
+
+    function handleLogoClick() {
+      if (currentSession && currentSession.user) {
+        if (currentSession.user.role === 'customer') showTab('subscriptions');
+        else if (currentSession.user.role === 'service_admin') showTab('services');
+        else showTab('dashboard');
+      } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+
+    function showPublicLoginView() {
+      if (currentSession && currentSession.user) return;
+      document.getElementById('standardLoginCard').scrollIntoView({ behavior: 'smooth' });
+      document.getElementById('loginEmail').focus();
+    }
+
+    // Customer / Standard Login
+    async function executeLogin() {
+      const email = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPassword').value;
+      const errorEl = document.getElementById('loginErrorAlert');
+
+      const res = await fetch('/api/v1/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ target })
+        body: JSON.stringify({ email, password })
       });
       const data = await res.json();
-      if (data.success) {
-        await loadSession();
-        await loadSubscriptions();
-        await loadInvoices();
-        await loadDashboard();
-        await loadRightSizing();
-        showNotification(`Switched persona to: ${data.user.name} (${data.user.role.toUpperCase()})`);
+
+      if (!res.ok) {
+        errorEl.style.display = 'block';
+        return;
       }
+
+      errorEl.style.display = 'none';
+      document.getElementById('loginPassword').value = '';
+      await loadSession();
+    }
+
+    // Admin / Staff Internal Login
+    function openAdminLoginModal() {
+      document.getElementById('adminLoginError').style.display = 'none';
+      document.getElementById('adminLoginModal').style.display = 'flex';
+      document.getElementById('adminLoginEmail').focus();
+    }
+    function closeAdminLoginModal() {
+      document.getElementById('adminLoginModal').style.display = 'none';
+    }
+
+    async function executeAdminLogin() {
+      const email = document.getElementById('adminLoginEmail').value.trim();
+      const password = document.getElementById('adminLoginPassword').value;
+      const errorEl = document.getElementById('adminLoginError');
+
+      const res = await fetch('/api/v1/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+      const data = await res.json();
+
+      if (!res.ok || (data.user.role !== 'admin' && data.user.role !== 'staff')) {
+        errorEl.style.display = 'block';
+        errorEl.textContent = 'Invalid administrative credentials or insufficient privileges.';
+        return;
+      }
+
+      closeAdminLoginModal();
+      await loadSession();
+    }
+
+    // Service Admin Key Login
+    function openServiceLoginModal() {
+      document.getElementById('serviceLoginError').style.display = 'none';
+      document.getElementById('serviceLoginModal').style.display = 'flex';
+      document.getElementById('serviceApiKeyInput').focus();
+    }
+    function closeServiceLoginModal() {
+      document.getElementById('serviceLoginModal').style.display = 'none';
+    }
+
+    async function executeServiceLogin() {
+      const apiKey = document.getElementById('serviceApiKeyInput').value.trim();
+      const errorEl = document.getElementById('serviceLoginError');
+
+      const res = await fetch('/api/v1/auth/service-login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ apiKey })
+      });
+      const data = await res.json();
+
+      if (!res.ok) {
+        errorEl.style.display = 'block';
+        return;
+      }
+
+      closeServiceLoginModal();
+      await loadSession();
+    }
+
+    // Logout
+    async function logoutSession() {
+      await fetch('/api/v1/auth/logout', { method: 'POST' });
+      currentSession = { user: null };
+      setupPublicUI();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     // Customer Alert Banner (Idle notice & Dunning)
     async function renderCustomerBanner() {
       const container = document.getElementById('customerAlertContainer');
-      if (currentSession.user.role !== 'customer') {
+      if (!currentSession || !currentSession.user || currentSession.user.role !== 'customer') {
         container.style.display = 'none';
         return;
       }
@@ -1298,9 +1517,9 @@
       const res = await fetch(`/api/v1/subscriptions/${subId}/${action}`, { method: 'POST' });
       const data = await res.json();
       if (data.success) {
-        showNotification(`Subscription updated to: ${data.subscription.status}`);
+        alert(`Subscription updated: ${data.subscription.status}`);
         await loadSubscriptions();
-        await loadDashboard();
+        if (currentSession.user.role !== 'customer') await loadDashboard();
         await renderCustomerBanner();
       }
     }
@@ -1340,9 +1559,8 @@
       });
       const data = await res.json();
       if (data.success) {
-        showNotification(`Invoice ${data.invoice.number} marked PAID via Sandbox Gateway!`);
+        alert(`Invoice ${data.invoice.number} marked PAID via Sandbox Gateway!`);
         await loadInvoices();
-        await loadDashboard();
         await loadSubscriptions();
         await renderCustomerBanner();
       }
@@ -1367,7 +1585,7 @@
               <h3>Dry Run: ${run.id} (Period: ${run.period})</h3>
               <p style="font-size: 13px; color: var(--muted); margin-top: 4px;">Status: <span class="chip chip-confirm">${run.status}</span> · Projected Total: ₹${(run.totalProjectedMinorINR / 100).toLocaleString('en-IN')}</p>
             </div>
-            <button class="btn btn-primary btn-sm" onclick="showNotification('Dry Run Invoices Approved for Dispatch!')">Approve Clean Invoices</button>
+            <button class="btn btn-primary btn-sm" onclick="alert('Dry run clean invoices approved for dispatch.')">Approve Clean Invoices</button>
           </div>
 
           <h4 style="margin-bottom: 12px; color: #DC2626;">Automated Anomaly Flags Detected (${run.flags.length})</h4>
@@ -1378,7 +1596,7 @@
                   <strong>${flag.subscription}</strong>
                   <div style="font-size: 13px; color: var(--text); margin-top: 2px;">${flag.message}</div>
                 </div>
-                <button class="btn btn-secondary btn-sm" onclick="showNotification('Hold placed on invoice generation for this item.')">Hold Invoice</button>
+                <button class="btn btn-secondary btn-sm" onclick="alert('Hold placed on invoice.')">Hold Invoice</button>
               </div>
             `).join('')}
           </div>
@@ -1390,10 +1608,10 @@
       const res = await fetch('/api/v1/bill-runs/dry', { method: 'POST' });
       await res.json();
       await loadDryRun();
-      showNotification('Generated fresh November 2026 dry run with anomaly detection.');
+      alert('Generated November 2026 billing dry run with anomaly flags.');
     }
 
-    // Public Pricing Page (NEW-10)
+    // Public Pricing Cards (NEW-10)
     function setBillingCadence(cadence) {
       billingCadence = cadence;
       document.getElementById('toggleMonthlyBtn').className = `btn btn-sm ${cadence === 'monthly' ? 'btn-primary' : 'btn-secondary'}`;
@@ -1437,7 +1655,7 @@
       }).join('');
     }
 
-    // Hosted Checkout Flow (NEW-10)
+    // Hosted Checkout (NEW-10)
     function openHostedCheckout(planId) {
       checkoutPlanTarget = catalog.plans.find(p => p.id === planId) || catalog.plans[0];
       document.getElementById('hostedCheckoutModal').style.display = 'flex';
@@ -1501,17 +1719,13 @@
       const data = await res.json();
 
       if (!res.ok) {
-        showNotification('Checkout Error: ' + (data.error || 'Failed to complete checkout'));
+        alert('Checkout Error: ' + (data.error || 'Failed to complete checkout'));
         return;
       }
 
       closeHostedCheckoutModal();
-      showNotification(`Congratulations! Your subscription ${data.subscription.number} is live, and invoice ${data.invoice.number} has been settled via Sandbox Gateway!`);
+      alert(`Subscription ${data.subscription.number} is live! Invoice ${data.invoice.number} has been settled.`);
       await loadSession();
-      await loadSubscriptions();
-      await loadInvoices();
-      await loadDashboard();
-      showTab('subscriptions');
     }
 
     // Quotations (NEW-11)
@@ -1580,10 +1794,9 @@
       });
       const data = await res.json();
       if (data.success) {
-        showNotification(`Quotation confirmed! New subscription created: ${data.subscription.number}`);
+        alert(`Quotation confirmed! New subscription created: ${data.subscription.number}`);
         await loadQuotations();
         await loadSubscriptions();
-        await loadDashboard();
       }
     }
 
@@ -1626,32 +1839,22 @@
       `).join('');
     }
 
-    // Demo Services
-    async function loadServices() {
-      const res = await fetch('/api/v1/services');
-      const services = await res.json();
-
-      const container = document.getElementById('servicesList');
-      container.innerHTML = services.map(s => `
-        <div style="background: var(--bg); border: 1px solid var(--border); border-radius: 1rem; padding: 16px;">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-            <strong style="font-size: 15px;">${s.serviceName}</strong>
-            <span class="chip chip-active">ACTIVE CLIENT</span>
-          </div>
-          <p style="font-size: 12px; color: var(--muted); margin-bottom: 8px;">${s.description}</p>
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 8px; font-size: 11px;">
-            <div><strong>Admin API Key:</strong> <code>${s.adminApiKey}</code></div>
-            <div><strong>Webhook Secret:</strong> <code>${s.webhookSecret}</code></div>
-            <div><strong>Authorized Scopes:</strong> <code>${s.scopes.join(', ')}</code></div>
-            <div><strong>Target Endpoint:</strong> <code>${s.webhookUrl}</code></div>
-          </div>
+    // Active Service Profile Rendering
+    function renderActiveServiceProfile(service) {
+      if (!service) return;
+      document.getElementById('activeServiceProfileBox').innerHTML = `
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; font-size: 12px;">
+          <div><strong>Service Name:</strong> ${service.serviceName}</div>
+          <div><strong>Authorized Scopes:</strong> <code>${(service.scopes || []).join(', ')}</code></div>
+          <div><strong>Admin API Key:</strong> <code>${service.adminApiKey}</code></div>
+          <div><strong>Webhook Target:</strong> <code>${service.webhookUrl}</code></div>
         </div>
-      `).join('');
+      `;
     }
 
     // Simulate API Usage Event Call
     async function simulateApiUsageCall() {
-      const apiKey = document.getElementById('apiSimServiceSelect').value;
+      const apiKey = currentSession?.service?.adminApiKey || 'bk_live_compute_9f82a17c4b6e821d3e';
       const subId = document.getElementById('apiSimSubSelect').value;
       const qty = document.getElementById('apiSimQuantity').value;
       const idempotencyKey = 'idem_' + Math.random().toString(36).substring(2, 10);
@@ -1671,8 +1874,6 @@
       const data = await res.json();
 
       consoleEl.textContent = `[HTTP Response ${res.status} OK]\n` + JSON.stringify(data, null, 2);
-      await loadSubscriptions();
-      await loadDashboard();
     }
 
     // Simulate Webhook HMAC Call
@@ -1683,13 +1884,13 @@
       const res = await fetch('/api/v1/services/simulate-webhook', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ serviceId: 'srv_compute_engine_01', eventType: 'subscription.activated' })
+        body: JSON.stringify({ serviceId: currentSession?.service?.serviceId || 'srv_compute_engine_01', eventType: 'subscription.activated' })
       });
       const data = await res.json();
       consoleEl.textContent = `[Webhook Delivery Payload]\n` + JSON.stringify(data, null, 2);
     }
 
-    // Staff Creation with AUTH-2 Password Meter
+    // Staff Creation (AUTH-5)
     function checkStaffPasswordStrength() {
       const pwd = document.getElementById('staffPasswordInput').value;
       const hasUpper = /[A-Z]/.test(pwd);
@@ -1716,11 +1917,11 @@
       const data = await res.json();
 
       if (!res.ok) {
-        showNotification('Error: ' + data.error);
+        alert('Error: ' + data.error);
         return;
       }
 
-      showNotification(`Staff member ${data.staff.name} successfully created!`);
+      alert(`Staff member ${data.staff.name} successfully created!`);
       document.getElementById('staffNameInput').value = '';
       document.getElementById('staffEmailInput').value = '';
       document.getElementById('staffPasswordInput').value = '';
@@ -1794,9 +1995,8 @@
 
     async function executeAssistantAction(endpoint) {
       await fetch(endpoint, { method: 'POST' });
-      showNotification('Assistant action executed and logged to audit trail.');
+      alert('Assistant action executed and logged to audit trail.');
       await loadSubscriptions();
-      await loadDashboard();
     }
 
     // Proration Modal
@@ -1835,14 +2035,9 @@
       });
       const data = await res.json();
       closeProrationModal();
-      showNotification(`Plan updated with proration credit applied! Net: ${data.proration.formattedNet}`);
+      alert(`Plan updated with proration credit applied! Net: ${data.proration.formattedNet}`);
       await loadSubscriptions();
-      await loadDashboard();
     }
-
-    // Credentials Modal
-    function openCredentialsModal() { document.getElementById('credentialsModal').style.display = 'flex'; }
-    function closeCredentialsModal() { document.getElementById('credentialsModal').style.display = 'none'; }
 
     // Tab Navigation
     function showTab(tabId) {
@@ -1852,27 +2047,23 @@
       const pane = document.getElementById(`tab-${tabId}`);
       if (pane) pane.style.display = 'block';
 
-      const tabBtn = Array.from(document.querySelectorAll('.nav-tab')).find(el => el.getAttribute('onclick').includes(tabId));
+      const tabBtn = Array.from(document.querySelectorAll('.nav-tab')).find(el => el.getAttribute('onclick')?.includes(tabId));
       if (tabBtn) tabBtn.classList.add('active');
     }
 
-    // Dark/Light Theme
+    // Theme Toggle
     function toggleTheme() {
       const body = document.body;
       const isDark = body.getAttribute('data-theme') === 'dark';
       body.setAttribute('data-theme', isDark ? 'light' : 'dark');
-      document.getElementById('themeIcon').textContent = isDark ? 'Dark' : 'Light';
+      document.getElementById('themeIcon').textContent = isDark ? 'Light' : 'Dark';
     }
 
-    // Helper: Money Formatter
+    // Currency Formatter
     function formatCurrency(minor, currencyCode) {
       const decimals = currencyCode === 'JPY' ? 0 : 2;
       const symbol = currencyCode === 'INR' ? '₹' : currencyCode === 'USD' ? '$' : currencyCode === 'EUR' ? '€' : currencyCode === 'GBP' ? '£' : currencyCode + ' ';
       return `${symbol}${(minor / Math.pow(10, decimals)).toLocaleString(undefined, { minimumFractionDigits: decimals })}`;
-    }
-
-    function showNotification(msg) {
-      alert(msg);
     }
 
     window.onload = init;
