@@ -100,6 +100,159 @@ function sendEmail({ to, subject, html, text }) {
   return emailRecord;
 }
 
+// Connected Partner Companies & Subscription Services Directory
+const partnerCompanies = [
+  {
+    id: 'partner_amazon_prime',
+    name: 'Amazon Prime',
+    category: 'Shopping & Lifestyle',
+    badge: 'Popular',
+    description: 'Fast free delivery, exclusive Prime Day deals, Amazon Music Prime, Prime Reading, and gaming perks.',
+    logoSvg: '<svg width="40" height="40" viewBox="0 0 100 100" fill="none"><rect width="100" height="100" rx="20" fill="#0F172A"/><path d="M22 62c16 9 38 12 56 0 1.2-.8 3 .5 1.8 1.8-19 14-43 12-60-0.4-1.2-0.8 0.4-2.2 2.2-1.4z" fill="#00A8E1"/><path d="M79 60c-2.4 2-5 3.5-7.8 4.2-.8.2-1.4-.4-1.2-1.2.8-2.6 2.2-5 4-7.2.6-.8 1.8-.4 2 0.6.4 1.2 1.4 2.4 3 3.6z" fill="#00A8E1"/><text x="50" y="46" font-weight="700" font-size="26" fill="#FFFFFF" text-anchor="middle">prime</text></svg>',
+    plans: [
+      { id: 'plan_prime_monthly', name: 'Prime Monthly', cadence: 'monthly', prices: { INR: 29900, USD: 1499, EUR: 1399, GBP: 899 }, features: ['Free 1-Day Delivery', 'Prime Video HD', 'Amazon Music 100M Songs', 'Early Deal Access'] },
+      { id: 'plan_prime_annual', name: 'Prime Annual', cadence: 'yearly', prices: { INR: 149900, USD: 13900, EUR: 12900, GBP: 9500 }, features: ['Save ~60% over monthly', 'Free Priority Delivery', 'Prime Video 4K', 'Prime Reading'] },
+      { id: 'plan_prime_student', name: 'Prime Student', cadence: 'yearly', prices: { INR: 74900, USD: 6900, EUR: 6400, GBP: 4700 }, features: ['Student Identity Verified', 'All Prime Benefits', 'Exclusive Textbook Discounts'] }
+    ]
+  },
+  {
+    id: 'partner_prime_video',
+    name: 'Prime Video',
+    category: 'Video Streaming',
+    badge: '4K HDR',
+    description: 'Award-winning Amazon Originals, blockbuster movies, 4K HDR streaming, and live sports entertainment.',
+    logoSvg: '<svg width="40" height="40" viewBox="0 0 100 100" fill="none"><rect width="100" height="100" rx="20" fill="#00050d"/><path d="M25 40h20c8 0 14 5 14 12s-6 12-14 12H33v14H25V40zm8 17h11c4 0 7-2 7-5s-3-5-7-5H33v10z" fill="#00A8E1"/><path d="M62 48h8v30h-8V48zm0-10h8v7h-8v-7z" fill="#00A8E1"/><path d="M18 78c22 11 44 11 64 0" stroke="#00A8E1" stroke-width="4" stroke-linecap=\"round\"/></svg>',
+    plans: [
+      { id: 'plan_pvideo_standalone', name: 'Prime Video Standalone', cadence: 'monthly', prices: { INR: 19900, USD: 899, EUR: 799, GBP: 599 }, features: ['Unlimited 4K HDR Streaming', '3 Simultaneous Devices', 'X-Ray Movie Trivia', 'Offline Downloads'] },
+      { id: 'plan_pvideo_bundle', name: 'Prime Video + Paramount+ Channel', cadence: 'monthly', prices: { INR: 34900, USD: 1499, EUR: 1399, GBP: 1099 }, features: ['Prime Originals', 'Paramount+ Complete Catalog', 'Unified Single Billing in BrightLoop'] }
+    ]
+  },
+  {
+    id: 'partner_netflix',
+    name: 'Netflix',
+    category: 'Video Streaming',
+    badge: 'Global Hit',
+    description: 'Unlimited movies, TV series, documentaries, and mobile games. Stream anywhere on phone, tablet, laptop, or TV.',
+    logoSvg: '<svg width="40" height="40" viewBox="0 0 100 100" fill="none"><rect width="100" height="100" rx="20" fill="#141414"/><path d="M28 20h14v60H28z" fill="#E50914"/><path d="M58 20h14v60H58z" fill="#E50914"/><path d="M28 20l44 60h-14l-44-60z" fill="#B81D24"/></svg>',
+    plans: [
+      { id: 'plan_nflx_mobile', name: 'Mobile Plan', cadence: 'monthly', prices: { INR: 14900, USD: 699, EUR: 599, GBP: 499 }, features: ['480p Standard Definition', '1 Phone or Tablet', 'Ad-Free Movies & Series', 'Downloads on 1 Device'] },
+      { id: 'plan_nflx_standard', name: 'Standard Plan', cadence: 'monthly', prices: { INR: 49900, USD: 1549, EUR: 1399, GBP: 1099 }, features: ['1080p Full HD', '2 Supported Devices at once', 'TV, Computer, Phone, Tablet', 'Downloads on 2 Devices'] },
+      { id: 'plan_nflx_premium', name: 'Premium 4K HDR', cadence: 'monthly', prices: { INR: 64900, USD: 2299, EUR: 1999, GBP: 1799 }, features: ['4K Ultra HD + HDR', '4 Supported Devices at once', 'Spatial Audio Included', 'Downloads on 6 Devices'] }
+    ]
+  },
+  {
+    id: 'partner_crunchyroll',
+    name: 'Crunchyroll',
+    category: 'Anime & Manga',
+    badge: 'Simulcast',
+    description: 'World largest anime library, 1,000+ titles, simulcasts 1 hour after Japan broadcast, and digital manga access.',
+    logoSvg: '<svg width="40" height="40" viewBox="0 0 100 100" fill="none"><rect width="100" height="100" rx="20" fill="#000000"/><circle cx="50" cy="50" r="32" fill="#F47521"/><path d="M50 24a26 26 0 1 0 26 26 26 26 0 0 0-26-26zm0 44a18 18 0 1 1 18-18 18 18 0 0 1-18 18z" fill="#FFFFFF"/><circle cx="43" cy="50" r="9" fill="#F47521"/></svg>',
+    plans: [
+      { id: 'plan_cr_fan', name: 'Fan Tier', cadence: 'monthly', prices: { INR: 7900, USD: 799, EUR: 699, GBP: 499 }, features: ['Stream on 1 device', 'No ads, unlimited anime', 'New episodes 1 hour after Japan', 'Digital Manga Library'] },
+      { id: 'plan_cr_megafan', name: 'Mega Fan Tier', cadence: 'monthly', prices: { INR: 9900, USD: 999, EUR: 899, GBP: 699 }, features: ['Stream on 4 devices', 'Offline viewing downloads', 'Crunchyroll Game Vault', '16% discount on annual'] },
+      { id: 'plan_cr_ultimate', name: 'Ultimate Fan Tier', cadence: 'monthly', prices: { INR: 14900, USD: 1499, EUR: 1399, GBP: 1099 }, features: ['Stream on 6 devices', 'Annual member swag bag', 'Exclusive merch discounts', 'Special event access'] }
+    ]
+  },
+  {
+    id: 'partner_spotify',
+    name: 'Spotify Premium',
+    category: 'Music & Podcasts',
+    badge: '100M Songs',
+    description: 'Ad-free music listening, offline downloads, high fidelity audio streaming, and 15 hours of audiobooks per month.',
+    logoSvg: '<svg width="40" height="40" viewBox="0 0 100 100" fill="none"><rect width="100" height="100" rx="20" fill="#121212"/><circle cx="50" cy="50" r="32" fill="#1DB954"/><path d="M32 42c12-3 26-2 37 4" stroke="#FFFFFF" stroke-width="6" stroke-linecap=\"round\"/><path d="M35 51c10-2 22-1 31 4" stroke="#FFFFFF" stroke-width="5" stroke-linecap=\"round\"/><path d="M38 60c8-1 17 0 24 4" stroke="#FFFFFF" stroke-width=\"4\" stroke-linecap=\"round\"/></svg>',
+    plans: [
+      { id: 'plan_spot_individual', name: 'Individual Premium', cadence: 'monthly', prices: { INR: 11900, USD: 1199, EUR: 1099, GBP: 999 }, features: ['1 Premium account', 'Ad-free music listening', 'Download to listen offline', 'Play songs in any order'] },
+      { id: 'plan_spot_duo', name: 'Premium Duo', cadence: 'monthly', prices: { INR: 14900, USD: 1699, EUR: 1499, GBP: 1399 }, features: ['2 Premium accounts', 'For couples / roommates', 'Duo Mix collaborative playlist'] },
+      { id: 'plan_spot_family', name: 'Premium Family', cadence: 'monthly', prices: { INR: 17900, USD: 1999, EUR: 1799, GBP: 1699 }, features: ['Up to 6 Premium accounts', 'Explicit content filtering', 'Spotify Kids standalone app'] }
+    ]
+  },
+  {
+    id: 'partner_disney_hotstar',
+    name: 'Disney+ Hotstar',
+    category: 'Video Streaming',
+    badge: 'Sports & Movies',
+    description: 'Home of Disney, Marvel Studios, Star Wars, Pixar, National Geographic, HBO releases, and live cricket tournaments.',
+    logoSvg: '<svg width="40" height="40" viewBox="0 0 100 100" fill="none"><rect width="100" height="100" rx="20" fill="#040714"/><path d="M22 35c18-16 40-16 56 0" stroke="#113CCF" stroke-width="5" stroke-linecap="round"/><path d="M30 65c12 5 28 5 40 0" stroke="#00D6FE" stroke-width="4" stroke-linecap="round"/><text x="44" y="58" font-weight="700" font-size="28" fill="#FFFFFF">D</text><path d="M60 42v18M51 51h18" stroke="#00D6FE" stroke-width="4" stroke-linecap="round"/></svg>',
+    plans: [
+      { id: 'plan_disney_super', name: 'Super Tier (Quarterly)', cadence: 'quarterly', prices: { INR: 29900, USD: 999, EUR: 899, GBP: 799 }, features: ['Full HD 1080p', '2 Concurrent Devices', 'Dolby 5.1 Surround Sound', 'All Movies & Live Sports'] },
+      { id: 'plan_disney_premium', name: 'Premium 4K (Annual)', cadence: 'yearly', prices: { INR: 149900, USD: 13999, EUR: 11999, GBP: 9999 }, features: ['4K Ultra HD + Dolby Vision', '4 Concurrent Devices', 'Ad-Free entertainment (except live)', 'Dolby Atmos Audio'] }
+    ]
+  },
+  {
+    id: 'partner_youtube',
+    name: 'YouTube Premium',
+    category: 'Video & Audio',
+    badge: 'Ad-Free',
+    description: 'Ad-free YouTube videos, seamless background playback while using other apps, offline downloads, and YouTube Music Premium.',
+    logoSvg: '<svg width="40" height="40" viewBox="0 0 100 100" fill="none"><rect width="100" height="100" rx="20" fill="#0F0F0F"/><rect x="18" y="28" width="64" height="44" rx="14" fill="#FF0000"/><polygon points="44,40 64,50 44,60" fill="#FFFFFF"/></svg>',
+    plans: [
+      { id: 'plan_yt_individual', name: 'Individual Premium', cadence: 'monthly', prices: { INR: 12900, USD: 1399, EUR: 1299, GBP: 1199 }, features: ['Ad-free video on all devices', 'Background & lock screen play', 'Offline downloads', 'YouTube Music Premium app included'] },
+      { id: 'plan_yt_family', name: 'Family Membership', cadence: 'monthly', prices: { INR: 18900, USD: 2299, EUR: 2199, GBP: 1899 }, features: ['Add up to 5 family members (ages 13+)', 'Individual personal recommendations', 'Shared single subscription in BrightLoop'] }
+    ]
+  },
+  {
+    id: 'partner_openai',
+    name: 'ChatGPT Plus (OpenAI)',
+    category: 'AI & Productivity',
+    badge: 'GPT-4o & o1',
+    description: 'Unlimited GPT-4o, complex reasoning with OpenAI o1, DALL-E 3 image generation, Advanced Voice, and custom AI agents.',
+    logoSvg: '<svg width="40" height="40" viewBox="0 0 100 100" fill="none"><rect width="100" height="100" rx="20" fill="#10A37F"/><circle cx="50" cy="50" r="28" stroke="#FFFFFF" stroke-width="5" fill="none"/><circle cx="50" cy="36" r="10" stroke="#FFFFFF" stroke-width="4" fill="none"/><circle cx="62" cy="43" r="10" stroke="#FFFFFF" stroke-width="4" fill="none"/><circle cx="62" cy="57" r="10" stroke="#FFFFFF" stroke-width="4" fill="none"/><circle cx="50" cy="64" r="10" stroke="#FFFFFF" stroke-width="4" fill="none"/><circle cx="38" cy="57" r="10" stroke="#FFFFFF" stroke-width="4" fill="none"/><circle cx="38" cy="43" r="10" stroke="#FFFFFF" stroke-width="4" fill="none"/></svg>',
+    plans: [
+      { id: 'plan_chatgpt_plus', name: 'ChatGPT Plus', cadence: 'monthly', prices: { INR: 199900, USD: 2000, EUR: 1900, GBP: 1600 }, features: ['Access to GPT-4o & OpenAI o1', 'DALL-E 3 image generation', 'Advanced Voice Mode', 'Early access to new features like Sora'] },
+      { id: 'plan_chatgpt_team', name: 'ChatGPT Team (Per User)', cadence: 'monthly', prices: { INR: 249900, USD: 2500, EUR: 2400, GBP: 2000 }, features: ['Higher rate limits on GPT-4o', 'Admin console & workspace sharing', 'Team data excluded from model training'] }
+    ]
+  },
+  {
+    id: 'partner_github',
+    name: 'GitHub Copilot',
+    category: 'Developer Tools',
+    badge: 'AI Pair Programmer',
+    description: 'AI code completions, multi-file code editing, chat completions in VS Code/JetBrains, and automated pull request reviews.',
+    logoSvg: '<svg width="40" height="40" viewBox="0 0 100 100" fill="none"><rect width="100" height="100" rx="20" fill="#24292F"/><path fill-rule="evenodd" clip-rule="evenodd" d="M50 20C33.4 20 20 33.4 20 50c0 13.3 8.6 24.5 20.6 28.5 1.5.3 2-.6 2-1.4v-5.2c-8.3 1.8-10.1-4-10.1-4-1.4-3.5-3.3-4.4-3.3-4.4-2.7-1.8.2-1.8.2-1.8 3 .2 4.6 3.1 4.6 3.1 2.7 4.6 7 3.3 8.7 2.5.3-2 1.1-3.3 2-4-6.6-.8-13.6-3.3-13.6-14.7 0-3.3 1.2-5.9 3.1-8-.3-.8-1.3-3.8.3-7.9 0 0 2.5-.8 8.2 3.1 2.4-.7 5-1 7.5-1s5.1.3 7.5 1c5.7-3.9 8.2-3.1 8.2-3.1 1.6 4.1.6 7.1.3 7.9 1.9 2.1 3.1 4.7 3.1 8 0 11.5-7 13.9-13.6 14.6 1.1.9 2.1 2.8 2.1 5.6v8.3c0 .8.6 1.8 2.1 1.4C71.4 74.5 80 63.3 80 50c0-16.6-13.4-30-30-30z" fill="#FFFFFF"/></svg>',
+    plans: [
+      { id: 'plan_gh_copilot_pro', name: 'Copilot Individual', cadence: 'monthly', prices: { INR: 85000, USD: 1000, EUR: 950, GBP: 800 }, features: ['Code completions in IDE', 'Chat with Claude 3.5 Sonnet & GPT-4o', 'CLI suggestions', 'Security vulnerability filters'] },
+      { id: 'plan_gh_copilot_biz', name: 'Copilot Business', cadence: 'monthly', prices: { INR: 210000, USD: 2300, EUR: 2100, GBP: 1800 }, features: ['Organization-wide policy control', 'Content exclusion rules', 'Privacy guarantee (no retention)', 'Corporate proxy support'] }
+    ]
+  },
+  {
+    id: 'partner_adobe',
+    name: 'Adobe Creative Cloud',
+    category: 'Design & Media',
+    badge: 'Industry Standard',
+    description: 'World-class creative applications including Photoshop, Illustrator, Premiere Pro, After Effects, and Adobe Firefly AI.',
+    logoSvg: '<svg width="40" height="40" viewBox="0 0 100 100" fill="none"><rect width="100" height="100" rx="20" fill="#FA0F00"/><polygon points="24,78 44,22 56,22 76,78 62,78 57,63 41,63 36,78" fill="#FFFFFF"/><polygon points="49,38 43,54 55,54" fill="#FA0F00"/></svg>',
+    plans: [
+      { id: 'plan_adobe_photo', name: 'Photography Plan (20GB)', cadence: 'monthly', prices: { INR: 79900, USD: 1999, EUR: 1899, GBP: 1599 }, features: ['Photoshop on desktop and iPad', 'Lightroom and Lightroom Classic', '20 GB cloud storage', 'Adobe Portfolio'] },
+      { id: 'plan_adobe_all', name: 'Creative Cloud All Apps', cadence: 'monthly', prices: { INR: 423000, USD: 5999, EUR: 5499, GBP: 4799 }, features: ['20+ creative apps (Photoshop, Illustrator, Premiere)', '100 GB cloud storage', '1,000 monthly generative Firefly credits'] }
+    ]
+  },
+  {
+    id: 'partner_dropbox',
+    name: 'Dropbox Cloud Storage',
+    category: 'Cloud Storage',
+    badge: 'Secure Storage',
+    description: 'Keep your photos, docs, and files safe with 256-bit AES encryption, DocSend telemetry, and seamless syncing.',
+    logoSvg: '<svg width="40" height="40" viewBox="0 0 100 100" fill="none"><rect width="100" height="100" rx="20" fill="#0061FF"/><path d="M35 30l15 10-15 10-15-10 15-10zm30 0l15 10-15 10-15-10 15-10zM20 60l15 10 15-10-15-10-15 10zm60 0l-15-10-15 10 15 10 15-10zM50 63l15 10-15 10-15-10 15-10z" fill="#FFFFFF"/></svg>',
+    plans: [
+      { id: 'plan_dbx_plus', name: 'Dropbox Plus (2 TB)', cadence: 'monthly', prices: { INR: 82000, USD: 999, EUR: 999, GBP: 799 }, features: ['2,000 GB secure storage', 'Unlimited device syncing', '30-day file recovery history', 'Dropbox Transfer (up to 2GB)'] },
+      { id: 'plan_dbx_essentials', name: 'Dropbox Essentials (3 TB)', cadence: 'monthly', prices: { INR: 148000, USD: 1800, EUR: 1650, GBP: 1400 }, features: ['3,000 GB secure storage', '180-day version history', 'Unlimited eSignatures', 'Document viewer engagement analytics'] }
+    ]
+  },
+  {
+    id: 'partner_apple',
+    name: 'Apple One',
+    category: 'Entertainment & Cloud',
+    badge: 'All-in-One',
+    description: 'Bundle Apple Music, Apple TV+, Apple Arcade, and iCloud+ storage into one effortless, unified monthly bill.',
+    logoSvg: '<svg width="40" height="40" viewBox="0 0 100 100" fill="none"><rect width="100" height="100" rx="20" fill="#000000"/><path d="M59 34c1.8-2.3 3-5.5 2.7-8.7-2.7.1-6 1.8-7.9 4-1.7 2-3.1 5.2-2.7 8.3 3 .2 6.1-1.6 7.9-3.6zm5 16.5c-4 0-7.3-2.3-9.2-2.3s-5.4 2.2-8.9 2.2c-4.6 0-8.9-2.7-11.3-6.8-4.8-8.3-1.2-20.6 3.4-27.2 2.3-3.3 5-6.8 9.3-6.9 3.6 0 5.4 2.4 8.6 2.4 3.1 0 4.6-2.4 8.5-2.4 4.3.1 7.2 3.3 9.4 6.6 2.6 3.8 3.7 7.5 3.8 7.7-.1.1-7.3 2.8-7.4 11.2-.1 6.8 5.6 9.8 5.8 10-3.2 4.7-6.7 9.3-12 9.3v-3.8z" fill="#FFFFFF"/></svg>',
+    plans: [
+      { id: 'plan_apple_tv', name: 'Apple TV+ Standalone', cadence: 'monthly', prices: { INR: 9900, USD: 999, EUR: 899, GBP: 799 }, features: ['4K HDR Apple Originals', 'Share with up to 5 family members', 'No ads ever'] },
+      { id: 'plan_apple_one_ind', name: 'Apple One Individual', cadence: 'monthly', prices: { INR: 19500, USD: 1995, EUR: 1895, GBP: 1595 }, features: ['Apple Music (Lossless + Spatial)', 'Apple TV+', 'Apple Arcade (200+ games)', '50 GB iCloud+ storage'] },
+      { id: 'plan_apple_one_fam', name: 'Apple One Family', cadence: 'monthly', prices: { INR: 36500, USD: 2595, EUR: 2495, GBP: 2195 }, features: ['Share with up to 5 other people', '200 GB iCloud+ storage', 'Private personal libraries for each member'] }
+    ]
+  }
+];
+
 // MIME types map for serving static files
 const MIME_TYPES = {
   '.html': 'text/html; charset=utf-8',
@@ -296,7 +449,7 @@ const server = http.createServer(async (req, res) => {
           <p>Your customer account has been created. You can now access and manage all your vendor subscriptions from a unified, clutter-free dashboard.</p>
           <div style="background: #F8FAFC; border: 1px solid #E2E8F0; padding: 16px; border-radius: 6px; margin: 20px 0;">
             <p style="margin: 0 0 6px 0;"><strong>Account Email:</strong> ${cleanEmail}</p>
-            <p style="margin: 0 0 6px 0;"><strong>Organization:</strong> ${company || name}</p>
+            <p style="margin: 0 0 6px 0;"><strong>Account Holder:</strong> ${name}</p>
             <p style="margin: 0;"><strong>Billing Currency:</strong> ${currency || 'INR'}</p>
           </div>
           <p>To access your customer portal, visit:</p>
@@ -866,6 +1019,54 @@ const server = http.createServer(async (req, res) => {
       return sendJson(200, { success: true, reversal: reversalRecord, invoice: targetInv });
     }
 
+    // 10b-1. Invoices: Get Payment List
+    const invPaymentsMatch = apiPath.match(/^\/invoices\/([^/]+)\/payments$/);
+    if (invPaymentsMatch && method === 'GET') {
+      const invId = invPaymentsMatch[1];
+      const list = (db.payments || []).filter(p => p.invoiceId === invId);
+      return sendJson(200, list);
+    }
+
+    // 10b-2. Payments: Edit Recorded Amount (Staff adjustment)
+    const payEditMatch = apiPath.match(/^\/payments\/([^/]+)\/edit$/);
+    if (payEditMatch && method === 'POST') {
+      if (currentSession.user.role === 'customer') {
+        return sendJson(403, { error: 'Only internal staff can adjust recorded payment amounts.' });
+      }
+      const origPay = (db.payments || []).find(p => p.id === payEditMatch[1]);
+      if (!origPay) return sendJson(404, { error: 'Payment not found' });
+      if (origPay.amountMinor < 0) return sendJson(400, { error: 'Cannot directly edit a reversal payment. Reverse or re-record as needed.' });
+
+      const { newAmountMinor, reason } = body;
+      if (typeof newAmountMinor !== 'number' || newAmountMinor < 0) {
+        return sendJson(400, { error: 'Valid payment amount is required.' });
+      }
+
+      const oldAmount = origPay.amountMinor;
+      const delta = newAmountMinor - oldAmount;
+      origPay.amountMinor = newAmountMinor;
+      origPay.note = (origPay.note || '') + ` (Amount adjusted from ${oldAmount} to ${newAmountMinor}: ${reason || 'Staff adjustment'})`;
+
+      const targetInv = db.invoices.find(i => i.id === origPay.invoiceId);
+      if (targetInv) {
+        targetInv.amountPaidMinor = Math.max(0, (targetInv.amountPaidMinor || 0) + delta);
+        targetInv.amountDueMinor = Math.max(0, targetInv.totalMinor - targetInv.amountPaidMinor);
+        if (targetInv.amountDueMinor === 0) {
+          targetInv.status = 'paid';
+          targetInv.partiallyPaid = false;
+          targetInv.paidAt = new Date().toISOString();
+        } else {
+          targetInv.status = 'confirmed';
+          targetInv.partiallyPaid = targetInv.amountPaidMinor > 0;
+          targetInv.paidAt = null;
+        }
+      }
+
+      logAudit(currentSession.user.email, 'PAYMENT_AMOUNT_EDITED', origPay.id, delta, { oldAmount, newAmountMinor, reason });
+      saveDatabase();
+      return sendJson(200, { success: true, payment: origPay, invoice: targetInv });
+    }
+
     // 10c. Renewal History List (REN-6)
     if (apiPath === '/renewals/history' && method === 'GET') {
       let list = db.renewalHistory || [];
@@ -1017,6 +1218,140 @@ const server = http.createServer(async (req, res) => {
     // 12. Demo Platform Services & Scoped API Keys
     if (apiPath === '/services' && method === 'GET') {
       return sendJson(200, db.credentialsGuide.platformServices);
+    }
+
+    // 12a. Connected Partner Services Directory (Amazon Prime, Netflix, Crunchyroll, Spotify, Disney+, YouTube, OpenAI, GitHub, etc.)
+    if (apiPath === '/partners' && method === 'GET') {
+      return sendJson(200, partnerCompanies);
+    }
+
+    // 12b. Customer: Subscribe to Connected Partner Service
+    if (apiPath === '/customer/subscriptions/add-partner' && method === 'POST') {
+      if (!currentSession.user) {
+        return sendJson(401, { error: 'Authentication required to subscribe to partner services.' });
+      }
+
+      const { partnerId, planId, cadence } = body;
+      const partner = partnerCompanies.find(p => p.id === partnerId);
+      if (!partner) return sendJson(404, { error: 'Partner service not found.' });
+
+      const plan = partner.plans.find(pl => pl.id === planId) || partner.plans[0];
+      if (!plan) return sendJson(404, { error: 'Partner plan not found.' });
+
+      let cust = db.customers.find(c => c.userId === currentSession.user.id);
+      if (!cust) {
+        cust = {
+          id: 'cust_' + crypto.randomBytes(4).toString('hex'),
+          userId: currentSession.user.id,
+          name: currentSession.user.name,
+          company: currentSession.user.name,
+          email: currentSession.user.email,
+          country: 'India',
+          billingCurrency: 'INR',
+          createdDate: new Date().toISOString().split('T')[0]
+        };
+        db.customers.push(cust);
+      }
+
+      const currency = cust.billingCurrency || 'INR';
+      const priceMinor = plan.prices[currency] || plan.prices['INR'] || 19900;
+
+      const subId = 'sub_ptn_' + crypto.randomBytes(4).toString('hex');
+      const subNumber = 'SUB-2026-' + (Math.floor(Math.random() * 800) + 150);
+      const nextDate = new Date();
+      if (plan.cadence === 'yearly' || cadence === 'yearly') {
+        nextDate.setFullYear(nextDate.getFullYear() + 1);
+      } else {
+        nextDate.setMonth(nextDate.getMonth() + 1);
+      }
+      const expiryDate = nextDate.toISOString().split('T')[0];
+
+      const newSub = {
+        id: subId,
+        number: subNumber,
+        customerId: cust.id,
+        customer: { id: cust.id, name: cust.name, company: cust.company || cust.name, email: cust.email },
+        partnerId: partner.id,
+        serviceName: partner.name,
+        category: partner.category,
+        planId: plan.id,
+        plan: {
+          id: plan.id,
+          name: `${partner.name} - ${plan.name}`,
+          code: plan.id
+        },
+        status: 'active',
+        currency,
+        unitPriceMinor: priceMinor,
+        startDate: new Date().toISOString().split('T')[0],
+        expiryDate,
+        healthScore: 98,
+        healthReason: 'Active partner subscription verified through BrightLoop hub',
+        paymentMethod: 'BrightLoop Consolidated Billing'
+      };
+      db.subscriptions.unshift(newSub);
+
+      const invId = 'inv_2026_' + crypto.randomBytes(3).toString('hex');
+      const invNumber = 'INV-2026-' + (Math.floor(Math.random() * 800) + 200);
+      const newInv = {
+        id: invId,
+        number: invNumber,
+        subscriptionId: newSub.id,
+        customerId: cust.id,
+        customer: newSub.customer,
+        period: new Date().toISOString().substring(0, 7),
+        status: 'paid',
+        currency,
+        subtotalMinor: priceMinor,
+        discountMinor: 0,
+        taxMinor: 0,
+        totalMinor: priceMinor,
+        amountPaidMinor: priceMinor,
+        amountDueMinor: 0,
+        partiallyPaid: false,
+        dueDate: new Date().toISOString().split('T')[0],
+        paidAt: new Date().toISOString(),
+        paymentFailedFlag: false,
+        lines: [
+          { description: `${partner.name} - ${plan.name} (${plan.cadence})`, quantity: 1, unitPriceMinor: priceMinor, amountMinor: priceMinor }
+        ]
+      };
+      db.invoices.unshift(newInv);
+
+      const pmt = {
+        id: 'pay_' + crypto.randomBytes(4).toString('hex'),
+        invoiceId: newInv.id,
+        method: 'BrightLoop Direct Settlement',
+        amountMinor: priceMinor,
+        currency,
+        provider: 'partner_hub',
+        date: new Date().toISOString(),
+        note: `Initial setup payment for ${partner.name} (${plan.name})`
+      };
+      db.payments.unshift(pmt);
+
+      sendEmail({
+        to: cust.email,
+        subject: `Subscription Activated: ${partner.name} via BrightLoop`,
+        html: `
+          <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; border: 1px solid #E5E7EB; border-radius: 8px;">
+            <h2 style="color: #0F172A; margin-top: 0;">Subscription Activated: ${partner.name}</h2>
+            <p>Hi ${cust.name},</p>
+            <p>Your subscription for <strong>${partner.name} (${plan.name})</strong> is now connected and active under your BrightLoop account.</p>
+            <div style="background: #F8FAFC; border: 1px solid #E2E8F0; padding: 14px; border-radius: 6px; margin: 18px 0; font-size: 13px;">
+              <p style="margin: 0 0 6px 0;"><strong>Subscription Ref:</strong> ${newSub.number}</p>
+              <p style="margin: 0 0 6px 0;"><strong>Plan:</strong> ${plan.name}</p>
+              <p style="margin: 0 0 6px 0;"><strong>Billing Frequency:</strong> ${plan.cadence}</p>
+              <p style="margin: 0;"><strong>Invoice Settled:</strong> ${newInv.number}</p>
+            </div>
+            <p style="font-size: 13px; color: #64748B;">You can manage, change plans, or pause this subscription at any time directly from your BrightLoop Customer Portal.</p>
+          </div>
+        `
+      });
+
+      logAudit(currentSession.user.email, 'PARTNER_SUBSCRIPTION_ADDED', newSub.number, priceMinor, { partnerId: partner.id, planId: plan.id });
+      saveDatabase();
+      return sendJson(200, { success: true, subscription: newSub, invoice: newInv });
     }
 
     // 13. REST API Endpoint for Services: POST /usage-events (Idempotent API)

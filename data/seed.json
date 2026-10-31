@@ -478,6 +478,22 @@
       "role": "customer",
       "plainPassword": "SecurePassword@2026!",
       "passwordHash": "$2a$10$fc05c21b9da549b36abcc6d0f1a220076fed15ed1a03"
+    },
+    {
+      "id": "usr_cust_503915",
+      "email": "ajikumarappu2255@gmail.com",
+      "name": "Anandhu A",
+      "role": "customer",
+      "plainPassword": "Aji225566@",
+      "passwordHash": "$2a$10$cdc04001e9bed10edeab3a419c3c16c7a0d756ac3dc0"
+    },
+    {
+      "id": "usr_cust_9fa402",
+      "email": "siddharth@vanguard.io",
+      "name": "Siddharth Rao",
+      "role": "customer",
+      "plainPassword": "CustomerPass@2026!",
+      "passwordHash": "$2a$10$3009e4afad9de5f8c421bba9bc63e67a38921fbbe727"
     }
   ],
   "customers": [
@@ -528,9 +544,101 @@
       "taxId": "N/A",
       "billingAddress": "India Office",
       "createdDate": "2026-10-31"
+    },
+    {
+      "id": "cust_50541032",
+      "userId": "usr_cust_503915",
+      "name": "Anandhu A",
+      "company": "cvjkikloop////",
+      "email": "ajikumarappu2255@gmail.com",
+      "country": "India",
+      "billingCurrency": "INR",
+      "taxId": "N/A",
+      "billingAddress": "India Office",
+      "createdDate": "2026-10-31"
+    },
+    {
+      "id": "cust_eed5e78c",
+      "userId": "usr_cust_9fa402",
+      "name": "Siddharth Rao",
+      "company": "Vanguard Analytics",
+      "email": "siddharth@vanguard.io",
+      "country": "India",
+      "billingCurrency": "INR",
+      "taxId": "29AABCU9603R1ZM",
+      "billingAddress": "India Office",
+      "createdDate": "2026-10-31"
     }
   ],
   "subscriptions": [
+    {
+      "id": "sub_ptn_359785f9",
+      "number": "SUB-2026-213",
+      "customerId": "cust_acme_01",
+      "customer": {
+        "id": "cust_acme_01",
+        "name": "Acme Corp (Priya Sharma)",
+        "company": "Acme Software Solutions Pvt Ltd",
+        "email": "priya@acmecorp.com"
+      },
+      "partnerId": "partner_netflix",
+      "serviceName": "Netflix",
+      "category": "Video Streaming",
+      "planId": "plan_nflx_standard",
+      "plan": {
+        "id": "plan_nflx_standard",
+        "name": "Netflix - Standard Plan",
+        "code": "plan_nflx_standard"
+      },
+      "status": "active",
+      "currency": "INR",
+      "unitPriceMinor": 49900,
+      "startDate": "2026-10-31",
+      "expiryDate": "2026-12-01",
+      "healthScore": 98,
+      "healthReason": "Active partner subscription verified through BrightLoop hub",
+      "paymentMethod": "BrightLoop Consolidated Billing"
+    },
+    {
+      "id": "sub_8e395168",
+      "number": "SUB-2026-224",
+      "customerId": "cust_starlight_04",
+      "planId": "plan_growth",
+      "variantId": "var_odoo",
+      "status": "confirmed",
+      "currency": "INR",
+      "startDate": "2026-10-31",
+      "expiryDate": "2027-11-01",
+      "billingDay": 1,
+      "paymentTerms": "Due on receipt",
+      "unitPriceMinor": 1305900,
+      "quantity": 1,
+      "healthScore": 100,
+      "healthReason": "Newly confirmed via online quotation acceptance link.",
+      "usageEventsCount": 0,
+      "lastUsageAt": "2026-10-31T08:49:54.969Z"
+    },
+    {
+      "id": "sub_f89ad9ff",
+      "number": "SUB-2026-506",
+      "customerId": "cust_eed5e78c",
+      "planId": "plan_enterprise",
+      "variantId": "var_standard",
+      "status": "active",
+      "currency": "INR",
+      "startDate": "2026-10-31",
+      "expiryDate": "2028-11-01",
+      "billingDay": 1,
+      "paymentTerms": "Due on receipt",
+      "unitPriceMinor": 3499900,
+      "quantity": 1,
+      "spendCapMinor": 5000000,
+      "healthScore": 100,
+      "healthReason": "Paused by customer or staff. Billing runs skip this subscription (SUBST-3).",
+      "usageEventsCount": 0,
+      "lastUsageAt": "2026-10-31T08:37:45.663Z",
+      "pausedAt": "2026-10-31T08:47:15.154Z"
+    },
     {
       "id": "sub_acme_101",
       "number": "SUB-2026-101",
@@ -540,7 +648,7 @@
       "status": "active",
       "currency": "INR",
       "startDate": "2026-08-01",
-      "expiryDate": "2028-08-01",
+      "expiryDate": "2029-08-01",
       "billingDay": 1,
       "paymentTerms": "Due on receipt",
       "unitPriceMinor": 3555900,
@@ -577,7 +685,7 @@
       "customerId": "cust_apex_03",
       "planId": "plan_growth",
       "variantId": "var_standard",
-      "status": "idle",
+      "status": "paused",
       "currency": "EUR",
       "startDate": "2026-09-25",
       "expiryDate": "2027-09-25",
@@ -586,15 +694,80 @@
       "unitPriceMinor": 13900,
       "quantity": 1,
       "spendCapMinor": 2500000,
-      "idleWarningSentAt": "2026-10-26T00:00:00Z",
-      "idleGraceExpiresAt": "2026-11-02T23:59:59Z",
-      "healthScore": 92,
-      "healthReason": "Healthy. Overdue invoice settled via sandbox payment.",
+      "idleWarningSentAt": null,
+      "idleGraceExpiresAt": null,
+      "healthScore": 88,
+      "healthReason": "Paused by customer or staff. Billing runs skip this subscription (SUBST-3).",
       "usageEventsCount": 0,
-      "lastUsageAt": "2026-09-28T10:00:00Z"
+      "lastUsageAt": "2026-10-31T08:48:30.592Z",
+      "pausedAt": "2026-10-31T08:48:34.404Z"
     }
   ],
   "invoices": [
+    {
+      "id": "inv_2026_6f7745",
+      "number": "INV-2026-417",
+      "subscriptionId": "sub_ptn_359785f9",
+      "customerId": "cust_acme_01",
+      "customer": {
+        "id": "cust_acme_01",
+        "name": "Acme Corp (Priya Sharma)",
+        "company": "Acme Software Solutions Pvt Ltd",
+        "email": "priya@acmecorp.com"
+      },
+      "period": "2026-10",
+      "status": "confirmed",
+      "currency": "INR",
+      "subtotalMinor": 49900,
+      "discountMinor": 0,
+      "taxMinor": 0,
+      "totalMinor": 49900,
+      "amountPaidMinor": 0,
+      "amountDueMinor": 49900,
+      "partiallyPaid": false,
+      "dueDate": "2026-10-31",
+      "paidAt": null,
+      "paymentFailedFlag": false,
+      "lines": [
+        {
+          "description": "Netflix - Standard Plan (monthly)",
+          "quantity": 1,
+          "unitPriceMinor": 49900,
+          "amountMinor": 49900
+        }
+      ]
+    },
+    {
+      "id": "inv_0ef2cced",
+      "number": "INV-2026-619",
+      "subscriptionId": "sub_f89ad9ff",
+      "customerId": "cust_eed5e78c",
+      "period": "2026-11",
+      "status": "paid",
+      "currency": "INR",
+      "lockedRateToBase": 1,
+      "subtotalMinor": 1249900,
+      "discountMinor": 249980,
+      "taxMinor": 179986,
+      "totalMinor": 1179906,
+      "dueDate": "2026-10-31",
+      "paidAt": "2026-10-31T08:37:45.664Z",
+      "paymentFailedFlag": false,
+      "lines": [
+        {
+          "description": "Growth Pro Plan (Monthly)",
+          "quantity": 1,
+          "unitPriceMinor": 1249900,
+          "amountMinor": 1249900
+        },
+        {
+          "description": "Tax (GST 18%)",
+          "quantity": 1,
+          "unitPriceMinor": 179986,
+          "amountMinor": 179986
+        }
+      ]
+    },
     {
       "id": "inv_5ad313e8",
       "number": "INV-2026-473",
@@ -627,7 +800,8 @@
           "unitPriceMinor": 2682,
           "amountMinor": 2682
         }
-      ]
+      ],
+      "reminderCount": 1
     },
     {
       "id": "inv_90a00516",
@@ -885,18 +1059,18 @@
       "subscriptionId": "sub_nova_102",
       "customerId": "cust_nova_02",
       "period": "2026-11",
-      "status": "confirmed",
-      "partiallyPaid": true,
+      "status": "paid",
+      "partiallyPaid": false,
       "currency": "USD",
       "lockedRateToBase": 84.5,
       "subtotalMinor": 14900,
       "taxMinor": 0,
       "discountMinor": 0,
       "totalMinor": 14900,
-      "amountPaidMinor": 9900,
-      "amountDueMinor": 5000,
+      "amountPaidMinor": 14900,
+      "amountDueMinor": 0,
       "dueDate": "2026-11-25",
-      "paidAt": null,
+      "paidAt": "2026-10-31T08:30:00.367Z",
       "paymentFailedFlag": false,
       "lines": [
         {
@@ -936,6 +1110,50 @@
     }
   ],
   "payments": [
+    {
+      "id": "pay_rev_6f4f138d",
+      "invoiceId": "inv_2026_6f7745",
+      "method": "Reversal of pay_9320cf83",
+      "amountMinor": -30000,
+      "currency": "INR",
+      "provider": "partner_hub",
+      "reversalOfPaymentId": "pay_9320cf83",
+      "reason": "Test staff reversal",
+      "date": "2026-10-31T09:28:19.816Z",
+      "note": "Payment reversed: Test staff reversal"
+    },
+    {
+      "id": "pay_9320cf83",
+      "invoiceId": "inv_2026_6f7745",
+      "method": "BrightLoop Direct Settlement",
+      "amountMinor": 30000,
+      "currency": "INR",
+      "provider": "partner_hub",
+      "date": "2026-10-31T09:28:19.797Z",
+      "note": "Initial setup payment for Netflix (Standard Plan) (Amount adjusted from 49900 to 30000: Staff adjustment)"
+    },
+    {
+      "id": "pay_sbx_f828269c",
+      "invoiceId": "inv_0ef2cced",
+      "method": "Sandbox Card",
+      "amountMinor": 1179906,
+      "currency": "INR",
+      "provider": "sandbox",
+      "gatewayReference": "sbx_chk_8d12ec292613",
+      "date": "2026-10-31T08:37:45.665Z",
+      "note": "Hosted checkout self-serve initial subscription payment"
+    },
+    {
+      "id": "pay_sbx_31ec5a3c",
+      "invoiceId": "inv_2026_016",
+      "method": "Sandbox Corporate Card",
+      "amountMinor": 5000,
+      "currency": "USD",
+      "provider": "sandbox",
+      "gatewayReference": "sbx_tx_d9a2f94475b9",
+      "date": "2026-10-31T08:30:00.367Z",
+      "note": "Full invoice payment settled"
+    },
     {
       "id": "pay_sbx_4e9fdf2c",
       "invoiceId": "inv_90a00516",
@@ -1039,6 +1257,35 @@
   ],
   "billRuns": [
     {
+      "id": "run_1793435388824_dry",
+      "mode": "dry",
+      "period": "2026-11",
+      "runAt": "2026-10-31T08:29:48.825Z",
+      "status": "pending_review",
+      "invoicesPrepared": 2,
+      "totalProjectedMinorINR": 5240000,
+      "flags": [
+        {
+          "subscription": "SUB-2026-102 (cust_nova_02)",
+          "severity": "danger",
+          "code": "PREVIOUS_INVOICE_UNPAID",
+          "message": "3 outstanding invoice(s) exist. Dunning follow-up active."
+        },
+        {
+          "subscription": "SUB-2026-103 (cust_apex_03)",
+          "severity": "warning",
+          "code": "IDLE_PENDING_ACTION",
+          "message": "Subscription flagged as idle (Healthy. Overdue invoice settled via sandbox payment.). Billing should be held."
+        },
+        {
+          "subscription": "SUB-2026-103 (cust_apex_03)",
+          "severity": "danger",
+          "code": "PREVIOUS_INVOICE_UNPAID",
+          "message": "1 outstanding invoice(s) exist. Dunning follow-up active."
+        }
+      ]
+    },
+    {
       "id": "run_1793432643033_dry",
       "mode": "dry",
       "period": "2026-11",
@@ -1121,6 +1368,166 @@
     }
   ],
   "auditLogs": [
+    {
+      "timestamp": "2026-10-31T09:28:19.816Z",
+      "actor": "staff@brightloop.io",
+      "action": "PAYMENT_REVERSED",
+      "entity": "pay_9320cf83",
+      "before": "30000",
+      "after": "{\"reversalId\":\"pay_rev_6f4f138d\",\"reason\":\"Test staff reversal\"}"
+    },
+    {
+      "timestamp": "2026-10-31T09:28:19.811Z",
+      "actor": "staff@brightloop.io",
+      "action": "PAYMENT_AMOUNT_EDITED",
+      "entity": "pay_9320cf83",
+      "before": "-19900",
+      "after": "{\"oldAmount\":49900,\"newAmountMinor\":30000}"
+    },
+    {
+      "timestamp": "2026-10-31T09:28:19.804Z",
+      "actor": "staff@brightloop.io",
+      "action": "USER_LOGIN",
+      "entity": "session",
+      "before": "null",
+      "after": "staff"
+    },
+    {
+      "timestamp": "2026-10-31T09:28:19.799Z",
+      "actor": "priya@acmecorp.com",
+      "action": "PARTNER_SUBSCRIPTION_ADDED",
+      "entity": "SUB-2026-213",
+      "before": "49900",
+      "after": "{\"partnerId\":\"partner_netflix\",\"planId\":\"plan_nflx_standard\"}"
+    },
+    {
+      "timestamp": "2026-10-31T09:28:19.786Z",
+      "actor": "priya@acmecorp.com",
+      "action": "USER_LOGIN",
+      "entity": "session",
+      "before": "null",
+      "after": "customer"
+    },
+    {
+      "timestamp": "2026-10-31T08:49:54.969Z",
+      "actor": "Starlight Operations Rep",
+      "action": "QUOTATION_ONLINE_ACCEPTED",
+      "entity": "QT-2026-101",
+      "before": "quotation",
+      "after": "confirmed"
+    },
+    {
+      "timestamp": "2026-10-31T08:48:34.404Z",
+      "actor": "admin@brightloop.io",
+      "action": "SUBSCRIPTION_PAUSE",
+      "entity": "SUB-2026-103",
+      "before": "active",
+      "after": "paused"
+    },
+    {
+      "timestamp": "2026-10-31T08:48:30.592Z",
+      "actor": "admin@brightloop.io",
+      "action": "SUBSCRIPTION_KEEP_RESET",
+      "entity": "SUB-2026-103",
+      "before": "idle",
+      "after": "active"
+    },
+    {
+      "timestamp": "2026-10-31T08:47:32.259Z",
+      "actor": "admin@brightloop.io",
+      "action": "PLAN_CHANGE_PRORATED",
+      "entity": "SUB-2026-506",
+      "before": "{\"oldPrice\":1249900}",
+      "after": "{\"newPrice\":3499900,\"netDifferenceMinor\":1350000}"
+    },
+    {
+      "timestamp": "2026-10-31T08:47:18.560Z",
+      "actor": "admin@brightloop.io",
+      "action": "SUBSCRIPTION_RENEWED",
+      "entity": "SUB-2026-506",
+      "before": "{\"oldExpiry\":\"2027-11-01\"}",
+      "after": "{\"newExpiry\":\"2028-11-01\"}"
+    },
+    {
+      "timestamp": "2026-10-31T08:47:15.155Z",
+      "actor": "admin@brightloop.io",
+      "action": "SUBSCRIPTION_PAUSE",
+      "entity": "SUB-2026-506",
+      "before": "active",
+      "after": "paused"
+    },
+    {
+      "timestamp": "2026-10-31T08:45:16.262Z",
+      "actor": "admin@brightloop.io",
+      "action": "USER_LOGIN",
+      "entity": "session",
+      "before": "null",
+      "after": "admin"
+    },
+    {
+      "timestamp": "2026-10-31T08:37:45.666Z",
+      "actor": "siddharth@vanguard.io",
+      "action": "PUBLIC_CHECKOUT_COMPLETED",
+      "entity": "SUB-2026-506",
+      "before": "null",
+      "after": "{\"totalMinor\":1179906,\"currency\":\"INR\"}"
+    },
+    {
+      "timestamp": "2026-10-31T08:31:24.535Z",
+      "actor": "priya@acmecorp.com",
+      "action": "SUBSCRIPTION_RENEWED",
+      "entity": "SUB-2026-101",
+      "before": "{\"oldExpiry\":\"2028-08-01\"}",
+      "after": "{\"newExpiry\":\"2029-08-01\"}"
+    },
+    {
+      "timestamp": "2026-10-31T08:31:06.768Z",
+      "actor": "priya@acmecorp.com",
+      "action": "USER_LOGIN",
+      "entity": "session",
+      "before": "null",
+      "after": "customer"
+    },
+    {
+      "timestamp": "2026-10-31T08:30:00.367Z",
+      "actor": "staff@brightloop.io",
+      "action": "PAYMENT_RECORDED",
+      "entity": "INV-2026-016",
+      "before": "null",
+      "after": "{\"id\":\"pay_sbx_31ec5a3c\",\"invoiceId\":\"inv_2026_016\",\"method\":\"Sandbox Corporate Card\",\"amountMinor\":5000,\"currency\":\"USD\",\"provider\":\"sandbox\",\"gatewayReference\":\"sbx_tx_d9a2f94475b9\",\"date\":\"2026-10-31T08:30:00.367Z\",\"note\":\"Full invoice payment settled\"}"
+    },
+    {
+      "timestamp": "2026-10-31T08:29:48.825Z",
+      "actor": "staff@brightloop.io",
+      "action": "BILL_RUN_DRY_GENERATED",
+      "entity": "run_1793435388824_dry",
+      "before": "null",
+      "after": "{\"flagsCount\":3}"
+    },
+    {
+      "timestamp": "2026-10-31T08:26:46.511Z",
+      "actor": "staff@brightloop.io",
+      "action": "DUNNING_REMINDER_SENT",
+      "entity": "INV-2026-473",
+      "before": "null",
+      "after": "{\"id\":\"rem_fdaa161a\",\"invoiceId\":\"inv_5ad313e8\",\"invoiceNumber\":\"INV-2026-473\",\"step\":\"Dunning Notice #1\",\"sentAt\":\"2026-10-31T08:26:46.511Z\",\"channel\":\"email\",\"result\":\"delivered\"}"
+    },
+    {
+      "timestamp": "2026-10-31T08:20:45.035Z",
+      "actor": "staff@brightloop.io",
+      "action": "USER_LOGIN",
+      "entity": "session",
+      "before": "null",
+      "after": "staff"
+    },
+    {
+      "timestamp": "2026-10-31T08:18:32.794Z",
+      "actor": "ajikumarappu2255@gmail.com",
+      "action": "CUSTOMER_REGISTRATION",
+      "entity": "usr_cust_503915",
+      "before": "null",
+      "after": "{\"name\":\"Anandhu A\",\"company\":\"cvjkikloop////\"}"
+    },
     {
       "timestamp": "2026-10-31T08:14:16.232Z",
       "actor": "anandhu@acquisition.io",
@@ -1312,9 +1719,9 @@
       "unitPriceMinor": 1305900,
       "validityDays": 14,
       "validUntil": "2026-11-14",
-      "status": "quotation",
-      "acceptedBy": null,
-      "acceptedAt": null,
+      "status": "confirmed",
+      "acceptedBy": "Starlight Operations Rep",
+      "acceptedAt": "2026-10-31T08:49:54.969Z",
       "lines": [
         {
           "description": "Growth Pro Plan (Monthly)",
@@ -1392,6 +1799,26 @@
   ],
   "renewalHistory": [
     {
+      "id": "ren_ab442c4e",
+      "subscriptionId": "sub_f89ad9ff",
+      "subscriptionNumber": "SUB-2026-506",
+      "oldExpiry": "2027-11-01",
+      "newExpiry": "2028-11-01",
+      "trigger": "manual_renew",
+      "triggeredBy": "admin@brightloop.io",
+      "date": "2026-10-31T08:47:18.560Z"
+    },
+    {
+      "id": "ren_2a6508ab",
+      "subscriptionId": "sub_acme_101",
+      "subscriptionNumber": "SUB-2026-101",
+      "oldExpiry": "2028-08-01",
+      "newExpiry": "2029-08-01",
+      "trigger": "manual_renew",
+      "triggeredBy": "priya@acmecorp.com",
+      "date": "2026-10-31T08:31:24.535Z"
+    },
+    {
       "id": "ren_d365a330",
       "subscriptionId": "sub_acme_101",
       "subscriptionNumber": "SUB-2026-101",
@@ -1446,6 +1873,15 @@
   ],
   "reminderLogs": [
     {
+      "id": "rem_fdaa161a",
+      "invoiceId": "inv_5ad313e8",
+      "invoiceNumber": "INV-2026-473",
+      "step": "Dunning Notice #1",
+      "sentAt": "2026-10-31T08:26:46.511Z",
+      "channel": "email",
+      "result": "delivered"
+    },
+    {
       "id": "rem_3376bd4f",
       "invoiceId": "inv_2026_015",
       "invoiceNumber": "INV-2026-015",
@@ -1487,6 +1923,26 @@
     }
   ],
   "sentEmails": [
+    {
+      "id": "eml_c5a0e906",
+      "to": "priya@acmecorp.com",
+      "from": "BrightLoop Subscriptions <notifications@brightloop.io>",
+      "subject": "Subscription Activated: Netflix via BrightLoop",
+      "html": "\n          <div style=\"font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; border: 1px solid #E5E7EB; border-radius: 8px;\">\n            <h2 style=\"color: #0F172A; margin-top: 0;\">Subscription Activated: Netflix</h2>\n            <p>Hi Acme Corp (Priya Sharma),</p>\n            <p>Your subscription for <strong>Netflix (Standard Plan)</strong> is now connected and active under your BrightLoop account.</p>\n            <div style=\"background: #F8FAFC; border: 1px solid #E2E8F0; padding: 14px; border-radius: 6px; margin: 18px 0; font-size: 13px;\">\n              <p style=\"margin: 0 0 6px 0;\"><strong>Subscription Ref:</strong> SUB-2026-213</p>\n              <p style=\"margin: 0 0 6px 0;\"><strong>Plan:</strong> Standard Plan</p>\n              <p style=\"margin: 0 0 6px 0;\"><strong>Billing Frequency:</strong> monthly</p>\n              <p style=\"margin: 0;\"><strong>Invoice Settled:</strong> INV-2026-417</p>\n            </div>\n            <p style=\"font-size: 13px; color: #64748B;\">You can manage, change plans, or pause this subscription at any time directly from your BrightLoop Customer Portal.</p>\n          </div>\n        ",
+      "text": "\n          \n            Subscription Activated: Netflix\n            Hi Acme Corp (Priya Sharma),\n            Your subscription for Netflix (Standard Plan) is now connected and active under your BrightLoop account.\n            \n              Subscription Ref: SUB-2026-213\n              Plan: Standard Plan\n              Billing Frequency: monthly\n              Invoice Settled: INV-2026-417\n            \n            You can manage, change plans, or pause this subscription at any time directly from your BrightLoop Customer Portal.\n          \n        ",
+      "sentAt": "2026-10-31T09:28:19.797Z",
+      "status": "delivered"
+    },
+    {
+      "id": "eml_72ae99fa",
+      "to": "ajikumarappu2255@gmail.com",
+      "from": "BrightLoop Subscriptions <notifications@brightloop.io>",
+      "subject": "Account Registration Confirmation — BrightLoop Subscriptions",
+      "html": "\n        <div style=\"font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; border: 1px solid #E5E7EB; border-radius: 8px;\">\n          <h2 style=\"color: #0F172A; margin-top: 0;\">Welcome to BrightLoop Subscriptions</h2>\n          <p>Hi Anandhu A,</p>\n          <p>Your customer account has been created. You can now access and manage all your vendor subscriptions from a unified, clutter-free dashboard.</p>\n          <div style=\"background: #F8FAFC; border: 1px solid #E2E8F0; padding: 16px; border-radius: 6px; margin: 20px 0;\">\n            <p style=\"margin: 0 0 6px 0;\"><strong>Account Email:</strong> ajikumarappu2255@gmail.com</p>\n            <p style=\"margin: 0 0 6px 0;\"><strong>Organization:</strong> cvjkikloop////</p>\n            <p style=\"margin: 0;\"><strong>Billing Currency:</strong> INR</p>\n          </div>\n          <p>To access your customer portal, visit:</p>\n          <p><a href=\"http://localhost:3000/#login\" style=\"display: inline-block; background: #0F172A; color: #FFFFFF; padding: 10px 20px; border-radius: 6px; text-decoration: none; font-weight: 600;\">Go to Customer Portal</a></p>\n          <hr style=\"border: none; border-top: 1px solid #E5E7EB; margin: 24px 0;\">\n          <p style=\"font-size: 12px; color: #64748B;\">BrightLoop Subscriptions Technologies Inc. Automated Account Notification.</p>\n        </div>\n      ",
+      "text": "\n        \n          Welcome to BrightLoop Subscriptions\n          Hi Anandhu A,\n          Your customer account has been created. You can now access and manage all your vendor subscriptions from a unified, clutter-free dashboard.\n          \n            Account Email: ajikumarappu2255@gmail.com\n            Organization: cvjkikloop////\n            Billing Currency: INR\n          \n          To access your customer portal, visit:\n          Go to Customer Portal\n          \n          BrightLoop Subscriptions Technologies Inc. Automated Account Notification.\n        \n      ",
+      "sentAt": "2026-10-31T08:18:32.791Z",
+      "status": "delivered"
+    },
     {
       "id": "eml_ad5e1ada",
       "to": "anandhu@acquisition.io",

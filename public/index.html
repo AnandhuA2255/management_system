@@ -454,10 +454,10 @@
     tr:last-child td { border-bottom: none; }
     tr:hover td { background: rgba(0,0,0,0.015); }
 
-    /* Architectural Enterprise Alert Strips (Non-AI, 8px radius with Left Accent Border) */
+    /* Refined Architectural Alert Banners (No harsh colored edges or AI accents) */
     .alert-banner {
       border-radius: 8px;
-      padding: 14px 18px;
+      padding: 13px 18px;
       margin-bottom: 20px;
       display: flex;
       align-items: center;
@@ -465,46 +465,46 @@
       gap: 16px;
       border: 1px solid var(--border);
       background: var(--surface);
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+      font-size: 13px;
     }
     .alert-idle {
-      border-left: 4px solid #F59E0B;
-      background: rgba(245, 158, 11, 0.08);
+      border-color: rgba(245, 158, 11, 0.28);
+      background: rgba(245, 158, 11, 0.05);
       color: var(--text);
     }
     [data-theme="dark"] .alert-idle {
-      border-left: 4px solid #F59E0B;
-      background: rgba(245, 158, 11, 0.12);
+      border-color: rgba(245, 158, 11, 0.24);
+      background: rgba(245, 158, 11, 0.08);
       color: #FDE68A;
     }
     .alert-danger {
-      border-left: 4px solid #EF4444;
-      background: rgba(239, 68, 68, 0.08);
+      border-color: rgba(239, 68, 68, 0.25);
+      background: rgba(239, 68, 68, 0.04);
       color: var(--text);
     }
     [data-theme="dark"] .alert-danger {
-      border-left: 4px solid #EF4444;
-      background: rgba(239, 68, 68, 0.12);
+      border-color: rgba(239, 68, 68, 0.25);
+      background: rgba(239, 68, 68, 0.08);
       color: #FECACA;
     }
     .alert-info {
-      border-left: 4px solid #4F46E5;
-      background: rgba(79, 70, 229, 0.08);
+      border-color: rgba(79, 70, 229, 0.25);
+      background: rgba(79, 70, 229, 0.04);
       color: var(--text);
     }
     [data-theme="dark"] .alert-info {
-      border-left: 4px solid #818CF8;
-      background: rgba(79, 70, 229, 0.12);
+      border-color: rgba(129, 140, 248, 0.25);
+      background: rgba(79, 70, 229, 0.08);
       color: #C7D2FE;
     }
     .alert-success {
-      border-left: 4px solid #10B981;
-      background: rgba(16, 185, 129, 0.08);
+      border-color: rgba(16, 185, 129, 0.25);
+      background: rgba(16, 185, 129, 0.04);
       color: var(--text);
     }
     [data-theme="dark"] .alert-success {
-      border-left: 4px solid #10B981;
-      background: rgba(16, 185, 129, 0.12);
+      border-color: rgba(16, 185, 129, 0.25);
+      background: rgba(16, 185, 129, 0.08);
       color: #A7F3D0;
     }
 
@@ -755,6 +755,46 @@
       background: rgba(125, 125, 125, 0.12);
     }
 
+    /* Aesthetic Interactive Pricing Cards with Dynamic Hover & Selection Outlines */
+    .pricing-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-card);
+      padding: 30px 26px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      outline: 2px solid transparent;
+      outline-offset: 3px;
+    }
+    .pricing-card:hover {
+      border-color: var(--secondary);
+      outline: 2px solid rgba(79, 70, 229, 0.45);
+      outline-offset: 3px;
+      transform: translateY(-5px);
+      box-shadow: 0 16px 36px rgba(79, 70, 229, 0.12);
+    }
+    .pricing-card.selected-plan {
+      border-color: var(--secondary) !important;
+      outline: 2px solid var(--secondary) !important;
+      outline-offset: 4px !important;
+      background: var(--surface);
+      box-shadow: 0 0 0 1px var(--secondary), 0 20px 40px rgba(79, 70, 229, 0.22);
+    }
+    [data-theme="dark"] .pricing-card:hover {
+      border-color: #818CF8;
+      outline: 2px solid rgba(129, 140, 248, 0.5);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.7), 0 0 24px rgba(129, 140, 248, 0.28);
+    }
+    [data-theme="dark"] .pricing-card.selected-plan {
+      border-color: #818CF8 !important;
+      outline: 2px solid #818CF8 !important;
+      outline-offset: 4px !important;
+      box-shadow: 0 0 0 1px #818CF8, 0 20px 44px rgba(0, 0, 0, 0.8), 0 0 30px rgba(129, 140, 248, 0.38);
+    }
+
     /* Dark Mode Specular Shadows and Form Styling */
     [data-theme="dark"] .login-card,
     [data-theme="dark"] .modal,
@@ -877,7 +917,6 @@
 
       <!-- Hero Section -->
       <div class="hero-section">
-        <div class="hero-badge">Multi-Vendor Subscription Hub &amp; Billing Engine</div>
         <h1 class="hero-title">One unified platform for all your recurring subscriptions.</h1>
         <p class="hero-subtitle">
           BrightLoop connects customers with multi-vendor subscriptions in a single clutter-free dashboard, while providing companies with global multi-currency billing, pluggable payment gateways, usage metering, and automated lifecycle intelligence.
@@ -1085,6 +1124,34 @@
               <!-- Populated via API -->
             </tbody>
           </table>
+        </div>
+
+        <!-- CONNECTED PARTNER SERVICES & ECOSYSTEM (For Customers) -->
+        <div id="customerPartnerMarketplaceSection" style="margin-top: 36px;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 18px; flex-wrap: wrap; gap: 12px;">
+            <div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <h3 style="font-size: 20px;">Connected Partner Services</h3>
+                <span style="font-size: 11px; background: var(--chip-confirm-bg); color: var(--chip-confirm-text); padding: 2px 8px; border-radius: 9999px; font-weight: 600;">Ecosystem Hub</span>
+              </div>
+              <p style="color: var(--muted); font-size: 13px; margin-top: 4px;">
+                Companies connected to BrightLoop to provide subscriptions via us. Add and manage all your streaming, developer tools, AI, and cloud subscriptions in one unified dashboard.
+              </p>
+            </div>
+            <!-- Category Filter Pills -->
+            <div id="partnerCategoryPills" style="display: flex; gap: 6px; flex-wrap: wrap;">
+              <button class="chip chip-active" onclick="filterPartners('All')">All Services</button>
+              <button class="chip chip-draft" onclick="filterPartners('Video Streaming')">Streaming</button>
+              <button class="chip chip-draft" onclick="filterPartners('Music & Podcasts')">Music</button>
+              <button class="chip chip-draft" onclick="filterPartners('Anime & Manga')">Anime</button>
+              <button class="chip chip-draft" onclick="filterPartners('AI & Productivity')">AI</button>
+              <button class="chip chip-draft" onclick="filterPartners('Developer Tools')">DevTools</button>
+            </div>
+          </div>
+
+          <div id="partnerServicesGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 18px;">
+            <!-- Populated dynamically with Netflix, Amazon Prime, Prime Video, Crunchyroll, Spotify, Disney+, YouTube, OpenAI, GitHub, etc. -->
+          </div>
         </div>
       </section>
 
@@ -1665,14 +1732,80 @@
       <div class="form-group">
         <label class="form-label">Payment Instrument</label>
         <select id="payInstrumentSelect" class="form-select">
-          <option value="Sandbox Corporate Card">Sandbox Corporate Card (•••• 4242)</option>
-          <option value="Direct Bank Transfer">Direct Bank Transfer (RTGS / NEFT / ACH)</option>
-          <option value="Automated UPI Clearing">UPI Clearing Instant</option>
+          <option value="Direct Bank Transfer">Direct Bank Transfer (Wire / RTGS / NEFT / ACH)</option>
+          <option value="Manual Cheque">Manual Cheque / Corporate Draft</option>
+          <option value="Internal Cash / Ledger">Internal Cash / Ledger Settlement</option>
+          <option value="Corporate Sandbox Card">Corporate Sandbox Card (4242)</option>
+          <option value="Instant UPI Clearing">Instant UPI Clearing</option>
         </select>
       </div>
       <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
         <button class="btn btn-secondary" onclick="closePartialPayModal()">Cancel</button>
-        <button class="btn btn-primary" onclick="submitInvoicePayment()">Authorize &amp; Settle Payment</button>
+        <button class="btn btn-primary" id="btnSubmitInvoicePayment" onclick="submitInvoicePayment()">Record Payment</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PARTNER SUBSCRIPTION MODAL (Add Connected Partner Service to Customer Account) -->
+  <div id="partnerSubscribeModal" class="modal-backdrop">
+    <div class="modal" style="max-width: 520px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <div id="modalPartnerLogo" style="flex-shrink: 0;"></div>
+          <div>
+            <h3 id="modalPartnerName" style="font-size: 18px;">Partner Service</h3>
+            <span id="modalPartnerCategory" style="font-size: 11px; color: var(--muted);">Category</span>
+          </div>
+        </div>
+        <button onclick="closePartnerSubscribeModal()" style="background: none; border: none; font-size: 20px; cursor: pointer; color: var(--muted);">&times;</button>
+      </div>
+
+      <p id="modalPartnerDesc" style="font-size: 13px; color: var(--muted); margin-bottom: 16px; line-height: 1.5;"></p>
+
+      <div class="form-group">
+        <label class="form-label">Select Available Plan</label>
+        <select id="modalPartnerPlanSelect" class="form-select" onchange="updatePartnerModalSummary()">
+          <!-- Populated dynamically -->
+        </select>
+      </div>
+
+      <div id="modalPartnerSummaryBox" style="background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 14px; margin-bottom: 16px; font-size: 13px;">
+        <!-- Filled dynamically -->
+      </div>
+
+      <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+        <button class="btn btn-secondary" onclick="closePartnerSubscribeModal()">Cancel</button>
+        <button class="btn btn-primary" id="btnConfirmPartnerSub" onclick="confirmPartnerSubscription()">Add to My Subscriptions</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAYMENT ADJUSTMENT & REVERSAL MODAL (Staff Console) -->
+  <div id="paymentAdjustmentModal" class="modal-backdrop">
+    <div class="modal" style="max-width: 580px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+        <div>
+          <span style="font-size: 10px; font-weight: 700; text-transform: uppercase; background: var(--chip-confirm-bg); color: var(--chip-confirm-text); padding: 2px 8px; border-radius: 9999px;">Staff Ledger Controls</span>
+          <h3 id="payAdjModalTitle" style="margin-top: 4px;">Manage Invoice Payments</h3>
+        </div>
+        <button onclick="closePaymentAdjustmentModal()" style="background: none; border: none; font-size: 20px; cursor: pointer; color: var(--muted);">&times;</button>
+      </div>
+
+      <div id="payAdjSummaryBox" style="background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; margin-bottom: 16px; font-size: 13px;">
+        <!-- Filled dynamically -->
+      </div>
+
+      <div style="margin-bottom: 12px;">
+        <strong style="font-size: 13px;">Recorded Payment Transactions</strong>
+        <p style="font-size: 12px; color: var(--muted); margin-top: 2px;">Audit-controlled adjustments: Edit paid amounts or issue payment reversals without external gateway redirect.</p>
+      </div>
+
+      <div id="payAdjList" style="display: flex; flex-direction: column; gap: 10px; max-height: 280px; overflow-y: auto;">
+        <!-- Filled dynamically -->
+      </div>
+
+      <div style="display: flex; justify-content: flex-end; margin-top: 20px;">
+        <button class="btn btn-secondary" onclick="closePaymentAdjustmentModal()">Done</button>
       </div>
     </div>
   </div>
@@ -1865,6 +1998,8 @@
       document.getElementById('authNavGuestArea').style.display = 'flex';
       document.getElementById('authNavUserArea').style.display = 'none';
       document.getElementById('portalTypeLabel').textContent = 'Subscriptions';
+      const partnerMarketSection = document.getElementById('customerPartnerMarketplaceSection');
+      if (partnerMarketSection) partnerMarketSection.style.display = 'none';
     }
 
     function setupAuthenticatedUI(data) {
@@ -1889,20 +2024,24 @@
 
       const role = data.user.role;
       const nav = document.getElementById('navTabsContainer');
+      const partnerMarketSection = document.getElementById('customerPartnerMarketplaceSection');
 
       if (role === 'customer') {
+        if (partnerMarketSection) partnerMarketSection.style.display = 'block';
         document.getElementById('portalTypeLabel').textContent = 'Customer Portal';
         nav.innerHTML = `
           <button class="nav-tab active" onclick="showTab('subscriptions')">My Subscriptions</button>
           <button class="nav-tab" onclick="showTab('invoices')">Invoices & Receipts</button>
         `;
         document.getElementById('subsHeaderTitle').textContent = 'My Active Subscriptions';
+        loadPartnerServices();
         loadSubscriptions();
         loadInvoices();
         loadRightSizing();
         renderCustomerBanner();
         showTab('subscriptions');
       } else if (role === 'admin' || role === 'staff') {
+        if (partnerMarketSection) partnerMarketSection.style.display = 'none';
         document.getElementById('portalTypeLabel').textContent = role === 'admin' ? 'Super Admin Console' : 'Staff Operations Console';
         let tabs = `
           <button class="nav-tab active" onclick="showTab('dashboard')">Dashboard</button>
@@ -2423,6 +2562,12 @@
     // Subscriptions Table
     let activeInvoiceForPay = null;
     let activeInvoiceForCancel = null;
+    let currentCustomerSubscriptions = [];
+    let loadedPartnerServices = [];
+    let activePartnerFilter = 'all';
+    let selectedPartnerForSub = null;
+    let selectedPartnerPlanForSub = null;
+    let activeInvoiceForAdjustment = null;
 
     // Subscriptions Table (with Renewal REN-1 to REN-6, Pause SUBST-3, Resume SUBST-4)
     async function loadSubscriptions() {
@@ -2430,6 +2575,11 @@
       const subs = await res.json();
       const tbody = document.getElementById('subscriptionsTableBody');
       const isStaffOrAdmin = currentSession && (currentSession.user.role === 'admin' || currentSession.user.role === 'staff');
+
+      currentCustomerSubscriptions = subs;
+      if (loadedPartnerServices && loadedPartnerServices.length > 0) {
+        renderPartnerGrid();
+      }
 
       tbody.innerHTML = subs.map(sub => `
         <tr>
@@ -2530,7 +2680,8 @@
             <td>
               <div style="display: flex; gap: 6px; flex-wrap: wrap;">
                 <a href="/invoices/${inv.id}/print" target="_blank" class="btn btn-secondary btn-sm">PDF</a>
-                ${(!isPaid && !isCancelled) ? `<button class="btn btn-primary btn-sm" onclick="openPartialPayModal('${inv.id}')">Pay</button>` : ''}
+                ${(!isPaid && !isCancelled) ? `<button class="btn btn-primary btn-sm" onclick="openPartialPayModal('${inv.id}')">${isStaffOrAdmin ? 'Record Payment' : 'Pay'}</button>` : ''}
+                ${(isStaffOrAdmin && paidMinor > 0) ? `<button class="btn btn-secondary btn-sm" onclick="openPaymentAdjustmentModal('${inv.id}')">Manage Payment</button>` : ''}
                 ${(isStaffOrAdmin && !isPaid && !isCancelled) ? `<button class="btn btn-danger btn-sm" onclick="openCancelInvoiceModal('${inv.id}')">Cancel</button>` : ''}
                 ${(isCancelled && isStaffOrAdmin) ? `<button class="btn btn-secondary btn-sm" onclick="regenerateCancelledInvoice('${inv.subscriptionId}', '${inv.period}')">Regenerate Draft</button>` : ''}
                 ${(isStaffOrAdmin && !isPaid && !isCancelled && (inv.paymentFailedFlag || dueMinor > 0)) ? `<button class="btn btn-secondary btn-sm" onclick="triggerDunningNotice('${inv.id}')">Remind</button>` : ''}
@@ -2551,8 +2702,12 @@
       activeInvoiceForPay = inv;
       const paidMinor = inv.amountPaidMinor || 0;
       const dueMinor = inv.amountDueMinor !== undefined ? inv.amountDueMinor : inv.totalMinor;
+      const isStaffOrAdmin = currentSession && (currentSession.user.role === 'admin' || currentSession.user.role === 'staff');
 
-      document.getElementById('payModalTitle').textContent = `Settle Invoice ${inv.number}`;
+      document.getElementById('payModalTitle').textContent = isStaffOrAdmin ? `Record Payment: Invoice ${inv.number}` : `Settle Invoice ${inv.number}`;
+      const submitBtn = document.getElementById('btnSubmitInvoicePayment');
+      if (submitBtn) submitBtn.textContent = isStaffOrAdmin ? 'Record Payment' : 'Process Payment';
+
       document.getElementById('payModalSummaryBox').innerHTML = `
         <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
           <span>Invoice Total:</span>
@@ -2625,6 +2780,329 @@
       await loadSubscriptions();
       if (currentSession.user.role !== 'customer') await loadDashboard();
       await renderCustomerBanner();
+    }
+
+    // Staff Payment Adjustment & Revocation Modal
+    async function openPaymentAdjustmentModal(invId) {
+      const res = await fetch('/api/v1/invoices');
+      const invoices = await res.json();
+      const inv = invoices.find(i => i.id === invId);
+      if (!inv) return;
+
+      activeInvoiceForAdjustment = inv;
+      document.getElementById('payAdjModalTitle').textContent = `Manage Payments: Invoice ${inv.number}`;
+      
+      const paidMinor = inv.amountPaidMinor || 0;
+      const dueMinor = inv.amountDueMinor !== undefined ? inv.amountDueMinor : (inv.status === 'paid' ? 0 : inv.totalMinor);
+
+      document.getElementById('payAdjSummaryBox').innerHTML = `
+        <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+          <span>Customer:</span>
+          <strong>${inv.customer ? inv.customer.name : inv.customerId}</strong>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+          <span>Invoice Total:</span>
+          <strong>${formatCurrency(inv.totalMinor, inv.currency)}</strong>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 4px; color: #166534;">
+          <span>Recorded Paid Amount:</span>
+          <strong>${formatCurrency(paidMinor, inv.currency)}</strong>
+        </div>
+        <div style="display: flex; justify-content: space-between; color: ${dueMinor > 0 ? '#DC2626' : 'var(--muted)'};">
+          <span>Remaining Balance Due:</span>
+          <strong>${formatCurrency(dueMinor, inv.currency)}</strong>
+        </div>
+      `;
+
+      await loadInvoicePaymentsList(inv.id);
+      document.getElementById('paymentAdjustmentModal').style.display = 'flex';
+    }
+
+    function closePaymentAdjustmentModal() {
+      document.getElementById('paymentAdjustmentModal').style.display = 'none';
+      activeInvoiceForAdjustment = null;
+    }
+
+    async function loadInvoicePaymentsList(invId) {
+      const listEl = document.getElementById('payAdjList');
+      listEl.innerHTML = '<div style="color: var(--muted); font-size: 13px;">Loading payment transactions...</div>';
+
+      try {
+        const res = await fetch(`/api/v1/invoices/${invId}/payments`);
+        const payments = await res.json();
+
+        if (!payments || payments.length === 0) {
+          listEl.innerHTML = '<div style="color: var(--muted); font-size: 13px; padding: 12px 0;">No active payments recorded on this invoice.</div>';
+          return;
+        }
+
+        listEl.innerHTML = payments.map(pmt => `
+          <div style="background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; display: flex; justify-content: space-between; align-items: center; gap: 12px;">
+            <div>
+              <div style="font-weight: 700; font-size: 14px; color: #166534;">${formatCurrency(pmt.amountMinor, pmt.currency)}</div>
+              <div style="font-size: 12px; color: var(--muted); margin-top: 2px;">Method: ${pmt.method} · Date: ${new Date(pmt.date).toLocaleDateString()}</div>
+              ${pmt.note ? `<div style="font-size: 11px; color: var(--muted); margin-top: 2px;">Ref: ${pmt.note}</div>` : ''}
+            </div>
+            <div style="display: flex; gap: 6px; flex-shrink: 0;">
+              <button class="btn btn-secondary btn-sm" onclick="promptEditPaymentAmount('${pmt.id}', ${pmt.amountMinor}, '${pmt.currency}')">Edit Paid Amount</button>
+              <button class="btn btn-danger btn-sm" onclick="promptRevokePayment('${pmt.id}')">Revoke</button>
+            </div>
+          </div>
+        `).join('');
+      } catch (err) {
+        listEl.innerHTML = `<div style="color: #DC2626; font-size: 13px;">Failed to load payments: ${err.message}</div>`;
+      }
+    }
+
+    async function promptEditPaymentAmount(paymentId, currentAmountMinor, currency) {
+      const currentFormatted = (currentAmountMinor / 100).toFixed(2);
+      const input = prompt(`Enter revised payment amount (${currency}):`, currentFormatted);
+      if (input === null) return;
+
+      const newVal = parseFloat(input);
+      if (isNaN(newVal) || newVal <= 0) {
+        alert('Please enter a valid positive payment amount.');
+        return;
+      }
+
+      const newAmountMinor = Math.round(newVal * 100);
+      const res = await fetch(`/api/v1/payments/${paymentId}/edit`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ newAmountMinor })
+      });
+      const data = await res.json();
+
+      if (!res.ok) {
+        alert('Failed to edit payment: ' + (data.error || 'Server error'));
+        return;
+      }
+
+      alert('Payment amount adjusted successfully. Ledger and invoice balance updated.');
+      if (activeInvoiceForAdjustment) {
+        await openPaymentAdjustmentModal(activeInvoiceForAdjustment.id);
+      }
+      await loadInvoices();
+      await loadSubscriptions();
+      if (currentSession && currentSession.user.role !== 'customer') await loadDashboard();
+    }
+
+    async function promptRevokePayment(paymentId) {
+      if (!confirm('Are you sure you want to revoke this payment record? This action reverses the payment amount and recalculates invoice balance.')) {
+        return;
+      }
+
+      const res = await fetch(`/api/v1/payments/${paymentId}/reverse`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ reason: 'Staff ledger manual revocation' })
+      });
+      const data = await res.json();
+
+      if (!res.ok) {
+        alert('Failed to revoke payment: ' + (data.error || 'Server error'));
+        return;
+      }
+
+      alert('Payment revoked successfully. Balance restored on invoice.');
+      if (activeInvoiceForAdjustment) {
+        await openPaymentAdjustmentModal(activeInvoiceForAdjustment.id);
+      }
+      await loadInvoices();
+      await loadSubscriptions();
+      if (currentSession && currentSession.user.role !== 'customer') await loadDashboard();
+    }
+
+    // Partner Marketplace Client Logic
+    async function loadPartnerServices() {
+      try {
+        const res = await fetch('/api/v1/partners');
+        loadedPartnerServices = await res.json();
+        renderPartnerGrid();
+      } catch (err) {
+        console.error('Failed to load partner companies:', err);
+      }
+    }
+
+    function filterPartners(category, btnElement) {
+      activePartnerFilter = category;
+      document.querySelectorAll('#partnerCategoryFilters .btn').forEach(btn => {
+        btn.classList.remove('btn-primary');
+        btn.classList.add('btn-secondary');
+      });
+      if (btnElement) {
+        btnElement.classList.remove('btn-secondary');
+        btnElement.classList.add('btn-primary');
+      }
+      renderPartnerGrid();
+    }
+
+    function renderPartnerGrid() {
+      const grid = document.getElementById('partnerServicesGrid');
+      if (!grid) return;
+
+      const filtered = activePartnerFilter === 'all'
+        ? loadedPartnerServices
+        : loadedPartnerServices.filter(p => p.category === activePartnerFilter);
+
+      const custCurrency = (currentSession && currentSession.customer && currentSession.customer.billingCurrency) || 'INR';
+
+      grid.innerHTML = filtered.map(partner => {
+        const isSubscribed = currentCustomerSubscriptions.some(s =>
+          (s.partnerId === partner.id) ||
+          (s.serviceName && s.serviceName.toLowerCase() === partner.name.toLowerCase()) ||
+          (s.plan && s.plan.name && s.plan.name.toLowerCase().includes(partner.name.toLowerCase()))
+        );
+
+        return `
+          <div class="card" style="display: flex; flex-direction: column; justify-content: space-between; padding: 22px 20px; position: relative;">
+            <div>
+              <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px;">
+                <div style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border-radius: 10px; overflow: hidden; background: #000; box-shadow: 0 2px 6px rgba(0,0,0,0.12);">
+                  ${partner.logoSvg}
+                </div>
+                <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 4px;">
+                  <span class="chip chip-confirm" style="font-size: 10px; font-weight: 700; text-transform: uppercase;">${partner.badge}</span>
+                  <span style="font-size: 11px; color: var(--muted); font-weight: 500;">${partner.category}</span>
+                </div>
+              </div>
+
+              <h3 style="font-size: 16px; margin-bottom: 6px;">${partner.name}</h3>
+              <p style="font-size: 12.5px; color: var(--muted); line-height: 1.45; min-height: 36px; margin-bottom: 16px;">
+                ${partner.description}
+              </p>
+
+              <div style="background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; margin-bottom: 16px;">
+                <div style="font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600;">Available Plans</div>
+                <div style="display: flex; flex-direction: column; gap: 4px; margin-top: 6px;">
+                  ${partner.plans.map(pl => {
+                    const price = pl.prices[custCurrency] || pl.prices['INR'] || 19900;
+                    return `
+                      <div style="display: flex; justify-content: space-between; font-size: 12px;">
+                        <span>${pl.name}</span>
+                        <strong style="color: var(--secondary);">${formatCurrency(price, custCurrency)}/${pl.cadence === 'yearly' ? 'yr' : 'mo'}</strong>
+                      </div>
+                    `;
+                  }).join('')}
+                </div>
+              </div>
+            </div>
+
+            <div style="margin-top: auto; padding-top: 10px;">
+              ${isSubscribed ? `
+                <button class="btn btn-secondary btn-sm" disabled style="width: 100%; opacity: 0.85; cursor: default; font-weight: 600;">
+                  Subscribed (Active in BrightLoop)
+                </button>
+              ` : `
+                <button class="btn btn-primary btn-sm" style="width: 100%;" onclick="openPartnerSubscribeModal('${partner.id}')">
+                  Add Subscription
+                </button>
+              `}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function openPartnerSubscribeModal(partnerId) {
+      const partner = loadedPartnerServices.find(p => p.id === partnerId);
+      if (!partner) return;
+
+      selectedPartnerForSub = partner;
+      selectedPartnerPlanForSub = partner.plans[0];
+
+      document.getElementById('modalPartnerName').textContent = partner.name;
+      document.getElementById('modalPartnerDesc').textContent = partner.description;
+      document.getElementById('modalPartnerCategory').textContent = partner.category;
+      document.getElementById('modalPartnerLogo').innerHTML = partner.logoSvg;
+
+      const planSelector = document.getElementById('modalPartnerPlanSelect');
+      planSelector.innerHTML = partner.plans.map(p => `
+        <option value="${p.id}">${p.name} (${p.cadence})</option>
+      `).join('');
+      planSelector.value = selectedPartnerPlanForSub.id;
+
+      updatePartnerModalSummary();
+      document.getElementById('partnerSubscribeModal').style.display = 'flex';
+    }
+
+    function closePartnerSubscribeModal() {
+      document.getElementById('partnerSubscribeModal').style.display = 'none';
+      selectedPartnerForSub = null;
+      selectedPartnerPlanForSub = null;
+    }
+
+    function updatePartnerModalSummary() {
+      if (!selectedPartnerForSub) return;
+      const planSelector = document.getElementById('modalPartnerPlanSelect');
+      const planId = planSelector.value;
+      selectedPartnerPlanForSub = selectedPartnerForSub.plans.find(p => p.id === planId) || selectedPartnerForSub.plans[0];
+
+      const custCurrency = (currentSession && currentSession.customer && currentSession.customer.billingCurrency) || 'INR';
+      const priceMinor = selectedPartnerPlanForSub.prices[custCurrency] || selectedPartnerPlanForSub.prices['INR'] || 19900;
+
+      document.getElementById('modalPartnerSummaryBox').innerHTML = `
+        <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+          <span>Provider Service:</span>
+          <strong>${selectedPartnerForSub.name}</strong>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+          <span>Selected Plan:</span>
+          <strong>${selectedPartnerPlanForSub.name}</strong>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+          <span>Cadence:</span>
+          <span style="text-transform: capitalize;">${selectedPartnerPlanForSub.cadence}</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-weight: 700; border-top: 1px solid var(--border); padding-top: 6px; font-size: 14px; color: var(--secondary);">
+          <span>Unified Billing Amount:</span>
+          <span>${formatCurrency(priceMinor, custCurrency)}</span>
+        </div>
+        <div style="margin-top: 10px; font-size: 12px; color: var(--muted);">
+          <strong>Included Features:</strong>
+          <ul style="margin: 4px 0 0 16px; padding: 0;">
+            ${(selectedPartnerPlanForSub.features || []).map(f => `<li>${f}</li>`).join('')}
+          </ul>
+        </div>
+      `;
+    }
+
+    async function confirmPartnerSubscription() {
+      if (!selectedPartnerForSub || !selectedPartnerPlanForSub) return;
+      const btn = document.getElementById('btnConfirmPartnerSub');
+      btn.disabled = true;
+      btn.textContent = 'Activating...';
+
+      try {
+        const res = await fetch('/api/v1/customer/subscriptions/add-partner', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            partnerId: selectedPartnerForSub.id,
+            planId: selectedPartnerPlanForSub.id
+          })
+        });
+        const data = await res.json();
+
+        if (!res.ok) {
+          alert('Unable to connect subscription: ' + (data.error || 'Server error'));
+          btn.disabled = false;
+          btn.textContent = 'Add to My Subscriptions';
+          return;
+        }
+
+        closePartnerSubscribeModal();
+        alert(`Subscription for ${selectedPartnerForSub.name} (${selectedPartnerPlanForSub.name}) activated! Added directly to your unified BrightLoop portal.`);
+        await loadSubscriptions();
+        await loadInvoices();
+        await renderCustomerBanner();
+        renderPartnerGrid();
+      } catch (err) {
+        alert('Network error connecting subscription: ' + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Add to My Subscriptions';
+      }
     }
 
     // Modal: Cancel Invoice (INVC-1 to INVC-6)
@@ -2784,6 +3262,19 @@
     }
 
     // Public Pricing Cards (NEW-10)
+    let selectedPricingPlan = 'plan_growth';
+
+    function selectPricingPlan(planId) {
+      selectedPricingPlan = planId;
+      document.querySelectorAll('.pricing-card').forEach(card => {
+        if (card.dataset.planId === planId) {
+          card.classList.add('selected-plan');
+        } else {
+          card.classList.remove('selected-plan');
+        }
+      });
+    }
+
     function setBillingCadence(cadence) {
       billingCadence = cadence;
       document.getElementById('toggleMonthlyBtn').className = `btn btn-sm ${cadence === 'monthly' ? 'btn-primary' : 'btn-secondary'}`;
@@ -2802,9 +3293,10 @@
           priceMinor = Math.round(priceMinor * 0.80);
         }
         const isHighlight = p.id === 'plan_growth';
+        const isSelected = selectedPricingPlan === p.id;
 
         return `
-          <div class="card" style="border: 2px solid ${isHighlight ? 'var(--secondary)' : 'var(--border)'}; position: relative; display: flex; flex-direction: column;">
+          <div class="pricing-card ${isSelected ? 'selected-plan' : ''}" data-plan-id="${p.id}" onclick="selectPricingPlan('${p.id}')">
             ${isHighlight ? `<div style="position: absolute; top: -12px; right: 20px; background: var(--secondary); color: #fff; font-size: 10px; font-weight: 700; padding: 2px 10px; border-radius: 9999px; text-transform: uppercase;">Most Popular</div>` : ''}
             <h3>${p.name}</h3>
             <p style="font-size: 13px; color: var(--muted); margin-top: 4px;">Ideal for growing businesses and tech infrastructure.</p>
@@ -2813,13 +3305,13 @@
               <span style="font-size: 13px; color: var(--muted);">/ ${billingCadence === 'yearly' ? 'mo (billed yearly)' : 'mo'}</span>
             </div>
             <ul style="list-style: none; font-size: 13px; display: flex; flex-direction: column; gap: 8px; margin-bottom: 24px;">
-              <li>- Multi-Currency Billing & Invoices</li>
+              <li>- Multi-Currency Billing &amp; Invoices</li>
               <li>- Meter: ${p.meter.unit} (${p.meter.allowance} allowance)</li>
               <li>- Idle Auto-End Policy (${p.idlePolicy.daysIdle} days limit)</li>
               <li>- Spend Cap Alert (${formatCurrency(p.spendCapPolicy.defaultCapMinor, currency)})</li>
-              <li>- Scoped REST API & Webhooks Access</li>
+              <li>- Scoped REST API &amp; Webhooks Access</li>
             </ul>
-            <button class="btn ${isHighlight ? 'btn-primary' : 'btn-secondary'}" style="margin-top: auto; width: 100%;" onclick="openHostedCheckout('${p.id}')">
+            <button class="btn ${isHighlight ? 'btn-primary' : 'btn-secondary'}" style="margin-top: auto; width: 100%;" onclick="event.stopPropagation(); openHostedCheckout('${p.id}')">
               Get Started with ${p.name}
             </button>
           </div>

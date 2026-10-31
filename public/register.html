@@ -249,23 +249,23 @@
     }
     .pwd-bar.active { background: #10B981; }
 
-    /* Alert Banner */
+    /* Alert Banner (Subtle, No colored edges) */
     .alert-banner {
       border-radius: 8px;
-      padding: 12px 14px;
-      font-size: 12px;
+      padding: 12px 16px;
+      font-size: 13px;
       margin-bottom: 16px;
       border: 1px solid var(--border);
       display: none;
     }
     .alert-danger {
-      border-left: 4px solid #EF4444;
-      background: rgba(239, 68, 68, 0.08);
+      border-color: rgba(239, 68, 68, 0.25);
+      background: rgba(239, 68, 68, 0.05);
       color: var(--text);
     }
     .alert-success {
-      border-left: 4px solid #10B981;
-      background: rgba(16, 185, 129, 0.08);
+      border-color: rgba(16, 185, 129, 0.25);
+      background: rgba(16, 185, 129, 0.05);
       color: var(--text);
     }
 
@@ -363,14 +363,9 @@
             <input type="text" id="regName" class="form-input" placeholder="e.g. Siddharth Rao" required>
           </div>
           <div class="form-group">
-            <label class="form-label">Company Name</label>
-            <input type="text" id="regCompany" class="form-input" placeholder="e.g. Acme Corp" required>
+            <label class="form-label">Email Address</label>
+            <input type="email" id="regEmail" class="form-input" placeholder="name@example.com" required>
           </div>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">Work Email Address</label>
-          <input type="email" id="regEmail" class="form-input" placeholder="name@company.com" required>
         </div>
 
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
@@ -481,7 +476,6 @@
 
       const payload = {
         name: document.getElementById('regName').value.trim(),
-        company: document.getElementById('regCompany').value.trim(),
         email: document.getElementById('regEmail').value.trim(),
         country: document.getElementById('regCountry').value,
         currency: document.getElementById('regCurrency').value,
