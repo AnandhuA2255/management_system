@@ -795,6 +795,38 @@
       box-shadow: 0 0 0 1px #818CF8, 0 20px 44px rgba(0, 0, 0, 0.8), 0 0 30px rgba(129, 140, 248, 0.38);
     }
 
+    /* Partner Filter Interactive Pills */
+    .partner-filter-pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 14px;
+      border-radius: 9999px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--muted);
+      transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+      user-select: none;
+    }
+    .partner-filter-pill:hover {
+      border-color: var(--secondary);
+      color: var(--text);
+      transform: translateY(-1px);
+    }
+    .partner-filter-pill.active {
+      background: var(--secondary);
+      border-color: var(--secondary);
+      color: #FFFFFF !important;
+      box-shadow: 0 2px 8px rgba(79, 70, 229, 0.28);
+    }
+    [data-theme="dark"] .partner-filter-pill.active {
+      background: #6366F1;
+      border-color: #818CF8;
+      box-shadow: 0 0 12px rgba(99, 102, 241, 0.45);
+    }
+
     /* Dark Mode Specular Shadows and Form Styling */
     [data-theme="dark"] .login-card,
     [data-theme="dark"] .modal,
@@ -1139,13 +1171,16 @@
               </p>
             </div>
             <!-- Category Filter Pills -->
-            <div id="partnerCategoryPills" style="display: flex; gap: 6px; flex-wrap: wrap;">
-              <button class="chip chip-active" onclick="filterPartners('All')">All Services</button>
-              <button class="chip chip-draft" onclick="filterPartners('Video Streaming')">Streaming</button>
-              <button class="chip chip-draft" onclick="filterPartners('Music & Podcasts')">Music</button>
-              <button class="chip chip-draft" onclick="filterPartners('Anime & Manga')">Anime</button>
-              <button class="chip chip-draft" onclick="filterPartners('AI & Productivity')">AI</button>
-              <button class="chip chip-draft" onclick="filterPartners('Developer Tools')">DevTools</button>
+            <div id="partnerCategoryPills" style="display: flex; gap: 8px; flex-wrap: wrap;">
+              <button type="button" class="partner-filter-pill active" onclick="filterPartners('all', this)">All Services</button>
+              <button type="button" class="partner-filter-pill" onclick="filterPartners('streaming', this)">Streaming</button>
+              <button type="button" class="partner-filter-pill" onclick="filterPartners('music', this)">Music</button>
+              <button type="button" class="partner-filter-pill" onclick="filterPartners('anime', this)">Anime</button>
+              <button type="button" class="partner-filter-pill" onclick="filterPartners('ai', this)">AI</button>
+              <button type="button" class="partner-filter-pill" onclick="filterPartners('devtools', this)">DevTools</button>
+              <button type="button" class="partner-filter-pill" onclick="filterPartners('design', this)">Design & Media</button>
+              <button type="button" class="partner-filter-pill" onclick="filterPartners('cloud', this)">Cloud Storage</button>
+              <button type="button" class="partner-filter-pill" onclick="filterPartners('shopping', this)">Shopping</button>
             </div>
           </div>
 
@@ -2924,15 +2959,35 @@
       }
     }
 
+    function matchesPartnerCategory(partnerCat, selectedFilter) {
+      if (!selectedFilter || selectedFilter === 'all') return true;
+      const pCat = (partnerCat || '').toLowerCase();
+      const f = selectedFilter.toLowerCase();
+      if (pCat === f) return true;
+      if (f === 'streaming' && (pCat.includes('streaming') || pCat.includes('video'))) return true;
+      if (f === 'music' && (pCat.includes('music') || pCat.includes('audio') || pCat.includes('podcast'))) return true;
+      if (f === 'anime' && (pCat.includes('anime') || pCat.includes('manga'))) return true;
+      if (f === 'ai' && (/\bai\b/i.test(pCat) || pCat.includes('productivity'))) return true;
+      if (f === 'devtools' && (pCat.includes('developer') || pCat.includes('devtools'))) return true;
+      if (f === 'design' && (pCat.includes('design') || pCat.includes('media'))) return true;
+      if (f === 'cloud' && (pCat.includes('cloud') || pCat.includes('storage'))) return true;
+      if (f === 'shopping' && (pCat.includes('shopping') || pCat.includes('lifestyle'))) return true;
+      return false;
+    }
+
     function filterPartners(category, btnElement) {
-      activePartnerFilter = category;
-      document.querySelectorAll('#partnerCategoryFilters .btn').forEach(btn => {
-        btn.classList.remove('btn-primary');
-        btn.classList.add('btn-secondary');
+      activePartnerFilter = (category || 'all').toLowerCase();
+      document.querySelectorAll('#partnerCategoryPills .partner-filter-pill').forEach(btn => {
+        btn.classList.remove('active');
       });
       if (btnElement) {
-        btnElement.classList.remove('btn-secondary');
-        btnElement.classList.add('btn-primary');
+        btnElement.classList.add('active');
+      } else {
+        const matchingBtn = Array.from(document.querySelectorAll('#partnerCategoryPills .partner-filter-pill')).find(b => {
+          const onclickAttr = b.getAttribute('onclick') || '';
+          return onclickAttr.includes(`'${category}'`);
+        }) || document.querySelector('#partnerCategoryPills .partner-filter-pill');
+        if (matchingBtn) matchingBtn.classList.add('active');
       }
       renderPartnerGrid();
     }
@@ -2941,9 +2996,18 @@
       const grid = document.getElementById('partnerServicesGrid');
       if (!grid) return;
 
-      const filtered = activePartnerFilter === 'all'
-        ? loadedPartnerServices
-        : loadedPartnerServices.filter(p => p.category === activePartnerFilter);
+      const filtered = loadedPartnerServices.filter(p => matchesPartnerCategory(p.category, activePartnerFilter));
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `
+          <div style="grid-column: 1 / -1; text-align: center; padding: 40px 20px; color: var(--muted); background: var(--surface); border: 1px dashed var(--border); border-radius: 12px;">
+            <div style="font-size: 15px; font-weight: 600; color: var(--text);">No services found in this category</div>
+            <p style="font-size: 13px; margin-top: 6px;">Browse all 12 partner platforms connected to BrightLoop.</p>
+            <button type="button" class="btn btn-secondary btn-sm" style="margin-top: 12px;" onclick="filterPartners('all')">View All Services</button>
+          </div>
+        `;
+        return;
+      }
 
       const custCurrency = (currentSession && currentSession.customer && currentSession.customer.billingCurrency) || 'INR';
 
