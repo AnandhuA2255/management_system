@@ -470,6 +470,14 @@
       "name": "Elena Rostova",
       "passwordHash": "$2a$10$wTqK4F.7Ztq7zGg8b4jH8eU3zVw6G8P7k9L1o2N3m4B5v6C7x8Z9a",
       "plainPassword": "CustomerPass@2026!"
+    },
+    {
+      "id": "usr_cust_a4cd4d",
+      "email": "anandhu@acquisition.io",
+      "name": "Anandhu A",
+      "role": "customer",
+      "plainPassword": "SecurePassword@2026!",
+      "passwordHash": "$2a$10$fc05c21b9da549b36abcc6d0f1a220076fed15ed1a03"
     }
   ],
   "customers": [
@@ -508,6 +516,18 @@
       "taxId": "DE987654321",
       "billingAddress": "Friedrichstraße 176, 10117 Berlin, Germany",
       "createdDate": "2026-09-25"
+    },
+    {
+      "id": "cust_5865d06c",
+      "userId": "usr_cust_a4cd4d",
+      "name": "Anandhu A",
+      "company": "Anandhu A",
+      "email": "anandhu@acquisition.io",
+      "country": "India",
+      "billingCurrency": "INR",
+      "taxId": "N/A",
+      "billingAddress": "India Office",
+      "createdDate": "2026-10-31"
     }
   ],
   "subscriptions": [
@@ -568,31 +588,65 @@
       "spendCapMinor": 2500000,
       "idleWarningSentAt": "2026-10-26T00:00:00Z",
       "idleGraceExpiresAt": "2026-11-02T23:59:59Z",
-      "healthScore": 25,
-      "healthReason": "Idle auto-end trigger. Zero API requests in past 32 days. 4 days grace period remaining.",
+      "healthScore": 92,
+      "healthReason": "Healthy. Overdue invoice settled via sandbox payment.",
       "usageEventsCount": 0,
       "lastUsageAt": "2026-09-28T10:00:00Z"
     }
   ],
   "invoices": [
     {
+      "id": "inv_5ad313e8",
+      "number": "INV-2026-473",
+      "subscriptionId": "sub_nova_102",
+      "customerId": "cust_nova_02",
+      "period": "2026-10",
+      "status": "draft",
+      "currency": "USD",
+      "lockedRateToBase": 1,
+      "subtotalMinor": 14900,
+      "discountMinor": 0,
+      "taxMinor": 2682,
+      "totalMinor": 17582,
+      "amountPaidMinor": 0,
+      "amountDueMinor": 17582,
+      "partiallyPaid": false,
+      "dueDate": "2026-11-14",
+      "paidAt": null,
+      "paymentFailedFlag": false,
+      "lines": [
+        {
+          "description": "Subscription Service (SUB-2026-102) - Period 2026-10",
+          "quantity": 1,
+          "unitPriceMinor": 14900,
+          "amountMinor": 14900
+        },
+        {
+          "description": "Goods & Services Tax (18%)",
+          "quantity": 1,
+          "unitPriceMinor": 2682,
+          "amountMinor": 2682
+        }
+      ]
+    },
+    {
       "id": "inv_90a00516",
       "number": "INV-2026-324",
       "subscriptionId": "sub_apex_103",
       "customerId": "cust_apex_03",
       "period": "2026-10",
-      "status": "draft",
+      "status": "paid",
       "currency": "EUR",
       "lockedRateToBase": 1,
       "subtotalMinor": 13900,
       "discountMinor": 0,
       "taxMinor": 2502,
       "totalMinor": 16402,
-      "amountPaidMinor": 0,
-      "amountDueMinor": 16402,
+      "amountPaidMinor": 16402,
+      "amountDueMinor": 0,
       "partiallyPaid": false,
       "dueDate": "2026-11-14",
-      "paidAt": null,
+      "paidAt": "2026-10-31T07:42:32.017Z",
       "paymentFailedFlag": false,
       "lines": [
         {
@@ -767,7 +821,7 @@
       "subscriptionId": "sub_nova_102",
       "customerId": "cust_nova_02",
       "period": "2026-10",
-      "status": "confirmed",
+      "status": "cancelled",
       "currency": "USD",
       "lockedRateToBase": 84.5,
       "subtotalMinor": 14900,
@@ -787,7 +841,10 @@
         }
       ],
       "amountPaidMinor": 0,
-      "amountDueMinor": 14900
+      "amountDueMinor": 0,
+      "cancelReason": "not interested with this rate",
+      "cancelledBy": "admin@brightloop.io",
+      "cancelledAt": "2026-10-31T07:43:03.277Z"
     },
     {
       "id": "inv_2026_009",
@@ -880,6 +937,17 @@
   ],
   "payments": [
     {
+      "id": "pay_sbx_4e9fdf2c",
+      "invoiceId": "inv_90a00516",
+      "method": "Sandbox Corporate Card",
+      "amountMinor": 16402,
+      "currency": "EUR",
+      "provider": "sandbox",
+      "gatewayReference": "sbx_tx_fc27372e026f",
+      "date": "2026-10-31T07:42:32.017Z",
+      "note": "Full invoice payment settled"
+    },
+    {
       "id": "pay_gw_9e9ad576",
       "invoiceId": "inv_2026_015",
       "method": "Hosted Checkout Gateway (Test Mode)",
@@ -971,6 +1039,64 @@
   ],
   "billRuns": [
     {
+      "id": "run_1793432643033_dry",
+      "mode": "dry",
+      "period": "2026-11",
+      "runAt": "2026-10-31T07:44:03.033Z",
+      "status": "pending_review",
+      "invoicesPrepared": 2,
+      "totalProjectedMinorINR": 5240000,
+      "flags": [
+        {
+          "subscription": "SUB-2026-102 (cust_nova_02)",
+          "severity": "danger",
+          "code": "PREVIOUS_INVOICE_UNPAID",
+          "message": "3 outstanding invoice(s) exist. Dunning follow-up active."
+        },
+        {
+          "subscription": "SUB-2026-103 (cust_apex_03)",
+          "severity": "warning",
+          "code": "IDLE_PENDING_ACTION",
+          "message": "Subscription flagged as idle (Healthy. Overdue invoice settled via sandbox payment.). Billing should be held."
+        },
+        {
+          "subscription": "SUB-2026-103 (cust_apex_03)",
+          "severity": "danger",
+          "code": "PREVIOUS_INVOICE_UNPAID",
+          "message": "1 outstanding invoice(s) exist. Dunning follow-up active."
+        }
+      ]
+    },
+    {
+      "id": "run_1793432636535_dry",
+      "mode": "dry",
+      "period": "2026-11",
+      "runAt": "2026-10-31T07:43:56.535Z",
+      "status": "pending_review",
+      "invoicesPrepared": 2,
+      "totalProjectedMinorINR": 5240000,
+      "flags": [
+        {
+          "subscription": "SUB-2026-102 (cust_nova_02)",
+          "severity": "danger",
+          "code": "PREVIOUS_INVOICE_UNPAID",
+          "message": "3 outstanding invoice(s) exist. Dunning follow-up active."
+        },
+        {
+          "subscription": "SUB-2026-103 (cust_apex_03)",
+          "severity": "warning",
+          "code": "IDLE_PENDING_ACTION",
+          "message": "Subscription flagged as idle (Healthy. Overdue invoice settled via sandbox payment.). Billing should be held."
+        },
+        {
+          "subscription": "SUB-2026-103 (cust_apex_03)",
+          "severity": "danger",
+          "code": "PREVIOUS_INVOICE_UNPAID",
+          "message": "1 outstanding invoice(s) exist. Dunning follow-up active."
+        }
+      ]
+    },
+    {
       "id": "run_2026_10_dry",
       "mode": "dry",
       "period": "2026-11",
@@ -995,6 +1121,70 @@
     }
   ],
   "auditLogs": [
+    {
+      "timestamp": "2026-10-31T08:14:16.232Z",
+      "actor": "anandhu@acquisition.io",
+      "action": "CUSTOMER_REGISTRATION",
+      "entity": "usr_cust_a4cd4d",
+      "before": "null",
+      "after": "{\"name\":\"Anandhu A\"}"
+    },
+    {
+      "timestamp": "2026-10-31T08:13:42.906Z",
+      "actor": "priya@acmecorp.com",
+      "action": "FORGOT_PASSWORD_REQUEST",
+      "entity": "auth",
+      "before": "null",
+      "after": "{\"token\":\"rst_a33f6154c9856cf17f7a7729ef6f17e2\"}"
+    },
+    {
+      "timestamp": "2026-10-31T07:44:03.033Z",
+      "actor": "admin@brightloop.io",
+      "action": "BILL_RUN_DRY_GENERATED",
+      "entity": "run_1793432643033_dry",
+      "before": "null",
+      "after": "{\"flagsCount\":3}"
+    },
+    {
+      "timestamp": "2026-10-31T07:43:56.535Z",
+      "actor": "admin@brightloop.io",
+      "action": "BILL_RUN_DRY_GENERATED",
+      "entity": "run_1793432636535_dry",
+      "before": "null",
+      "after": "{\"flagsCount\":3}"
+    },
+    {
+      "timestamp": "2026-10-31T07:43:08.001Z",
+      "actor": "admin@brightloop.io",
+      "action": "INVOICE_REGENERATED",
+      "entity": "INV-2026-473",
+      "before": "null",
+      "after": "{\"subscriptionId\":\"sub_nova_102\",\"period\":\"2026-10\"}"
+    },
+    {
+      "timestamp": "2026-10-31T07:43:03.280Z",
+      "actor": "admin@brightloop.io",
+      "action": "INVOICE_CANCELLED",
+      "entity": "INV-2026-012",
+      "before": "null",
+      "after": "{\"reason\":\"not interested with this rate\"}"
+    },
+    {
+      "timestamp": "2026-10-31T07:42:32.017Z",
+      "actor": "admin@brightloop.io",
+      "action": "PAYMENT_RECORDED",
+      "entity": "INV-2026-324",
+      "before": "null",
+      "after": "{\"id\":\"pay_sbx_4e9fdf2c\",\"invoiceId\":\"inv_90a00516\",\"method\":\"Sandbox Corporate Card\",\"amountMinor\":16402,\"currency\":\"EUR\",\"provider\":\"sandbox\",\"gatewayReference\":\"sbx_tx_fc27372e026f\",\"date\":\"2026-10-31T07:42:32.017Z\",\"note\":\"Full invoice payment settled\"}"
+    },
+    {
+      "timestamp": "2026-10-31T07:41:46.719Z",
+      "actor": "admin@brightloop.io",
+      "action": "USER_LOGIN",
+      "entity": "session",
+      "before": "null",
+      "after": "admin"
+    },
     {
       "timestamp": "2026-10-31T07:37:27.276Z",
       "actor": "system",
@@ -1286,6 +1476,36 @@
       "provider": "sandbox",
       "event": "invoice.paid",
       "processedAt": "2026-09-01T10:15:01Z"
+    }
+  ],
+  "passwordResetTokens": [
+    {
+      "token": "rst_a33f6154c9856cf17f7a7729ef6f17e2",
+      "email": "priya@acmecorp.com",
+      "expiresAt": 1793438022905,
+      "used": false
+    }
+  ],
+  "sentEmails": [
+    {
+      "id": "eml_ad5e1ada",
+      "to": "anandhu@acquisition.io",
+      "from": "BrightLoop Subscriptions <notifications@brightloop.io>",
+      "subject": "Account Registration Confirmation — BrightLoop Subscriptions",
+      "html": "\n        <div style=\"font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; border: 1px solid #E5E7EB; border-radius: 8px;\">\n          <h2 style=\"color: #0F172A; margin-top: 0;\">Welcome to BrightLoop Subscriptions</h2>\n          <p>Hi Anandhu A,</p>\n          <p>Your customer account has been created. You can now access and manage all your vendor subscriptions from a unified, clutter-free dashboard.</p>\n          <div style=\"background: #F8FAFC; border: 1px solid #E2E8F0; padding: 16px; border-radius: 6px; margin: 20px 0;\">\n            <p style=\"margin: 0 0 6px 0;\"><strong>Account Email:</strong> anandhu@acquisition.io</p>\n            <p style=\"margin: 0 0 6px 0;\"><strong>Organization:</strong> Anandhu A</p>\n            <p style=\"margin: 0;\"><strong>Billing Currency:</strong> INR</p>\n          </div>\n          <p>To access your customer portal, visit:</p>\n          <p><a href=\"http://localhost:3000/#login\" style=\"display: inline-block; background: #0F172A; color: #FFFFFF; padding: 10px 20px; border-radius: 6px; text-decoration: none; font-weight: 600;\">Go to Customer Portal</a></p>\n          <hr style=\"border: none; border-top: 1px solid #E5E7EB; margin: 24px 0;\">\n          <p style=\"font-size: 12px; color: #64748B;\">BrightLoop Subscriptions Technologies Inc. Automated Account Notification.</p>\n        </div>\n      ",
+      "text": "\n        \n          Welcome to BrightLoop Subscriptions\n          Hi Anandhu A,\n          Your customer account has been created. You can now access and manage all your vendor subscriptions from a unified, clutter-free dashboard.\n          \n            Account Email: anandhu@acquisition.io\n            Organization: Anandhu A\n            Billing Currency: INR\n          \n          To access your customer portal, visit:\n          Go to Customer Portal\n          \n          BrightLoop Subscriptions Technologies Inc. Automated Account Notification.\n        \n      ",
+      "sentAt": "2026-10-31T08:14:16.231Z",
+      "status": "delivered"
+    },
+    {
+      "id": "eml_a306e9d1",
+      "to": "priya@acmecorp.com",
+      "from": "BrightLoop Subscriptions <notifications@brightloop.io>",
+      "subject": "Reset Your BrightLoop Password",
+      "html": "\n        <div style=\"font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; border: 1px solid #E5E7EB; border-radius: 8px;\">\n          <h2 style=\"color: #0F172A; margin-top: 0;\">Password Reset Request</h2>\n          <p>We received a request to reset your password for your BrightLoop account (<strong>priya@acmecorp.com</strong>).</p>\n          <p>Click the button below to choose a new password. This link is valid for 60 minutes:</p>\n          <p style=\"margin: 24px 0;\">\n            <a href=\"http://localhost:3000/#reset-password?token=rst_a33f6154c9856cf17f7a7729ef6f17e2\" style=\"display: inline-block; background: #4F46E5; color: #FFFFFF; padding: 10px 20px; border-radius: 6px; text-decoration: none; font-weight: 600;\">Reset Account Password</a>\n          </p>\n          <div style=\"background: #F8FAFC; border: 1px solid #E2E8F0; padding: 12px; border-radius: 6px; font-size: 13px;\">\n            <span>Verification Security Token:</span>\n            <code style=\"display: block; font-weight: 700; color: #0F172A; margin-top: 4px;\">rst_a33f6154c9856cf17f7a7729ef6f17e2</code>\n          </div>\n          <p style=\"font-size: 13px; color: #64748B; margin-top: 20px;\">If you did not request this reset, you can safely ignore this email.</p>\n          <hr style=\"border: none; border-top: 1px solid #E5E7EB; margin: 24px 0;\">\n          <p style=\"font-size: 12px; color: #64748B;\">BrightLoop Security Team · Automated Notification</p>\n        </div>\n      ",
+      "text": "\n        \n          Password Reset Request\n          We received a request to reset your password for your BrightLoop account (priya@acmecorp.com).\n          Click the button below to choose a new password. This link is valid for 60 minutes:\n          \n            Reset Account Password\n          \n          \n            Verification Security Token:\n            rst_a33f6154c9856cf17f7a7729ef6f17e2\n          \n          If you did not request this reset, you can safely ignore this email.\n          \n          BrightLoop Security Team · Automated Notification\n        \n      ",
+      "sentAt": "2026-10-31T08:13:42.905Z",
+      "status": "delivered"
     }
   ]
 }

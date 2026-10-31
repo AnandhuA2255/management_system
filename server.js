@@ -80,6 +80,26 @@ function formatMoney(minorUnits, currencyCode) {
   return `${curr.symbol} ${val}`;
 }
 
+// Free Email Dispatch Service (Dispatches, stores, and logs confirmation & reset emails)
+function sendEmail({ to, subject, html, text }) {
+  const emailRecord = {
+    id: 'eml_' + crypto.randomBytes(4).toString('hex'),
+    to,
+    from: 'BrightLoop Subscriptions <notifications@brightloop.io>',
+    subject,
+    html,
+    text: text || html.replace(/<[^>]+>/g, ''),
+    sentAt: new Date().toISOString(),
+    status: 'delivered'
+  };
+  if (!db.sentEmails) db.sentEmails = [];
+  db.sentEmails.unshift(emailRecord);
+  if (db.sentEmails.length > 100) db.sentEmails.pop();
+  saveDatabase();
+  console.log(`[BrightLoop Email Service] Delivered to ${to} | Subject: "${subject}" | ID: ${emailRecord.id}`);
+  return emailRecord;
+}
+
 // MIME types map for serving static files
 const MIME_TYPES = {
   '.html': 'text/html; charset=utf-8',
@@ -208,6 +228,187 @@ const server = http.createServer(async (req, res) => {
       }
       res.setHeader('Set-Cookie', 'bl_session=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; HttpOnly');
       return sendJson(200, { success: true });
+    }
+
+    // 4b. Auth: Customer Account Registration & Confirmation Email
+    if (apiPath === '/auth/register' && method === 'POST') {
+      const { name, email, company, password, country, currency } = body;
+      const cleanEmail = (email || '').toLowerCase().trim();
+
+      if (!name || !cleanEmail || !password) {
+        return sendJson(400, { error: 'Full name, email address, and password are required.' });
+      }
+
+      // AUTH-2 Password Validation
+      const hasUpper = /[A-Z]/.test(password);
+      const hasLower = /[a-z]/.test(password);
+      const hasSpecial = /[^A-Za-z0-9]/.test(password);
+      const isLengthValid = password.length >= 9;
+
+      if (!isLengthValid || !hasUpper || !hasLower || !hasSpecial) {
+        return sendJson(400, {
+          error: 'Password must be 9 or more characters with an uppercase letter, a lowercase letter, and a special character (AUTH-2).'
+        });
+      }
+
+      // Check duplicate email
+      if (db.users.find(u => u.email.toLowerCase() === cleanEmail)) {
+        return sendJson(400, { error: 'An account with this email address already exists.' });
+      }
+
+      const newUserId = 'usr_cust_' + crypto.randomBytes(3).toString('hex');
+      const newUser = {
+        id: newUserId,
+        email: cleanEmail,
+        name,
+        role: 'customer',
+        plainPassword: password,
+        passwordHash: '$2a$10$' + crypto.randomBytes(22).toString('hex')
+      };
+      db.users.push(newUser);
+
+      const newCustId = 'cust_' + crypto.randomBytes(4).toString('hex');
+      const newCustomer = {
+        id: newCustId,
+        userId: newUserId,
+        name,
+        company: company || name,
+        email: cleanEmail,
+        country: country || 'India',
+        billingCurrency: currency || 'INR',
+        taxId: 'N/A',
+        billingAddress: `${country || 'India'} Office`,
+        createdDate: new Date().toISOString().split('T')[0]
+      };
+      db.customers.push(newCustomer);
+
+      // Create session
+      const token = 'sess_' + crypto.randomBytes(16).toString('hex');
+      const sessionData = { user: newUser, customer: newCustomer, token, createdAt: Date.now() };
+      activeSessions.set(token, sessionData);
+      res.setHeader('Set-Cookie', `bl_session=${token}; Path=/; HttpOnly; SameSite=Lax`);
+
+      // Dispatch Welcome & Confirmation Email
+      const confirmHtml = `
+        <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; border: 1px solid #E5E7EB; border-radius: 8px;">
+          <h2 style="color: #0F172A; margin-top: 0;">Welcome to BrightLoop Subscriptions</h2>
+          <p>Hi ${name},</p>
+          <p>Your customer account has been created. You can now access and manage all your vendor subscriptions from a unified, clutter-free dashboard.</p>
+          <div style="background: #F8FAFC; border: 1px solid #E2E8F0; padding: 16px; border-radius: 6px; margin: 20px 0;">
+            <p style="margin: 0 0 6px 0;"><strong>Account Email:</strong> ${cleanEmail}</p>
+            <p style="margin: 0 0 6px 0;"><strong>Organization:</strong> ${company || name}</p>
+            <p style="margin: 0;"><strong>Billing Currency:</strong> ${currency || 'INR'}</p>
+          </div>
+          <p>To access your customer portal, visit:</p>
+          <p><a href="http://localhost:3000/#login" style="display: inline-block; background: #0F172A; color: #FFFFFF; padding: 10px 20px; border-radius: 6px; text-decoration: none; font-weight: 600;">Go to Customer Portal</a></p>
+          <hr style="border: none; border-top: 1px solid #E5E7EB; margin: 24px 0;">
+          <p style="font-size: 12px; color: #64748B;">BrightLoop Subscriptions Technologies Inc. Automated Account Notification.</p>
+        </div>
+      `;
+      const emailRecord = sendEmail({
+        to: cleanEmail,
+        subject: 'Account Registration Confirmation — BrightLoop Subscriptions',
+        html: confirmHtml
+      });
+
+      logAudit(cleanEmail, 'CUSTOMER_REGISTRATION', newUser.id, null, { name, company });
+      saveDatabase();
+
+      return sendJson(200, { success: true, token, user: newUser, customer: newCustomer, emailDispatched: emailRecord });
+    }
+
+    // 4c. Auth: Forgot Password Request (Dispatches Reset Email)
+    if (apiPath === '/auth/forgot-password' && method === 'POST') {
+      const { email } = body;
+      const cleanEmail = (email || '').toLowerCase().trim();
+      const user = db.users.find(u => u.email.toLowerCase() === cleanEmail);
+
+      const resetToken = 'rst_' + crypto.randomBytes(16).toString('hex');
+      const expiresAt = Date.now() + (60 * 60 * 1000); // 1 hour
+
+      if (!db.passwordResetTokens) db.passwordResetTokens = [];
+      db.passwordResetTokens.unshift({ token: resetToken, email: cleanEmail, expiresAt, used: false });
+
+      const resetLink = `http://localhost:3000/#reset-password?token=${resetToken}`;
+      const resetHtml = `
+        <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; border: 1px solid #E5E7EB; border-radius: 8px;">
+          <h2 style="color: #0F172A; margin-top: 0;">Password Reset Request</h2>
+          <p>We received a request to reset your password for your BrightLoop account (<strong>${cleanEmail}</strong>).</p>
+          <p>Click the button below to choose a new password. This link is valid for 60 minutes:</p>
+          <p style="margin: 24px 0;">
+            <a href="${resetLink}" style="display: inline-block; background: #4F46E5; color: #FFFFFF; padding: 10px 20px; border-radius: 6px; text-decoration: none; font-weight: 600;">Reset Account Password</a>
+          </p>
+          <div style="background: #F8FAFC; border: 1px solid #E2E8F0; padding: 12px; border-radius: 6px; font-size: 13px;">
+            <span>Verification Security Token:</span>
+            <code style="display: block; font-weight: 700; color: #0F172A; margin-top: 4px;">${resetToken}</code>
+          </div>
+          <p style="font-size: 13px; color: #64748B; margin-top: 20px;">If you did not request this reset, you can safely ignore this email.</p>
+          <hr style="border: none; border-top: 1px solid #E5E7EB; margin: 24px 0;">
+          <p style="font-size: 12px; color: #64748B;">BrightLoop Security Team · Automated Notification</p>
+        </div>
+      `;
+
+      let emailRecord = null;
+      if (user) {
+        emailRecord = sendEmail({
+          to: cleanEmail,
+          subject: 'Reset Your BrightLoop Password',
+          html: resetHtml
+        });
+        logAudit(cleanEmail, 'FORGOT_PASSWORD_REQUEST', 'auth', null, { token: resetToken });
+      }
+
+      saveDatabase();
+      return sendJson(200, {
+        success: true,
+        message: 'If an account exists with that email, a password reset email has been dispatched.',
+        resetToken: resetToken,
+        emailDispatched: emailRecord
+      });
+    }
+
+    // 4d. Auth: Reset Password Execution
+    if (apiPath === '/auth/reset-password' && method === 'POST') {
+      const { token, newPassword } = body;
+      if (!token || !newPassword) {
+        return sendJson(400, { error: 'Reset token and new password are required.' });
+      }
+
+      const resetEntry = (db.passwordResetTokens || []).find(r => r.token === token && !r.used && r.expiresAt > Date.now());
+      if (!resetEntry) {
+        return sendJson(400, { error: 'Invalid or expired password reset token.' });
+      }
+
+      // Validate AUTH-2
+      const hasUpper = /[A-Z]/.test(newPassword);
+      const hasLower = /[a-z]/.test(newPassword);
+      const hasSpecial = /[^A-Za-z0-9]/.test(newPassword);
+      const isLengthValid = newPassword.length >= 9;
+
+      if (!isLengthValid || !hasUpper || !hasLower || !hasSpecial) {
+        return sendJson(400, {
+          error: 'Password must satisfy AUTH-2 (9+ characters, 1 uppercase, 1 lowercase, 1 special character).'
+        });
+      }
+
+      const user = db.users.find(u => u.email.toLowerCase() === resetEntry.email.toLowerCase());
+      if (!user) {
+        return sendJson(404, { error: 'User account not found.' });
+      }
+
+      user.plainPassword = newPassword;
+      user.passwordHash = '$2a$10$' + crypto.randomBytes(22).toString('hex');
+      resetEntry.used = true;
+
+      logAudit(user.email, 'PASSWORD_RESET_COMPLETED', user.id, null, 'success');
+      saveDatabase();
+
+      return sendJson(200, { success: true, message: 'Password has been updated. You can now sign in.' });
+    }
+
+    // 4e. Email Dispatch Logs Preview (GET /api/v1/emails)
+    if (apiPath === '/emails' && method === 'GET') {
+      return sendJson(200, db.sentEmails || []);
     }
 
     // 4. Credentials Guide

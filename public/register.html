@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Your Account — BrightLoop Subscriptions</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #FFFDF9;
+      --surface: #FFFFFF;
+      --primary: #0F172A;
+      --secondary: #4F46E5;
+      --accent: #F59E0B;
+      --text: #0F172A;
+      --muted: #64748B;
+      --border: #E2E8F0;
+      --radius-card: 12px;
+      --radius-input: 8px;
+    }
+
+    [data-theme="dark"] {
+      --bg: #090C10;
+      --surface: #141923;
+      --primary: #F8FAFC;
+      --secondary: #818CF8;
+      --accent: #F59E0B;
+      --text: #F1F5F9;
+      --muted: #94A3B8;
+      --border: rgba(255, 255, 255, 0.08);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      transition: background-color 0.25s ease, color 0.25s ease;
+    }
+
+    /* Ambient Motion Background */
+    .ambient-mesh-bg {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+      opacity: 0.6;
+    }
+    .ambient-glow-1 {
+      position: absolute;
+      top: -120px; right: 10%;
+      width: 550px; height: 550px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(79, 70, 229, 0.12) 0%, rgba(79, 70, 229, 0) 70%);
+      filter: blur(80px);
+      animation: glowShift1 24s ease-in-out infinite alternate;
+    }
+    .ambient-glow-2 {
+      position: absolute;
+      top: 40%; left: -100px;
+      width: 500px; height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(245, 158, 11, 0.08) 0%, rgba(245, 158, 11, 0) 70%);
+      filter: blur(75px);
+      animation: glowShift2 28s ease-in-out infinite alternate;
+    }
+    [data-theme="dark"] .ambient-glow-1 {
+      background: radial-gradient(circle, rgba(129, 140, 248, 0.16) 0%, rgba(129, 140, 248, 0) 70%);
+    }
+    [data-theme="dark"] .ambient-glow-2 {
+      background: radial-gradient(circle, rgba(168, 85, 247, 0.08) 0%, rgba(168, 85, 247, 0) 70%);
+    }
+    @keyframes glowShift1 {
+      0% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(-40px, 30px) scale(1.08); }
+      100% { transform: translate(30px, -20px) scale(0.95); }
+    }
+    @keyframes glowShift2 {
+      0% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(30px, -25px) scale(1.06); }
+      100% { transform: translate(-25px, 25px) scale(0.92); }
+    }
+
+    /* Motion Graphics Background Layer */
+    .motion-graphics-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    header {
+      padding: 16px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+      position: relative;
+      z-index: 10;
+    }
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--text);
+    }
+    .brand-font {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 19px;
+      letter-spacing: -0.02em;
+    }
+
+    .main-wrap {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 48px 20px;
+      position: relative;
+      z-index: 10;
+    }
+
+    .register-card {
+      max-width: 480px;
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-card);
+      padding: 36px 32px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+    }
+
+    [data-theme="dark"] .register-card {
+      box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.06), 0 8px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    .form-group { margin-bottom: 16px; }
+    .form-label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 5px;
+      color: var(--text);
+    }
+    .form-input, .form-select {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-input);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 13px;
+      outline: none;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+    .form-input:focus, .form-select:focus {
+      border-color: var(--secondary);
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
+    }
+
+    /* Password Input Wrapper with Minimalist Eye Toggle */
+    .password-input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    .password-input-wrapper .form-input {
+      padding-right: 42px;
+    }
+    .btn-toggle-pwd {
+      position: absolute;
+      right: 8px;
+      background: none;
+      border: none;
+      color: var(--muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6px;
+      border-radius: 6px;
+      transition: color 0.15s ease, background-color 0.15s ease;
+    }
+    .btn-toggle-pwd:hover {
+      color: var(--text);
+      background: rgba(125, 125, 125, 0.1);
+    }
+
+    /* Buttons */
+    .btn {
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 9px 18px;
+      border-radius: 8px;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.15s ease;
+      text-decoration: none;
+      line-height: 1.4;
+    }
+    .btn-primary {
+      background: var(--primary);
+      color: var(--bg);
+      border-color: var(--primary);
+    }
+    .btn-primary:hover {
+      background: var(--secondary);
+      border-color: var(--secondary);
+      color: #FFFFFF;
+    }
+    .btn-secondary {
+      background: var(--surface);
+      color: var(--text);
+    }
+    .btn-secondary:hover {
+      background: var(--bg);
+    }
+    .btn-sm { padding: 5px 12px; font-size: 12px; }
+
+    /* Password strength meter (AUTH-2) */
+    .pwd-meter {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 4px;
+      margin-top: 6px;
+    }
+    .pwd-bar {
+      height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+      transition: background-color 0.2s ease;
+    }
+    .pwd-bar.active { background: #10B981; }
+
+    /* Alert Banner */
+    .alert-banner {
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-size: 12px;
+      margin-bottom: 16px;
+      border: 1px solid var(--border);
+      display: none;
+    }
+    .alert-danger {
+      border-left: 4px solid #EF4444;
+      background: rgba(239, 68, 68, 0.08);
+      color: var(--text);
+    }
+    .alert-success {
+      border-left: 4px solid #10B981;
+      background: rgba(16, 185, 129, 0.08);
+      color: var(--text);
+    }
+
+    /* Sliding Theme Switch */
+    .theme-switch-btn {
+      width: 52px; height: 28px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 9999px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      padding: 2px;
+      transition: background-color 0.2s ease;
+    }
+    .theme-switch-thumb {
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      transform: translateX(1px);
+      color: #D97706;
+    }
+    .theme-switch-thumb .icon-sun { display: block; }
+    .theme-switch-thumb .icon-moon { display: none; }
+    [data-theme="dark"] .theme-switch-thumb {
+      transform: translateX(25px);
+      color: #818CF8;
+    }
+    [data-theme="dark"] .theme-switch-thumb .icon-sun { display: none; }
+    [data-theme="dark"] .theme-switch-thumb .icon-moon { display: block; }
+  </style>
+</head>
+<body data-theme="light">
+
+  <div class="ambient-mesh-bg">
+    <div class="ambient-glow-1"></div>
+    <div class="ambient-glow-2"></div>
+  </div>
+
+  <canvas id="motionCanvas" class="motion-graphics-canvas"></canvas>
+
+  <header>
+    <a href="/" class="logo-container">
+      <svg width="30" height="30" viewBox="0 0 100 100" fill="none">
+        <circle cx="50" cy="50" r="38" stroke="var(--primary)" stroke-width="11" stroke-linecap="round" stroke-dasharray="190 60"/>
+        <circle cx="50" cy="50" r="38" stroke="var(--secondary)" stroke-width="11" stroke-linecap="round" stroke-dasharray="50 200"/>
+        <text x="50" y="58" font-family="'Space Grotesk', sans-serif" font-weight="700" font-size="24" fill="var(--primary)" text-anchor="middle">TT</text>
+      </svg>
+      <div>
+        <span class="brand-font">BrightLoop</span>
+        <span style="font-size: 11px; color: var(--muted); margin-left: 4px;">Subscriptions</span>
+      </div>
+    </a>
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <button class="theme-switch-btn" onclick="toggleTheme()" title="Toggle theme" role="switch">
+        <span class="theme-switch-thumb">
+          <svg class="icon-sun" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="4"/>
+            <line x1="12" y1="2" x2="12" y2="4"/>
+            <line x1="12" y1="20" x2="12" y2="22"/>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+            <line x1="2" y1="12" x2="4" y2="12"/>
+            <line x1="20" y1="12" x2="22" y2="12"/>
+          </svg>
+          <svg class="icon-moon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </span>
+      </button>
+      <a href="/#login" class="btn btn-secondary btn-sm">Sign In</a>
+    </div>
+  </header>
+
+  <main class="main-wrap">
+    <div class="register-card">
+      <h2 style="font-size: 22px; margin-bottom: 6px;">Create Your Account</h2>
+      <p style="font-size: 13px; color: var(--muted); margin-bottom: 22px;">
+        Join BrightLoop to manage and view all your software subscriptions clutter-free in one unified portal.
+      </p>
+
+      <div id="regErrorAlert" class="alert-banner alert-danger"></div>
+      <div id="regSuccessAlert" class="alert-banner alert-success"></div>
+
+      <form id="regForm" onsubmit="event.preventDefault(); submitRegistration();">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div class="form-group">
+            <label class="form-label">Full Name</label>
+            <input type="text" id="regName" class="form-input" placeholder="e.g. Siddharth Rao" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Company Name</label>
+            <input type="text" id="regCompany" class="form-input" placeholder="e.g. Acme Corp" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Work Email Address</label>
+          <input type="email" id="regEmail" class="form-input" placeholder="name@company.com" required>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div class="form-group">
+            <label class="form-label">Country</label>
+            <select id="regCountry" class="form-select">
+              <option value="India" selected>India (GST 18%)</option>
+              <option value="United States">United States</option>
+              <option value="Germany">Germany (EU VAT 19%)</option>
+              <option value="United Kingdom">United Kingdom</option>
+              <option value="Australia">Australia</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Billing Currency</label>
+            <select id="regCurrency" class="form-select">
+              <option value="INR" selected>INR (₹)</option>
+              <option value="USD">USD ($)</option>
+              <option value="EUR">EUR (€)</option>
+              <option value="GBP">GBP (£)</option>
+              <option value="AUD">AUD (A$)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <div class="password-input-wrapper">
+            <input type="password" id="regPassword" class="form-input" placeholder="Enter secure password" oninput="checkPasswordStrength()" required>
+            <button type="button" class="btn-toggle-pwd" onclick="togglePasswordVisibility('regPassword', this)" title="Show / Hide Password">
+              <svg class="icon-eye" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+              <svg class="icon-eye-off" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;">
+                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                <line x1="1" y1="1" x2="23" y2="23"></line>
+              </svg>
+            </button>
+          </div>
+          <div class="pwd-meter">
+            <div id="pwdBar1" class="pwd-bar"></div>
+            <div id="pwdBar2" class="pwd-bar"></div>
+            <div id="pwdBar3" class="pwd-bar"></div>
+            <div id="pwdBar4" class="pwd-bar"></div>
+          </div>
+          <small style="color: var(--muted); font-size: 11px; margin-top: 4px; display: block;">
+            Requires 9+ characters with uppercase, lowercase, and special character (AUTH-2).
+          </small>
+        </div>
+
+        <button type="submit" id="submitRegBtn" class="btn btn-primary" style="width: 100%; margin-top: 10px;">
+          Create Customer Account
+        </button>
+      </form>
+
+      <div style="text-align: center; margin-top: 18px; font-size: 12px; color: var(--muted);">
+        Already registered? <a href="/#login" style="color: var(--secondary); font-weight: 600; text-decoration: none;">Sign in here</a>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Theme initialization
+    const savedTheme = localStorage.getItem('bl_theme') || 'light';
+    document.body.setAttribute('data-theme', savedTheme);
+
+    function toggleTheme() {
+      const isDark = document.body.getAttribute('data-theme') === 'dark';
+      const newTheme = isDark ? 'light' : 'dark';
+      document.body.setAttribute('data-theme', newTheme);
+      localStorage.setItem('bl_theme', newTheme);
+    }
+
+    // Password visibility toggle with minimalist SVG icons
+    function togglePasswordVisibility(inputId, btn) {
+      const input = document.getElementById(inputId);
+      if (!input) return;
+      const isPwd = input.type === 'password';
+      input.type = isPwd ? 'text' : 'password';
+      const eye = btn.querySelector('.icon-eye');
+      const eyeOff = btn.querySelector('.icon-eye-off');
+      if (eye && eyeOff) {
+        eye.style.display = isPwd ? 'none' : 'block';
+        eyeOff.style.display = isPwd ? 'block' : 'none';
+      }
+    }
+
+    // AUTH-2 password check
+    function checkPasswordStrength() {
+      const pwd = document.getElementById('regPassword').value;
+      const hasUpper = /[A-Z]/.test(pwd);
+      const hasLower = /[a-z]/.test(pwd);
+      const hasSpecial = /[^A-Za-z0-9]/.test(pwd);
+      const isLen = pwd.length >= 9;
+
+      document.getElementById('pwdBar1').className = `pwd-bar ${isLen ? 'active' : ''}`;
+      document.getElementById('pwdBar2').className = `pwd-bar ${hasUpper ? 'active' : ''}`;
+      document.getElementById('pwdBar3').className = `pwd-bar ${hasLower ? 'active' : ''}`;
+      document.getElementById('pwdBar4').className = `pwd-bar ${hasSpecial ? 'active' : ''}`;
+    }
+
+    async function submitRegistration() {
+      const errEl = document.getElementById('regErrorAlert');
+      const succEl = document.getElementById('regSuccessAlert');
+      errEl.style.display = 'none';
+      succEl.style.display = 'none';
+
+      const payload = {
+        name: document.getElementById('regName').value.trim(),
+        company: document.getElementById('regCompany').value.trim(),
+        email: document.getElementById('regEmail').value.trim(),
+        country: document.getElementById('regCountry').value,
+        currency: document.getElementById('regCurrency').value,
+        password: document.getElementById('regPassword').value
+      };
+
+      const btn = document.getElementById('submitRegBtn');
+      btn.disabled = true;
+      btn.textContent = 'Creating Account...';
+
+      try {
+        const res = await fetch('/api/v1/auth/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+
+        if (!res.ok) {
+          errEl.textContent = data.error || 'Failed to create account.';
+          errEl.style.display = 'block';
+          btn.disabled = false;
+          btn.textContent = 'Create Customer Account';
+          return;
+        }
+
+        succEl.innerHTML = `
+          <strong>Account successfully created!</strong>
+          <p style="margin-top: 4px;">A confirmation email has been dispatched to <strong>${payload.email}</strong>. Redirecting to your customer portal...</p>
+        `;
+        succEl.style.display = 'block';
+        document.getElementById('regForm').reset();
+
+        setTimeout(() => {
+          window.location.href = '/';
+        }, 1500);
+      } catch (err) {
+        errEl.textContent = 'Network error during registration.';
+        errEl.style.display = 'block';
+        btn.disabled = false;
+        btn.textContent = 'Create Customer Account';
+      }
+    }
+
+    // Motion Graphics Canvas (Subtle Floating Geometric Particles & Constellations)
+    const canvas = document.getElementById('motionCanvas');
+    const ctx = canvas.getContext('2d');
+    let width, height;
+    let particles = [];
+
+    function resizeCanvas() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    for (let i = 0; i < 40; i++) {
+      particles.push({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        vx: (Math.random() - 0.5) * 0.4,
+        vy: (Math.random() - 0.5) * 0.4,
+        radius: Math.random() * 2 + 1
+      });
+    }
+
+    function animateMotion() {
+      ctx.clearRect(0, 0, width, height);
+      const isDark = document.body.getAttribute('data-theme') === 'dark';
+      const nodeColor = isDark ? 'rgba(129, 140, 248, 0.25)' : 'rgba(79, 70, 229, 0.15)';
+      const lineColor = isDark ? 'rgba(129, 140, 248, 0.08)' : 'rgba(79, 70, 229, 0.05)';
+
+      for (let i = 0; i < particles.length; i++) {
+        const p = particles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+
+        if (p.x < 0) p.x = width;
+        if (p.x > width) p.x = 0;
+        if (p.y < 0) p.y = height;
+        if (p.y > height) p.y = 0;
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fillStyle = nodeColor;
+        ctx.fill();
+
+        for (let j = i + 1; j < particles.length; j++) {
+          const p2 = particles[j];
+          const dist = Math.hypot(p.x - p2.x, p.y - p2.y);
+          if (dist < 140) {
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.strokeStyle = lineColor;
+            ctx.lineWidth = 1;
+            ctx.stroke();
+          }
+        }
+      }
+      requestAnimationFrame(animateMotion);
+    }
+    animateMotion();
+  </script>
+</body>
+</html>

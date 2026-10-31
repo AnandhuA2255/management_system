@@ -28,20 +28,21 @@
     }
 
     [data-theme="dark"] {
-      --bg: #0B0E14;
-      --surface: #141923;
+      --bg: #080A0F;
+      --surface: #0E131C;
+      --surface-card: #131924;
       --primary: #F8FAFC;
       --secondary: #818CF8;
       --secondary-hover: #A5B4FC;
       --accent: #F59E0B;
       --text: #F1F5F9;
       --muted: #94A3B8;
-      --border: #232B3B;
-      --chip-draft-bg: #1E293B; --chip-draft-text: #CBD5E1;
-      --chip-confirm-bg: #1E1B4B; --chip-confirm-text: #C7D2FE;
-      --chip-active-bg: #064E3B; --chip-active-text: #A7F3D0;
-      --chip-idle-bg: #451A03; --chip-idle-text: #FDE68A;
-      --chip-overdue-bg: #450A0A; --chip-overdue-text: #FECACA;
+      --border: rgba(255, 255, 255, 0.08);
+      --chip-draft-bg: rgba(255, 255, 255, 0.06); --chip-draft-text: #CBD5E1;
+      --chip-confirm-bg: rgba(99, 102, 241, 0.15); --chip-confirm-text: #C7D2FE;
+      --chip-active-bg: rgba(16, 185, 129, 0.15); --chip-active-text: #A7F3D0;
+      --chip-idle-bg: rgba(245, 158, 11, 0.15); --chip-idle-text: #FDE68A;
+      --chip-overdue-bg: rgba(239, 68, 68, 0.15); --chip-overdue-text: #FECACA;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -710,6 +711,67 @@
       padding: 32px;
       box-shadow: 0 4px 20px rgba(0,0,0,0.03);
     }
+
+    /* Motion Graphics Background Canvas */
+    .motion-graphics-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Password Input Wrapper with Minimalist Eye Toggle */
+    .password-input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+      width: 100%;
+    }
+    .password-input-wrapper input {
+      width: 100%;
+      padding-right: 42px !important;
+    }
+    .btn-toggle-pwd {
+      position: absolute;
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6px;
+      border-radius: 6px;
+      transition: color 0.15s ease, background-color 0.15s ease;
+    }
+    .btn-toggle-pwd:hover {
+      color: var(--text);
+      background: rgba(125, 125, 125, 0.12);
+    }
+
+    /* Dark Mode Specular Shadows and Form Styling */
+    [data-theme="dark"] .login-card,
+    [data-theme="dark"] .modal,
+    [data-theme="dark"] .pricing-card,
+    [data-theme="dark"] .assistant-drawer {
+      box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.06), 0 12px 32px rgba(0, 0, 0, 0.55);
+    }
+    [data-theme="dark"] .form-input,
+    [data-theme="dark"] .form-select {
+      background: #0B0E14;
+      border-color: rgba(255, 255, 255, 0.12);
+      color: #F8FAFC;
+    }
+    [data-theme="dark"] .form-input:focus,
+    [data-theme="dark"] .form-select:focus {
+      border-color: var(--secondary);
+    }
   </style>
 </head>
 <body data-theme="light">
@@ -719,6 +781,9 @@
     <div class="ambient-glow-1"></div>
     <div class="ambient-glow-2"></div>
   </div>
+
+  <!-- Motion Graphics Canvas (Floating Nodes and Geometric Constellations) -->
+  <canvas id="motionCanvas" class="motion-graphics-canvas"></canvas>
 
   <!-- MAIN NAVIGATION BAR -->
   <header class="navbar">
@@ -817,9 +882,10 @@
         <p class="hero-subtitle">
           BrightLoop connects customers with multi-vendor subscriptions in a single clutter-free dashboard, while providing companies with global multi-currency billing, pluggable payment gateways, usage metering, and automated lifecycle intelligence.
         </p>
-        <div style="display: flex; justify-content: center; gap: 12px; margin-bottom: 24px;">
-          <button class="btn btn-primary" onclick="showPublicLoginView()">Customer Account Sign In</button>
-          <button class="btn btn-secondary" onclick="document.getElementById('publicPricingSection').scrollIntoView({behavior: 'smooth'})">Explore Plans &amp; Pricing</button>
+        <div style="display: flex; justify-content: center; gap: 12px; margin-bottom: 24px; flex-wrap: wrap;">
+          <button class="btn btn-primary" onclick="showPublicLoginView()">Sign In</button>
+          <a href="/register.html" class="btn btn-secondary" style="text-decoration: none; display: inline-flex; align-items: center;">Create Free Account</a>
+          <button class="btn btn-outline" onclick="document.getElementById('publicPricingSection').scrollIntoView({behavior: 'smooth'})">Explore Plans &amp; Pricing</button>
         </div>
 
         <!-- 3 Feature Pillars -->
@@ -857,14 +923,23 @@
         <div class="form-group">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
             <label class="form-label" style="margin-bottom: 0;">Password</label>
-            <a href="javascript:void(0)" onclick="alert('In accordance with AUTH-3, password reset links are dispatched to registered account emails.')" style="font-size: 11px; color: var(--secondary); text-decoration: none;">Forgot password?</a>
+            <a href="javascript:void(0)" onclick="openForgotPasswordModal()" style="font-size: 11px; color: var(--secondary); text-decoration: none;">Forgot password?</a>
           </div>
-          <input type="password" id="loginPassword" class="form-input" placeholder="Enter your password" onkeydown="if(event.key==='Enter') executeLogin()">
+          <div class="password-input-wrapper">
+            <input type="password" id="loginPassword" class="form-input" placeholder="Enter your password" onkeydown="if(event.key==='Enter') executeLogin()">
+            <button type="button" class="btn-toggle-pwd" onclick="togglePasswordVisibility('loginPassword', this)" title="Show / hide password" aria-label="Show password">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            </button>
+          </div>
         </div>
         <button class="btn btn-primary" style="width: 100%; margin-top: 8px;" onclick="executeLogin()">Sign In</button>
 
-        <div style="text-align: center; margin-top: 18px; font-size: 12px; color: var(--muted);">
-          Don't have an active subscription? <a href="javascript:void(0)" onclick="openHostedCheckout('plan_growth')" style="color: var(--secondary); font-weight: 600;">Subscribe now</a>
+        <div style="text-align: center; margin-top: 18px; font-size: 12px; color: var(--muted); display: flex; flex-direction: column; gap: 6px;">
+          <div>Don't have an account yet? <a href="/register.html" style="color: var(--secondary); font-weight: 600;">Create free account</a></div>
+          <div>Need an instant subscription? <a href="javascript:void(0)" onclick="openHostedCheckout('plan_growth')" style="color: var(--secondary); font-weight: 600;">Subscribe now</a></div>
         </div>
       </div>
 
@@ -1168,7 +1243,15 @@
             </div>
             <div class="form-group">
               <label class="form-label">Password (AUTH-2 Rule)</label>
-              <input type="password" id="staffPasswordInput" class="form-input" placeholder="Min 9 chars, upper, lower, special" oninput="checkStaffPasswordStrength()">
+              <div class="password-input-wrapper">
+                <input type="password" id="staffPasswordInput" class="form-input" placeholder="Min 9 chars, upper, lower, special" oninput="checkStaffPasswordStrength()">
+                <button type="button" class="btn-toggle-pwd" onclick="togglePasswordVisibility('staffPasswordInput', this)" title="Show / hide password" aria-label="Show password">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                    <circle cx="12" cy="12" r="3"></circle>
+                  </svg>
+                </button>
+              </div>
               <div class="pwd-meter">
                 <div id="pwdBar1" class="pwd-bar"></div>
                 <div id="pwdBar2" class="pwd-bar"></div>
@@ -1255,7 +1338,15 @@
       </div>
       <div class="form-group">
         <label class="form-label">Password</label>
-        <input type="password" id="adminLoginPassword" class="form-input" placeholder="Password" onkeydown="if(event.key==='Enter') executeAdminLogin()">
+        <div class="password-input-wrapper">
+          <input type="password" id="adminLoginPassword" class="form-input" placeholder="Password" onkeydown="if(event.key==='Enter') executeAdminLogin()">
+          <button type="button" class="btn-toggle-pwd" onclick="togglePasswordVisibility('adminLoginPassword', this)" title="Show / hide password" aria-label="Show password">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+              <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+          </button>
+        </div>
       </div>
       <button class="btn btn-primary" style="width: 100%; margin-top: 8px;" onclick="executeAdminLogin()">Access Console</button>
     </div>
@@ -1285,6 +1376,99 @@
         <input type="text" id="serviceApiKeyInput" class="form-input" placeholder="bk_live_compute_...">
       </div>
       <button class="btn btn-primary" style="width: 100%; margin-top: 8px;" onclick="executeServiceLogin()">Authenticate Service</button>
+    </div>
+  </div>
+
+  <!-- FORGOT PASSWORD MODAL (Free Email Service Dispatch) -->
+  <div id="forgotPasswordModal" class="modal-backdrop">
+    <div class="modal" style="max-width: 440px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px;">
+        <div>
+          <span style="font-size: 10px; font-weight: 700; text-transform: uppercase; background: var(--chip-confirm-bg); color: var(--chip-confirm-text); padding: 2px 8px; border-radius: 9999px;">Account Recovery</span>
+          <h3 style="margin-top: 4px;">Forgot Password</h3>
+        </div>
+        <button onclick="closeForgotPasswordModal()" style="background: none; border: none; font-size: 20px; cursor: pointer; color: var(--muted);">&times;</button>
+      </div>
+
+      <p style="font-size: 12px; color: var(--muted); margin-bottom: 16px; line-height: 1.5;">
+        Enter your registered email address. Our integrated notification service will dispatch a secure 1-hour password reset link.
+      </p>
+
+      <div id="forgotPwdAlert" class="alert-banner alert-danger" style="display: none; padding: 10px 14px; font-size: 12px; margin-bottom: 14px;"></div>
+      <div id="forgotPwdSuccess" class="alert-banner alert-success" style="display: none; padding: 12px 14px; font-size: 12px; margin-bottom: 14px;"></div>
+
+      <div id="forgotPwdForm">
+        <div class="form-group">
+          <label class="form-label">Registered Email Address</label>
+          <input type="email" id="forgotEmailInput" class="form-input" placeholder="e.g. priya@acmecorp.com" onkeydown="if(event.key==='Enter') submitForgotPassword()">
+        </div>
+        <button class="btn btn-primary" id="btnSendForgotLink" style="width: 100%; margin-top: 8px;" onclick="submitForgotPassword()">Dispatch Reset Email</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESET PASSWORD MODAL -->
+  <div id="resetPasswordModal" class="modal-backdrop">
+    <div class="modal" style="max-width: 440px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px;">
+        <div>
+          <span style="font-size: 10px; font-weight: 700; text-transform: uppercase; background: var(--chip-active-bg); color: var(--chip-active-text); padding: 2px 8px; border-radius: 9999px;">Security Update</span>
+          <h3 style="margin-top: 4px;">Set New Password</h3>
+        </div>
+        <button onclick="closeResetPasswordModal()" style="background: none; border: none; font-size: 20px; cursor: pointer; color: var(--muted);">&times;</button>
+      </div>
+
+      <p style="font-size: 12px; color: var(--muted); margin-bottom: 14px;">
+        Please enter your new password complying with AUTH-2 (at least 9 characters, upper, lower, and special symbol).
+      </p>
+
+      <div id="resetPwdAlert" class="alert-banner alert-danger" style="display: none; padding: 10px 14px; font-size: 12px; margin-bottom: 14px;"></div>
+      <div id="resetPwdSuccess" class="alert-banner alert-success" style="display: none; padding: 12px 14px; font-size: 12px; margin-bottom: 14px;"></div>
+
+      <div id="resetPwdForm">
+        <input type="hidden" id="resetTokenHidden">
+        <div class="form-group">
+          <label class="form-label">New Password</label>
+          <div class="password-input-wrapper">
+            <input type="password" id="resetNewPassword" class="form-input" placeholder="New secure password" oninput="checkResetPasswordStrength()" onkeydown="if(event.key==='Enter') submitResetPassword()">
+            <button type="button" class="btn-toggle-pwd" onclick="togglePasswordVisibility('resetNewPassword', this)" title="Show / hide password" aria-label="Show password">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            </button>
+          </div>
+          <div class="pwd-meter">
+            <div id="resetPwdBar1" class="pwd-bar"></div>
+            <div id="resetPwdBar2" class="pwd-bar"></div>
+            <div id="resetPwdBar3" class="pwd-bar"></div>
+            <div id="resetPwdBar4" class="pwd-bar"></div>
+          </div>
+          <div id="resetPwdRuleText" style="font-size: 11px; color: var(--muted); margin-top: 4px;">Must have 9+ chars, 1 uppercase, 1 lowercase, 1 special char.</div>
+        </div>
+        <button class="btn btn-primary" id="btnSubmitReset" style="width: 100%; margin-top: 8px;" onclick="submitResetPassword()">Update Password &amp; Sign In</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DISPATCHED EMAILS INSPECTOR MODAL -->
+  <div id="emailLogModal" class="modal-backdrop">
+    <div class="modal" style="max-width: 680px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+        <div>
+          <span style="font-size: 10px; font-weight: 700; text-transform: uppercase; background: var(--chip-draft-bg); color: var(--chip-draft-text); padding: 2px 8px; border-radius: 9999px;">Service Telemetry</span>
+          <h3 style="margin-top: 4px;">Email Delivery Log</h3>
+        </div>
+        <button onclick="closeEmailLogModal()" style="background: none; border: none; font-size: 20px; cursor: pointer; color: var(--muted);">&times;</button>
+      </div>
+
+      <p style="font-size: 12px; color: var(--muted); margin-bottom: 14px;">
+        Inspection feed of all automated emails dispatched by BrightLoop (Account registration confirmation, password reset requests, dunning notices).
+      </p>
+
+      <div id="emailLogList" style="max-height: 420px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px;">
+        <!-- Filled dynamically -->
+      </div>
     </div>
   </div>
 
@@ -1328,7 +1512,15 @@
 
       <div class="form-group">
         <label class="form-label">Account Password (AUTH-2 Compliant)</label>
-        <input type="password" id="chkPassword" class="form-input" value="CustomerPass@2026!">
+        <div class="password-input-wrapper">
+          <input type="password" id="chkPassword" class="form-input" value="CustomerPass@2026!">
+          <button type="button" class="btn-toggle-pwd" onclick="togglePasswordVisibility('chkPassword', this)" title="Show / hide password" aria-label="Show password">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+              <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+          </button>
+        </div>
       </div>
 
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
@@ -1561,8 +1753,9 @@
       <div class="footer-col">
         <h4>Product</h4>
         <ul>
-          <li><a href="javascript:void(0)" onclick="document.getElementById('publicPricingSection').scrollIntoView({behavior: 'smooth'})">Pricing & Plans</a></li>
+          <li><a href="javascript:void(0)" onclick="document.getElementById('publicPricingSection').scrollIntoView({behavior: 'smooth'})">Pricing &amp; Plans</a></li>
           <li><a href="javascript:void(0)" onclick="showPublicLoginView()">Customer Portal</a></li>
+          <li><a href="/register.html">Create Customer Account</a></li>
           <li><a href="/invoices/inv_2026_001/print" target="_blank">PDF Invoice Spec</a></li>
         </ul>
       </div>
@@ -1570,18 +1763,19 @@
       <div class="footer-col">
         <h4>Compliance</h4>
         <ul>
-          <li><a href="javascript:void(0)">GST & Tax Rules</a></li>
+          <li><a href="javascript:void(0)">GST &amp; Tax Rules</a></li>
           <li><a href="javascript:void(0)">PCI-DSS SAQ A</a></li>
-          <li><a href="javascript:void(0)">Privacy & Audit</a></li>
+          <li><a href="javascript:void(0)">Privacy &amp; Audit</a></li>
         </ul>
       </div>
 
       <!-- Discreet Internal / Admin Access Paths -->
       <div class="footer-col">
-        <h4>System & Internal</h4>
+        <h4>System &amp; Internal</h4>
         <ul>
-          <li><a href="javascript:void(0)" onclick="openAdminLoginModal()" style="color: var(--secondary); font-weight: 600;">Internal Staff & Admin Console</a></li>
+          <li><a href="javascript:void(0)" onclick="openAdminLoginModal()" style="color: var(--secondary); font-weight: 600;">Internal Staff &amp; Admin Console</a></li>
           <li><a href="javascript:void(0)" onclick="openServiceLoginModal()">Service API Gateway</a></li>
+          <li><a href="javascript:void(0)" onclick="openEmailLogModal()" style="color: #A5B4FC;">Dispatched Emails Inspector</a></li>
           <li><a href="/credentials.html" target="_blank" style="color: #9CA3AF;">Developer Credentials Directory</a></li>
         </ul>
       </div>
@@ -1623,10 +1817,29 @@
 
     function checkUrlHash() {
       const hash = window.location.hash;
+      const urlParams = new URLSearchParams(window.location.search);
+      const urlToken = urlParams.get('token') || urlParams.get('reset_token');
+
+      if (urlToken) {
+        openResetPasswordModal(urlToken);
+        return;
+      }
+
+      if (hash.startsWith('#reset-password')) {
+        const hashParams = new URLSearchParams(hash.replace('#reset-password?', ''));
+        const token = hashParams.get('token');
+        if (token) {
+          openResetPasswordModal(token);
+          return;
+        }
+      }
+
       if (hash === '#staff-portal' || hash === '#admin') {
         openAdminLoginModal();
       } else if (hash === '#service-portal' || hash === '#service') {
         openServiceLoginModal();
+      } else if (hash === '#emails' || hash === '#mailbox') {
+        openEmailLogModal();
       } else if (hash === '#login' || hash === '#signin') {
         showPublicLoginView();
       }
@@ -1829,6 +2042,283 @@
       setupPublicUI();
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
+
+    // Helper: Escape HTML
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
+    }
+
+    // Toggle Password Visibility (Eye Minimalist SVG Icon)
+    function togglePasswordVisibility(inputId, btn) {
+      const input = document.getElementById(inputId);
+      if (!input) return;
+      const isPwd = input.type === 'password';
+      input.type = isPwd ? 'text' : 'password';
+      btn.innerHTML = isPwd
+        ? `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>`
+        : `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>`;
+      btn.setAttribute('aria-label', isPwd ? 'Hide password' : 'Show password');
+      btn.setAttribute('title', isPwd ? 'Hide password' : 'Show password');
+    }
+
+    // Forgot Password Flow
+    function openForgotPasswordModal() {
+      document.getElementById('forgotPwdAlert').style.display = 'none';
+      document.getElementById('forgotPwdSuccess').style.display = 'none';
+      document.getElementById('forgotPwdForm').style.display = 'block';
+      document.getElementById('forgotEmailInput').value = '';
+      document.getElementById('forgotPasswordModal').style.display = 'flex';
+      document.getElementById('forgotEmailInput').focus();
+    }
+    function closeForgotPasswordModal() {
+      document.getElementById('forgotPasswordModal').style.display = 'none';
+    }
+
+    async function submitForgotPassword() {
+      const email = document.getElementById('forgotEmailInput').value.trim();
+      const alertEl = document.getElementById('forgotPwdAlert');
+      const successEl = document.getElementById('forgotPwdSuccess');
+      const btn = document.getElementById('btnSendForgotLink');
+
+      alertEl.style.display = 'none';
+      successEl.style.display = 'none';
+
+      if (!email) {
+        alertEl.textContent = 'Please enter your account email address.';
+        alertEl.style.display = 'block';
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'Dispatching email...';
+
+      try {
+        const res = await fetch('/api/v1/auth/forgot-password', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email })
+        });
+        const data = await res.json();
+
+        if (!res.ok) {
+          alertEl.textContent = data.error || 'Failed to dispatch reset email.';
+          alertEl.style.display = 'block';
+          btn.disabled = false;
+          btn.textContent = 'Dispatch Reset Email';
+          return;
+        }
+
+        document.getElementById('forgotPwdForm').style.display = 'none';
+        let directToken = '';
+        if (data.emailRecord && data.emailRecord.html) {
+          const match = data.emailRecord.html.match(/token=([a-f0-9]+)/);
+          if (match) directToken = match[1];
+        }
+
+        successEl.innerHTML = `
+          <strong>Reset Email Dispatched!</strong>
+          <p style="margin-top: 6px; font-size: 12px; line-height: 1.5;">${data.message}</p>
+          <div style="margin-top: 14px; display: flex; gap: 8px; flex-wrap: wrap;">
+            <button class="btn btn-secondary btn-sm" onclick="openEmailLogModal(); closeForgotPasswordModal();">View In Mailbox Log</button>
+            ${directToken ? `<button class="btn btn-primary btn-sm" onclick="openResetPasswordModal('${directToken}'); closeForgotPasswordModal();">Set New Password Now</button>` : ''}
+          </div>
+        `;
+        successEl.style.display = 'block';
+      } catch (err) {
+        alertEl.textContent = 'Network error while contacting email service.';
+        alertEl.style.display = 'block';
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Dispatch Reset Email';
+      }
+    }
+
+    // Reset Password Flow
+    function openResetPasswordModal(token) {
+      document.getElementById('resetTokenHidden').value = token || '';
+      document.getElementById('resetPwdAlert').style.display = 'none';
+      document.getElementById('resetPwdSuccess').style.display = 'none';
+      document.getElementById('resetPwdForm').style.display = 'block';
+      document.getElementById('resetNewPassword').value = '';
+      checkResetPasswordStrength();
+      document.getElementById('resetPasswordModal').style.display = 'flex';
+      document.getElementById('resetNewPassword').focus();
+    }
+    function closeResetPasswordModal() {
+      document.getElementById('resetPasswordModal').style.display = 'none';
+    }
+
+    function checkResetPasswordStrength() {
+      const pwd = document.getElementById('resetNewPassword').value;
+      const isLen = pwd.length >= 9;
+      const hasUpper = /[A-Z]/.test(pwd);
+      const hasLower = /[a-z]/.test(pwd);
+      const hasSpecial = /[^A-Za-z0-9]/.test(pwd);
+
+      document.getElementById('resetPwdBar1').className = `pwd-bar ${isLen ? 'active' : ''}`;
+      document.getElementById('resetPwdBar2').className = `pwd-bar ${hasUpper ? 'active' : ''}`;
+      document.getElementById('resetPwdBar3').className = `pwd-bar ${hasLower ? 'active' : ''}`;
+      document.getElementById('resetPwdBar4').className = `pwd-bar ${hasSpecial ? 'active' : ''}`;
+    }
+
+    async function submitResetPassword() {
+      const token = document.getElementById('resetTokenHidden').value.trim();
+      const newPassword = document.getElementById('resetNewPassword').value;
+      const alertEl = document.getElementById('resetPwdAlert');
+      const successEl = document.getElementById('resetPwdSuccess');
+      const btn = document.getElementById('btnSubmitReset');
+
+      alertEl.style.display = 'none';
+      successEl.style.display = 'none';
+
+      if (!newPassword) {
+        alertEl.textContent = 'Please enter a new password.';
+        alertEl.style.display = 'block';
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'Updating password...';
+
+      try {
+        const res = await fetch('/api/v1/auth/reset-password', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ token, newPassword })
+        });
+        const data = await res.json();
+
+        if (!res.ok) {
+          alertEl.textContent = data.error || 'Failed to update password.';
+          alertEl.style.display = 'block';
+          btn.disabled = false;
+          btn.textContent = 'Update Password & Sign In';
+          return;
+        }
+
+        document.getElementById('resetPwdForm').style.display = 'none';
+        successEl.innerHTML = `
+          <strong>Password Updated Successfully!</strong>
+          <p style="margin-top: 6px; font-size: 12px;">Your new password is now active. You may now sign in.</p>
+          <div style="margin-top: 12px;">
+            <button class="btn btn-primary btn-sm" onclick="closeResetPasswordModal(); showPublicLoginView();">Sign In Now</button>
+          </div>
+        `;
+        successEl.style.display = 'block';
+      } catch (err) {
+        alertEl.textContent = 'Network error while contacting authentication service.';
+        alertEl.style.display = 'block';
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Update Password & Sign In';
+      }
+    }
+
+    // Dispatched Emails Inspector
+    async function openEmailLogModal() {
+      document.getElementById('emailLogModal').style.display = 'flex';
+      await loadSentEmails();
+    }
+    function closeEmailLogModal() {
+      document.getElementById('emailLogModal').style.display = 'none';
+    }
+
+    async function loadSentEmails() {
+      const listEl = document.getElementById('emailLogList');
+      listEl.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--muted); font-size: 13px;">Loading email activity...</div>';
+
+      try {
+        const res = await fetch('/api/v1/emails');
+        const emails = await res.json();
+
+        if (!emails || emails.length === 0) {
+          listEl.innerHTML = '<div style="padding: 24px; text-align: center; color: var(--muted); font-size: 13px;">No dispatched emails recorded yet. Trigger registration or password reset to view.</div>';
+          return;
+        }
+
+        listEl.innerHTML = emails.map(e => `
+          <div style="background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 14px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+              <strong style="font-size: 13px; color: var(--text);">${escapeHtml(e.subject)}</strong>
+              <span class="chip chip-active" style="font-size: 10px;">DELIVERED</span>
+            </div>
+            <div style="font-size: 12px; color: var(--muted); margin-bottom: 8px;">
+              To: <strong style="color: var(--text);">${escapeHtml(e.to)}</strong> &bull; Sent: ${new Date(e.sentAt).toLocaleTimeString()}
+            </div>
+            <div style="background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 12px; font-size: 12px; max-height: 180px; overflow-y: auto;">
+              ${e.html}
+            </div>
+          </div>
+        `).join('');
+      } catch (err) {
+        listEl.innerHTML = '<div style="color: #EF4444; padding: 12px; font-size: 13px;">Failed to load dispatched emails.</div>';
+      }
+    }
+
+    // Motion Graphics Background Canvas Animation (Constellations & Particles)
+    (function initMotionGraphicsCanvas() {
+      const canvas = document.getElementById('motionCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let width, height;
+      let particles = [];
+
+      function resize() {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+      }
+      window.addEventListener('resize', resize);
+      resize();
+
+      for (let i = 0; i < 48; i++) {
+        particles.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          vx: (Math.random() - 0.5) * 0.45,
+          vy: (Math.random() - 0.5) * 0.45,
+          radius: Math.random() * 2 + 1
+        });
+      }
+
+      function renderFrame() {
+        ctx.clearRect(0, 0, width, height);
+        const isDark = document.body.getAttribute('data-theme') === 'dark';
+        const nodeColor = isDark ? 'rgba(129, 140, 248, 0.28)' : 'rgba(79, 70, 229, 0.16)';
+        const lineColor = isDark ? 'rgba(129, 140, 248, 0.08)' : 'rgba(79, 70, 229, 0.05)';
+
+        for (let i = 0; i < particles.length; i++) {
+          const p = particles[i];
+          p.x += p.vx;
+          p.y += p.vy;
+
+          if (p.x < 0) p.x = width;
+          if (p.x > width) p.x = 0;
+          if (p.y < 0) p.y = height;
+          if (p.y > height) p.y = 0;
+
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+          ctx.fillStyle = nodeColor;
+          ctx.fill();
+
+          for (let j = i + 1; j < particles.length; j++) {
+            const p2 = particles[j];
+            const dist = Math.hypot(p.x - p2.x, p.y - p2.y);
+            if (dist < 135) {
+              ctx.beginPath();
+              ctx.moveTo(p.x, p.y);
+              ctx.lineTo(p2.x, p2.y);
+              ctx.strokeStyle = lineColor;
+              ctx.lineWidth = 1;
+              ctx.stroke();
+            }
+          }
+        }
+        requestAnimationFrame(renderFrame);
+      }
+      requestAnimationFrame(renderFrame);
+    })();
 
     // Customer Alert Banner (Idle notice & Dunning)
     async function renderCustomerBanner() {
