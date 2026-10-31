@@ -238,13 +238,14 @@ const server = http.createServer(async (req, res) => {
         totalMrrBaseINR += (sub.unitPriceMinor * (curr.rateToBase || 1.0));
       });
 
-      // Outstanding and Overdue Invoices
+      // Outstanding and Overdue Invoices (Excluding Cancelled per INVC-3, summing amountDue per PAYX-7)
       let totalOutstandingMinorINR = 0;
       let overdueCount = 0;
-      db.invoices.filter(i => i.status !== 'paid').forEach(inv => {
+      db.invoices.filter(i => i.status !== 'paid' && i.status !== 'cancelled').forEach(inv => {
         const curr = db.currencies.find(c => c.code === inv.currency) || { rateToBase: 1.0 };
-        totalOutstandingMinorINR += (inv.totalMinor * (inv.lockedRateToBase || curr.rateToBase || 1.0));
-        if (inv.paymentFailedFlag || new Date(inv.dueDate) < new Date('2026-10-31')) {
+        const due = inv.amountDueMinor !== undefined ? inv.amountDueMinor : inv.totalMinor;
+        totalOutstandingMinorINR += (due * (inv.lockedRateToBase || curr.rateToBase || 1.0));
+        if (inv.paymentFailedFlag || (due > 0 && new Date(inv.dueDate) < new Date('2026-10-31'))) {
           overdueCount++;
         }
       });
@@ -297,8 +298,8 @@ const server = http.createServer(async (req, res) => {
       return sendJson(200, enriched);
     }
 
-    // 8. Subscription Actions: Keep, Pause, Resume, Cancel
-    const subActionMatch = apiPath.match(/^\/subscriptions\/([^/]+)\/(keep|pause|resume|cancel|change-plan)$/);
+    // 8. Subscription Actions: Keep, Pause, Resume, Cancel, Renew, Change-Plan
+    const subActionMatch = apiPath.match(/^\/subscriptions\/([^/]+)\/(keep|pause|resume|cancel|renew|change-plan)$/);
     if (subActionMatch && method === 'POST') {
       const subId = subActionMatch[1];
       const action = subActionMatch[2];
@@ -325,16 +326,66 @@ const server = http.createServer(async (req, res) => {
         sub.healthReason = 'Idle clock restarted by customer. Active status restored.';
         logAudit(currentSession.user.email, 'SUBSCRIPTION_KEEP_RESET', sub.number, prevStatus, 'active');
       } else if (action === 'pause') {
+        // SUBST-3: Paused allowed only if plan has pause enabled
+        const plan = db.plans.find(p => p.id === sub.planId);
+        if (plan && plan.pauseAllowed === false) {
+          return sendJson(400, { error: 'Pausing is disabled for this plan (SUBST-3).' });
+        }
+        if (sub.status !== 'active') {
+          return sendJson(400, { error: `Invalid transition: cannot pause from '${sub.status}' (SUBST-2).` });
+        }
         sub.status = 'paused';
-        sub.healthReason = 'Paused by customer with proration credit stored for next cycle.';
+        sub.pausedAt = new Date().toISOString();
+        sub.healthReason = 'Paused by customer or staff. Billing runs skip this subscription (SUBST-3).';
         logAudit(currentSession.user.email, 'SUBSCRIPTION_PAUSE', sub.number, prevStatus, 'paused');
       } else if (action === 'resume') {
+        // SUBST-2: Only paused can resume to active
+        if (sub.status !== 'paused') {
+          return sendJson(400, { error: `Invalid transition: cannot resume from '${sub.status}' (SUBST-2).` });
+        }
+        // SUBST-4: Next billing / expiry date moves forward by paused days
+        const pauseStart = sub.pausedAt ? new Date(sub.pausedAt).getTime() : Date.now();
+        const pausedDays = Math.max(1, Math.round((Date.now() - pauseStart) / (1000 * 3600 * 24)));
+        if (sub.expiryDate) {
+          const exp = new Date(sub.expiryDate);
+          exp.setDate(exp.getDate() + pausedDays);
+          sub.expiryDate = exp.toISOString().split('T')[0];
+        }
         sub.status = 'active';
+        sub.pausedAt = null;
+        sub.healthReason = `Resumed. Billing dates advanced by ${pausedDays} paused days (SUBST-4).`;
         logAudit(currentSession.user.email, 'SUBSCRIPTION_RESUME', sub.number, prevStatus, 'active');
       } else if (action === 'cancel') {
+        if (sub.status === 'closed') {
+          return sendJson(400, { error: 'Subscription is already closed.' });
+        }
         sub.status = 'closed';
-        sub.closeReason = 'Customer initiated cancellation';
+        sub.closeReason = body.reason || 'Customer or staff initiated cancellation';
         logAudit(currentSession.user.email, 'SUBSCRIPTION_CANCEL', sub.number, prevStatus, 'closed');
+      } else if (action === 'renew') {
+        // Renewal extends existing subscription expiry date by 1 term, keeps same number (REN-1 to REN-6)
+        const oldExpiry = sub.expiryDate;
+        const expDate = new Date(sub.expiryDate || '2027-08-01');
+        expDate.setFullYear(expDate.getFullYear() + 1);
+        sub.expiryDate = expDate.toISOString().split('T')[0];
+        sub.status = 'active';
+
+        const renRecord = {
+          id: 'ren_' + crypto.randomBytes(4).toString('hex'),
+          subscriptionId: sub.id,
+          subscriptionNumber: sub.number,
+          oldExpiry,
+          newExpiry: sub.expiryDate,
+          trigger: 'manual_renew',
+          triggeredBy: currentSession.user.email,
+          date: new Date().toISOString()
+        };
+        if (!db.renewalHistory) db.renewalHistory = [];
+        db.renewalHistory.unshift(renRecord);
+
+        logAudit(currentSession.user.email, 'SUBSCRIPTION_RENEWED', sub.number, { oldExpiry }, { newExpiry: sub.expiryDate });
+        saveDatabase();
+        return sendJson(200, { success: true, subscription: sub, renewal: renRecord });
       } else if (action === 'change-plan') {
         const { newPlanId } = body;
         const newPlan = db.plans.find(p => p.id === newPlanId);
@@ -390,30 +441,174 @@ const server = http.createServer(async (req, res) => {
       return sendJson(200, enriched);
     }
 
-    // 10. Invoices: Sandbox Payment Trigger
+    // 9b. Invoices: Cancellation (INVC-1 to INVC-6)
+    const invCancelMatch = apiPath.match(/^\/invoices\/([^/]+)\/cancel$/);
+    if (invCancelMatch && method === 'POST') {
+      const inv = db.invoices.find(i => i.id === invCancelMatch[1]);
+      if (!inv) return sendJson(404, { error: 'Invoice not found' });
+      if (inv.status === 'paid') {
+        return sendJson(400, { error: 'Paid to Cancelled is not allowed (INVC-1).' });
+      }
+      if (inv.amountPaidMinor && inv.amountPaidMinor > 0) {
+        return sendJson(400, { error: 'Cancelling a Confirmed invoice that already has a part payment is blocked. Please reverse payments first (INVC-4).' });
+      }
+      const { reason } = body;
+      if (!reason || !reason.trim()) {
+        return sendJson(400, { error: 'Cancelling needs a reason (free text, required) (INVC-2).' });
+      }
+      inv.status = 'cancelled';
+      inv.cancelReason = reason.trim();
+      inv.cancelledBy = currentSession.user.email;
+      inv.cancelledAt = new Date().toISOString();
+      inv.amountDueMinor = 0;
+
+      // Release discount usage if applicable (DUSE-2)
+      if (db.discountUsage) {
+        db.discountUsage = db.discountUsage.filter(d => d.invoiceId !== inv.id);
+      }
+
+      logAudit(currentSession.user.email, 'INVOICE_CANCELLED', inv.number, null, { reason: inv.cancelReason });
+      saveDatabase();
+      return sendJson(200, { success: true, invoice: inv });
+    }
+
+    // 9c. Invoices: Regeneration (INVC-6)
+    if (apiPath === '/invoices/regenerate' && method === 'POST') {
+      const { subscriptionId, period } = body;
+      const sub = db.subscriptions.find(s => s.id === subscriptionId || s.number === subscriptionId);
+      if (!sub) return sendJson(404, { error: 'Target subscription not found' });
+
+      // Unique rule applies only to non-cancelled invoices (INVC-6)
+      const existingActive = db.invoices.find(i => i.subscriptionId === sub.id && i.period === period && i.status !== 'cancelled');
+      if (existingActive) {
+        return sendJson(400, { error: `An active or confirmed invoice (${existingActive.number}) already exists for this period (INVC-6).` });
+      }
+
+      const newInvNumber = 'INV-2026-' + Math.floor(300 + Math.random() * 600);
+      const subtotalMinor = sub.unitPriceMinor;
+      const taxMinor = Math.round(subtotalMinor * 0.18);
+      const totalMinor = subtotalMinor + taxMinor;
+
+      const newInv = {
+        id: 'inv_' + crypto.randomBytes(4).toString('hex'),
+        number: newInvNumber,
+        subscriptionId: sub.id,
+        customerId: sub.customerId,
+        period: period || '2026-11',
+        status: 'draft',
+        currency: sub.currency,
+        lockedRateToBase: 1.0,
+        subtotalMinor,
+        discountMinor: 0,
+        taxMinor,
+        totalMinor,
+        amountPaidMinor: 0,
+        amountDueMinor: totalMinor,
+        partiallyPaid: false,
+        dueDate: new Date(Date.now() + 14 * 86400000).toISOString().split('T')[0],
+        paidAt: null,
+        paymentFailedFlag: false,
+        lines: [
+          { description: `Subscription Service (${sub.number}) - Period ${period || '2026-11'}`, quantity: 1, unitPriceMinor: subtotalMinor, amountMinor: subtotalMinor },
+          { description: 'Goods & Services Tax (18%)', quantity: 1, unitPriceMinor: taxMinor, amountMinor: taxMinor }
+        ]
+      };
+      db.invoices.unshift(newInv);
+      logAudit(currentSession.user.email, 'INVOICE_REGENERATED', newInv.number, null, { subscriptionId: sub.id, period });
+      saveDatabase();
+      return sendJson(200, { success: true, invoice: newInv });
+    }
+
+    // 9d. Invoices: Dunning Retry & Reminders (DUN-1 to DUN-5)
+    const invDunningMatch = apiPath.match(/^\/invoices\/([^/]+)\/dunning-retry$/);
+    if (invDunningMatch && method === 'POST') {
+      const inv = db.invoices.find(i => i.id === invDunningMatch[1]);
+      if (!inv) return sendJson(404, { error: 'Invoice not found' });
+      if (inv.status === 'paid' || inv.status === 'cancelled') {
+        return sendJson(400, { error: 'Payment or cancellation stops remaining dunning reminders (DUN-2).' });
+      }
+
+      // DUN-5: Idempotency - running twice in one day sends each reminder once
+      const todayStr = new Date().toISOString().split('T')[0];
+      if (!db.reminderLogs) db.reminderLogs = [];
+      const alreadySent = db.reminderLogs.find(r => r.invoiceId === inv.id && (r.sentAt || '').startsWith(todayStr));
+      if (alreadySent) {
+        return sendJson(200, { success: true, message: 'Reminder already sent today (idempotent DUN-5)', reminder: alreadySent });
+      }
+
+      inv.reminderCount = (inv.reminderCount || 0) + 1;
+      if (inv.reminderCount >= 3) {
+        inv.needsFollowUp = true; // DUN-4
+      }
+
+      const reminderRecord = {
+        id: 'rem_' + crypto.randomBytes(4).toString('hex'),
+        invoiceId: inv.id,
+        invoiceNumber: inv.number,
+        step: `Dunning Notice #${inv.reminderCount}`,
+        sentAt: new Date().toISOString(),
+        channel: 'email',
+        result: 'delivered'
+      };
+      db.reminderLogs.unshift(reminderRecord);
+      logAudit(currentSession.user.email, 'DUNNING_REMINDER_SENT', inv.number, null, reminderRecord);
+      saveDatabase();
+      return sendJson(200, { success: true, reminder: reminderRecord, invoice: inv });
+    }
+
+    // 10. Invoices: Payment (Supports Partial & Overpayments per PAYX-1 to PAYX-4)
     const invPayMatch = apiPath.match(/^\/invoices\/([^/]+)\/pay$/);
     if (invPayMatch && method === 'POST') {
       const invId = invPayMatch[1];
       const inv = db.invoices.find(i => i.id === invId);
       if (!inv) return sendJson(404, { error: 'Invoice not found' });
+      if (inv.status === 'cancelled') return sendJson(400, { error: 'Cannot pay a cancelled invoice.' });
 
-      const { method: payMethod } = body;
-      inv.status = 'paid';
-      inv.paidAt = new Date().toISOString();
+      const { method: payMethod, amountMinor } = body;
+      const currentDue = inv.amountDueMinor !== undefined ? inv.amountDueMinor : inv.totalMinor;
+      const requested = amountMinor !== undefined ? Number(amountMinor) : currentDue;
+      const acceptedPay = Math.min(requested, currentDue);
+      const overpayment = requested - acceptedPay;
+
+      inv.amountPaidMinor = (inv.amountPaidMinor || 0) + acceptedPay;
+      inv.amountDueMinor = inv.totalMinor - inv.amountPaidMinor;
+
+      if (inv.amountDueMinor <= 0) {
+        inv.status = 'paid';
+        inv.paidAt = new Date().toISOString();
+        inv.partiallyPaid = false;
+      } else {
+        inv.status = 'confirmed';
+        inv.partiallyPaid = true;
+      }
       inv.paymentFailedFlag = false;
 
       const paymentRecord = {
         id: 'pay_sbx_' + crypto.randomBytes(4).toString('hex'),
         invoiceId: inv.id,
         method: payMethod || 'Sandbox Instant Card',
-        amountMinor: inv.totalMinor,
+        amountMinor: acceptedPay,
         currency: inv.currency,
         provider: 'sandbox',
         gatewayReference: 'sbx_tx_' + crypto.randomBytes(6).toString('hex'),
         date: new Date().toISOString(),
-        note: 'Payment successfully settled through built-in sandbox gateway'
+        note: acceptedPay === currentDue ? 'Full invoice payment settled' : 'Partial installment payment received'
       };
       db.payments.unshift(paymentRecord);
+
+      // Overpayment handled as CustomerCredit (PAYX-4)
+      if (overpayment > 0) {
+        if (!db.customerCredits) db.customerCredits = [];
+        db.customerCredits.push({
+          id: 'crd_' + crypto.randomBytes(4).toString('hex'),
+          customerId: inv.customerId,
+          currency: inv.currency,
+          amountMinor: overpayment,
+          source: 'overpayment_credit',
+          usedOnInvoice: null,
+          createdAt: new Date().toISOString()
+        });
+      }
 
       // Restore health score if associated subscription was at risk
       const sub = db.subscriptions.find(s => s.id === inv.subscriptionId);
@@ -424,7 +619,153 @@ const server = http.createServer(async (req, res) => {
 
       logAudit(currentSession.user.email, 'PAYMENT_RECORDED', inv.number, null, paymentRecord);
       saveDatabase();
-      return sendJson(200, { success: true, invoice: inv, payment: paymentRecord });
+      return sendJson(200, { success: true, invoice: inv, payment: paymentRecord, overpaymentCredit: overpayment > 0 ? overpayment : 0 });
+    }
+
+    // 10b. Payments: Reversal (PAYX-5)
+    const payRevMatch = apiPath.match(/^\/payments\/([^/]+)\/reverse$/);
+    if (payRevMatch && method === 'POST') {
+      if (currentSession.user.role === 'customer') {
+        return sendJson(403, { error: 'Only internal staff can reverse payments (PAYX-5).' });
+      }
+      const origPay = db.payments.find(p => p.id === payRevMatch[1]);
+      if (!origPay) return sendJson(404, { error: 'Payment not found' });
+      if (origPay.amountMinor < 0) return sendJson(400, { error: 'Cannot reverse a reversal payment.' });
+
+      const { reason } = body;
+      if (!reason || !reason.trim()) return sendJson(400, { error: 'Reversal reason is required (PAYX-5).' });
+
+      const reversalRecord = {
+        id: 'pay_rev_' + crypto.randomBytes(4).toString('hex'),
+        invoiceId: origPay.invoiceId,
+        method: 'Reversal of ' + origPay.id,
+        amountMinor: -origPay.amountMinor,
+        currency: origPay.currency,
+        provider: origPay.provider,
+        reversalOfPaymentId: origPay.id,
+        reason: reason.trim(),
+        date: new Date().toISOString(),
+        note: 'Payment reversed: ' + reason.trim()
+      };
+      db.payments.unshift(reversalRecord);
+
+      const targetInv = db.invoices.find(i => i.id === origPay.invoiceId);
+      if (targetInv) {
+        targetInv.amountPaidMinor = Math.max(0, (targetInv.amountPaidMinor || 0) - origPay.amountMinor);
+        targetInv.amountDueMinor = targetInv.totalMinor - targetInv.amountPaidMinor;
+        if (targetInv.amountDueMinor > 0) {
+          targetInv.status = 'confirmed';
+          targetInv.partiallyPaid = targetInv.amountPaidMinor > 0;
+          targetInv.paidAt = null;
+        }
+      }
+
+      logAudit(currentSession.user.email, 'PAYMENT_REVERSED', origPay.id, origPay.amountMinor, { reversalId: reversalRecord.id, reason });
+      saveDatabase();
+      return sendJson(200, { success: true, reversal: reversalRecord, invoice: targetInv });
+    }
+
+    // 10c. Renewal History List (REN-6)
+    if (apiPath === '/renewals/history' && method === 'GET') {
+      let list = db.renewalHistory || [];
+      if (currentSession.user.role === 'customer') {
+        const cust = db.customers.find(c => c.userId === currentSession.user.id);
+        const subIds = new Set(db.subscriptions.filter(s => s.customerId === (cust ? cust.id : '')).map(s => s.id));
+        list = list.filter(r => subIds.has(r.subscriptionId));
+      }
+      return sendJson(200, list);
+    }
+
+    // 10d. Customer Credits List (PAYX-4, PRO-6)
+    if (apiPath === '/customer-credits' && method === 'GET') {
+      let list = db.customerCredits || [];
+      if (currentSession.user.role === 'customer') {
+        const cust = db.customers.find(c => c.userId === currentSession.user.id);
+        list = list.filter(c => c.customerId === (cust ? cust.id : ''));
+      }
+      return sendJson(200, list);
+    }
+
+    // 10e. Discount Usage Tracking (DUSE-6)
+    if (apiPath === '/discounts/usage' && method === 'GET') {
+      return sendJson(200, db.discountUsage || []);
+    }
+
+    // 10f. Dunning Logs (DUN-3)
+    if (apiPath === '/dunning/logs' && method === 'GET') {
+      return sendJson(200, db.reminderLogs || []);
+    }
+
+    // 10g. Audit Log CSV Export (AUD-4)
+    if (apiPath === '/audit-log/export-csv' && method === 'GET') {
+      const headers = ['Timestamp', 'Actor', 'Action', 'Entity', 'Before', 'After'];
+      const rows = (db.auditLogs || []).map(l => [
+        `"${l.timestamp || ''}"`,
+        `"${(l.actor || '').replace(/"/g, '""')}"`,
+        `"${(l.action || '').replace(/"/g, '""')}"`,
+        `"${(l.entity || '').replace(/"/g, '""')}"`,
+        `"${(l.before || '').replace(/"/g, '""')}"`,
+        `"${(l.after || '').replace(/"/g, '""')}"`
+      ].join(','));
+      const csv = [headers.join(','), ...rows].join('\r\n');
+      res.writeHead(200, {
+        'Content-Type': 'text/csv; charset=utf-8',
+        'Content-Disposition': 'attachment; filename="brightloop_audit_logs.csv"'
+      });
+      return res.end(csv);
+    }
+
+    // 10h. Payment Gateway Webhook (GW-1 to GW-5)
+    if (apiPath === '/webhooks/gateway' && method === 'POST') {
+      const { eventId, eventType, invoiceId, amountMinor, gatewayReference } = body;
+      if (!eventId) return sendJson(400, { error: 'Missing eventId in webhook payload (GW-3).' });
+      if (!db.webhookEvents) db.webhookEvents = [];
+      const existing = db.webhookEvents.find(w => w.eventId === eventId);
+      if (existing) {
+        // GW-3: repeated webhook does nothing
+        return sendJson(200, { success: true, message: 'Event already processed (idempotent GW-3)', event: existing });
+      }
+
+      const inv = db.invoices.find(i => i.id === invoiceId || i.number === invoiceId);
+      if (inv) {
+        if (inv.status === 'paid') {
+          // GW-4: payment arriving for already-paid invoice flagged for staff
+          inv.needsStaffReview = true;
+          inv.overpaymentNote = 'Gateway payment received for settled invoice';
+        } else {
+          inv.status = 'paid';
+          inv.paidAt = new Date().toISOString();
+          inv.amountPaidMinor = inv.totalMinor;
+          inv.amountDueMinor = 0;
+          inv.partiallyPaid = false;
+          inv.paymentFailedFlag = false;
+
+          const pmt = {
+            id: 'pay_gw_' + crypto.randomBytes(4).toString('hex'),
+            invoiceId: inv.id,
+            method: 'Hosted Checkout Gateway (Test Mode)',
+            amountMinor: amountMinor || inv.totalMinor,
+            currency: inv.currency,
+            provider: 'sandbox_gateway',
+            gatewayReference: gatewayReference || 'gw_ref_' + crypto.randomBytes(6).toString('hex'),
+            date: new Date().toISOString(),
+            note: 'Settled via gateway test mode webhook (GW-2)'
+          };
+          db.payments.unshift(pmt);
+        }
+      }
+
+      const evtRecord = {
+        id: 'wevt_' + crypto.randomBytes(4).toString('hex'),
+        eventId,
+        eventType: eventType || 'invoice.payment_succeeded',
+        provider: 'sandbox_gateway',
+        processedAt: new Date().toISOString()
+      };
+      db.webhookEvents.unshift(evtRecord);
+      logAudit('system', 'GATEWAY_WEBHOOK_PROCESSED', eventId, null, evtRecord);
+      saveDatabase();
+      return sendJson(200, { success: true, processed: evtRecord, invoice: inv });
     }
 
     // 11. Bill-Runs: Dry-Run Engine with Anomaly Flags (NEW-8)

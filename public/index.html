@@ -9,35 +9,35 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #FFFBF5;
+      --bg: #FFFDF9;
       --surface: #FFFFFF;
-      --primary: #000000;
+      --primary: #0F172A;
       --secondary: #4F46E5;
       --secondary-hover: #4338CA;
       --accent: #F59E0B;
-      --text: #1F2937;
-      --muted: #6B7280;
-      --border: #E5E7EB;
-      --radius-card: 1.5rem;
-      --radius-input: 1rem;
-      --chip-draft-bg: #F3F4F6; --chip-draft-text: #374151;
-      --chip-confirm-bg: #E0E7FF; --chip-confirm-text: #3730A3;
-      --chip-active-bg: #DCFCE7; --chip-active-text: #166534;
-      --chip-idle-bg: #FEF3C7; --chip-idle-text: #92400E;
-      --chip-overdue-bg: #FEE2E2; --chip-overdue-text: #991B1B;
+      --text: #0F172A;
+      --muted: #64748B;
+      --border: #E2E8F0;
+      --radius-card: 12px;
+      --radius-input: 8px;
+      --chip-draft-bg: #F1F5F9; --chip-draft-text: #475569;
+      --chip-confirm-bg: #EEF2FF; --chip-confirm-text: #4338CA;
+      --chip-active-bg: #ECFDF5; --chip-active-text: #065F46;
+      --chip-idle-bg: #FFFBEB; --chip-idle-text: #92400E;
+      --chip-overdue-bg: #FEF2F2; --chip-overdue-text: #991B1B;
     }
 
     [data-theme="dark"] {
-      --bg: #0B0B0F;
-      --surface: #15151B;
-      --primary: #FFFFFF;
+      --bg: #0B0E14;
+      --surface: #141923;
+      --primary: #F8FAFC;
       --secondary: #818CF8;
       --secondary-hover: #A5B4FC;
       --accent: #F59E0B;
-      --text: #F3F4F6;
-      --muted: #9CA3AF;
-      --border: #2A2A33;
-      --chip-draft-bg: #1F2430; --chip-draft-text: #E2E8F0;
+      --text: #F1F5F9;
+      --muted: #94A3B8;
+      --border: #232B3B;
+      --chip-draft-bg: #1E293B; --chip-draft-text: #CBD5E1;
       --chip-confirm-bg: #1E1B4B; --chip-confirm-text: #C7D2FE;
       --chip-active-bg: #064E3B; --chip-active-text: #A7F3D0;
       --chip-idle-bg: #451A03; --chip-idle-text: #FDE68A;
@@ -46,14 +46,66 @@
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: 'Inter', -apple-system, sans-serif;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       background-color: var(--bg);
       color: var(--text);
       line-height: 1.6;
-      transition: background-color 0.2s ease, color 0.2s ease;
+      transition: background-color 0.25s ease, color 0.25s ease;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
+      position: relative;
+    }
+
+    /* Subtle Ambient Glowing Background */
+    .ambient-mesh-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+      opacity: 0.6;
+    }
+    .ambient-glow-1 {
+      position: absolute;
+      top: -120px;
+      right: 8%;
+      width: 580px;
+      height: 580px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(79, 70, 229, 0.12) 0%, rgba(79, 70, 229, 0) 70%);
+      filter: blur(80px);
+      animation: glowShift1 24s ease-in-out infinite alternate;
+    }
+    .ambient-glow-2 {
+      position: absolute;
+      top: 35%;
+      left: -120px;
+      width: 520px;
+      height: 520px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(245, 158, 11, 0.08) 0%, rgba(245, 158, 11, 0) 70%);
+      filter: blur(75px);
+      animation: glowShift2 28s ease-in-out infinite alternate;
+    }
+    [data-theme="dark"] .ambient-glow-1 {
+      background: radial-gradient(circle, rgba(129, 140, 248, 0.15) 0%, rgba(129, 140, 248, 0) 70%);
+    }
+    [data-theme="dark"] .ambient-glow-2 {
+      background: radial-gradient(circle, rgba(168, 85, 247, 0.08) 0%, rgba(168, 85, 247, 0) 70%);
+    }
+    @keyframes glowShift1 {
+      0% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(-45px, 35px) scale(1.08); }
+      100% { transform: translate(35px, -25px) scale(0.95); }
+    }
+    @keyframes glowShift2 {
+      0% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(35px, -25px) scale(1.06); }
+      100% { transform: translate(-25px, 30px) scale(0.92); }
     }
 
     h1, h2, h3, h4, .brand-font {
@@ -68,13 +120,14 @@
     .navbar {
       background: var(--surface);
       border-bottom: 1px solid var(--border);
-      padding: 14px 32px;
+      padding: 12px 32px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       position: sticky;
       top: 0;
       z-index: 40;
+      backdrop-filter: blur(8px);
     }
     .logo-container {
       display: flex;
@@ -91,25 +144,26 @@
       flex-wrap: wrap;
     }
     .nav-tab {
-      background: none;
-      border: none;
+      background: transparent;
+      border: 1px solid transparent;
       color: var(--muted);
       font-size: 13px;
       font-weight: 500;
-      padding: 6px 14px;
-      border-radius: 9999px;
+      padding: 6px 12px;
+      border-radius: 6px;
       cursor: pointer;
       transition: all 0.15s ease;
       white-space: nowrap;
     }
-    .nav-tab:hover { color: var(--text); background: var(--bg); }
-    .nav-tab.active {
-      color: #FFFFFF;
-      background: #000000;
+    .nav-tab:hover {
+      color: var(--text);
+      background: rgba(125, 125, 125, 0.08);
     }
-    [data-theme="dark"] .nav-tab.active {
-      color: #000000;
-      background: #FFFFFF;
+    .nav-tab.active {
+      color: var(--primary);
+      background: var(--bg);
+      border-color: var(--border);
+      font-weight: 600;
     }
 
     .nav-right {
@@ -118,28 +172,40 @@
       gap: 12px;
     }
 
-    /* Buttons */
+    /* Modern Sleek Buttons (Non-AI Architectural Style) */
     .btn {
-      font-family: 'Inter', sans-serif;
+      font-family: 'Inter', -apple-system, sans-serif;
       font-size: 13px;
-      font-weight: 600;
-      padding: 9px 18px;
-      border-radius: 9999px;
+      font-weight: 500;
+      padding: 8px 16px;
+      border-radius: 8px;
       cursor: pointer;
-      border: 1px solid transparent;
+      border: 1px solid var(--border);
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
-      transition: all 0.15s ease;
+      transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
       text-decoration: none;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+      line-height: 1.4;
+    }
+    .btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+    }
+    .btn:active {
+      transform: translateY(0);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
     }
     .btn-primary {
       background: var(--primary);
       color: var(--bg);
+      border-color: var(--primary);
     }
     .btn-primary:hover {
       background: var(--secondary);
+      border-color: var(--secondary);
       color: #FFFFFF;
     }
     .btn-secondary {
@@ -154,9 +220,158 @@
     .btn-danger {
       background: #DC2626;
       color: #FFFFFF;
+      border-color: #DC2626;
     }
-    .btn-danger:hover { background: #B91C1C; }
-    .btn-sm { padding: 5px 12px; font-size: 12px; }
+    .btn-danger:hover {
+      background: #B91C1C;
+      border-color: #B91C1C;
+    }
+    .btn-sm {
+      padding: 5px 12px;
+      font-size: 12px;
+      border-radius: 6px;
+    }
+
+    /* Sliding Theme Switch (Moon and Sun Minimalist SVGs) */
+    .theme-switch-btn {
+      width: 52px;
+      height: 28px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 9999px;
+      position: relative;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      padding: 2px;
+      transition: background-color 0.2s ease, border-color 0.2s ease;
+      outline: none;
+      flex-shrink: 0;
+    }
+    .theme-switch-btn:hover { border-color: var(--muted); }
+    .theme-switch-thumb {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      transform: translateX(1px);
+      color: #D97706; /* Sun amber */
+    }
+    .theme-switch-thumb .icon-sun { display: block; }
+    .theme-switch-thumb .icon-moon { display: none; }
+    [data-theme="dark"] .theme-switch-thumb {
+      transform: translateX(25px);
+      color: #818CF8; /* Moon indigo */
+    }
+    [data-theme="dark"] .theme-switch-thumb .icon-sun { display: none; }
+    [data-theme="dark"] .theme-switch-thumb .icon-moon { display: block; }
+
+    /* Command / Assistant Trigger Button */
+    .assistant-trigger-btn {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      padding: 5px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.15s ease;
+    }
+    .assistant-trigger-btn:hover {
+      border-color: var(--muted);
+      background: var(--surface);
+    }
+    .kbd-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+    }
+    .kbd-badge kbd {
+      font-family: 'Inter', monospace;
+      font-size: 10px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1px 5px;
+      color: var(--muted);
+    }
+
+    /* User Profile Badge (Linear/Stripe Style) */
+    .user-profile-badge {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 4px 10px 4px 6px;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+    }
+    .user-avatar-initials {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      background: var(--secondary);
+      color: #FFFFFF;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      letter-spacing: 0.02em;
+    }
+    .user-meta {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.2;
+    }
+    .user-meta-name {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .user-status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #10B981;
+    }
+    .user-meta-role {
+      font-size: 10px;
+      color: var(--muted);
+      text-transform: capitalize;
+    }
+    .user-logout-btn {
+      background: none;
+      border: none;
+      color: var(--muted);
+      cursor: pointer;
+      padding: 4px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      margin-left: 2px;
+      transition: color 0.15s, background-color 0.15s;
+    }
+    .user-logout-btn:hover {
+      color: #EF4444;
+      background: rgba(239, 68, 68, 0.1);
+    }
 
     /* Layout & Cards */
     .container {
@@ -238,45 +453,58 @@
     tr:last-child td { border-bottom: none; }
     tr:hover td { background: rgba(0,0,0,0.015); }
 
-    /* Alert Banners */
+    /* Architectural Enterprise Alert Strips (Non-AI, 8px radius with Left Accent Border) */
     .alert-banner {
-      border-radius: var(--radius-card);
-      padding: 18px 22px;
-      margin-bottom: 24px;
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin-bottom: 20px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 16px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
     }
     .alert-idle {
-      background: #FEF3C7;
-      border: 1px solid #F59E0B;
-      color: #92400E;
+      border-left: 4px solid #F59E0B;
+      background: rgba(245, 158, 11, 0.08);
+      color: var(--text);
     }
     [data-theme="dark"] .alert-idle {
-      background: #451A03;
-      border-color: #B45309;
+      border-left: 4px solid #F59E0B;
+      background: rgba(245, 158, 11, 0.12);
       color: #FDE68A;
     }
     .alert-danger {
-      background: #FEE2E2;
-      border: 1px solid #EF4444;
-      color: #991B1B;
+      border-left: 4px solid #EF4444;
+      background: rgba(239, 68, 68, 0.08);
+      color: var(--text);
     }
     [data-theme="dark"] .alert-danger {
-      background: #450A0A;
-      border-color: #DC2626;
+      border-left: 4px solid #EF4444;
+      background: rgba(239, 68, 68, 0.12);
       color: #FECACA;
     }
     .alert-info {
-      background: #E0E7FF;
-      border: 1px solid #818CF8;
-      color: #3730A3;
+      border-left: 4px solid #4F46E5;
+      background: rgba(79, 70, 229, 0.08);
+      color: var(--text);
     }
     [data-theme="dark"] .alert-info {
-      background: #1E1B4B;
-      border-color: #4F46E5;
+      border-left: 4px solid #818CF8;
+      background: rgba(79, 70, 229, 0.12);
       color: #C7D2FE;
+    }
+    .alert-success {
+      border-left: 4px solid #10B981;
+      background: rgba(16, 185, 129, 0.08);
+      color: var(--text);
+    }
+    [data-theme="dark"] .alert-success {
+      border-left: 4px solid #10B981;
+      background: rgba(16, 185, 129, 0.12);
+      color: #A7F3D0;
     }
 
     /* Modals */
@@ -486,6 +714,12 @@
 </head>
 <body data-theme="light">
 
+  <!-- Subtle Animated Ambient Glow Background -->
+  <div class="ambient-mesh-bg">
+    <div class="ambient-glow-1"></div>
+    <div class="ambient-glow-2"></div>
+  </div>
+
   <!-- MAIN NAVIGATION BAR -->
   <header class="navbar">
     <div class="logo-container" onclick="handleLogoClick()">
@@ -507,20 +741,60 @@
     </nav>
 
     <div class="nav-right">
-      <button class="btn btn-secondary btn-sm" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
-        <span id="themeIcon">Theme</span>
+      <!-- Sliding Dark / Light Mode Toggle Button with Minimalist Moon / Sun Icons -->
+      <button class="theme-switch-btn" onclick="toggleTheme()" title="Toggle Dark / Light Mode" id="themeSwitchBtn" role="switch" aria-label="Toggle theme">
+        <span class="theme-switch-thumb">
+          <!-- Minimalist SVG Sun icon (Light mode) -->
+          <svg class="icon-sun" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="4"/>
+            <line x1="12" y1="2" x2="12" y2="4"/>
+            <line x1="12" y1="20" x2="12" y2="22"/>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+            <line x1="2" y1="12" x2="4" y2="12"/>
+            <line x1="20" y1="12" x2="22" y2="12"/>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+          </svg>
+          <!-- Minimalist SVG Moon icon (Dark mode) -->
+          <svg class="icon-moon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </span>
       </button>
 
-      <!-- If Logged In -->
-      <div id="authNavUserArea" style="display: none; align-items: center; gap: 8px;">
-        <button class="btn btn-secondary btn-sm" onclick="toggleAssistant()" title="Open Assistant (Ctrl+K)">
-          <span>Assistant (Ctrl+K)</span>
+      <!-- If Logged In: Modern Assistant & User Profile Details -->
+      <div id="authNavUserArea" style="display: none; align-items: center; gap: 10px;">
+        <!-- Raycast/Linear Command Trigger -->
+        <button class="assistant-trigger-btn" onclick="toggleAssistant()" title="AI Billing Assistant (Ctrl+K)">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+          </svg>
+          <span>Assistant</span>
+          <span class="kbd-badge"><kbd>Ctrl</kbd><kbd>K</kbd></span>
         </button>
-        <span id="currentUserNameDisplay" style="font-size: 12px; font-weight: 600; background: var(--bg); padding: 5px 12px; border-radius: 9999px; border: 1px solid var(--border);"></span>
-        <button class="btn btn-secondary btn-sm" onclick="logoutSession()">Sign Out</button>
+
+        <!-- Monogram User Profile Badge -->
+        <div class="user-profile-badge">
+          <div class="user-avatar-initials" id="userAvatarBadge">PS</div>
+          <div class="user-meta">
+            <div class="user-meta-name">
+              <span id="currentUserNameDisplay">Priya Sharma</span>
+              <span class="user-status-dot" title="Active"></span>
+            </div>
+            <div class="user-meta-role" id="currentUserRoleDisplay">Customer · Acme Corp</div>
+          </div>
+          <button class="user-logout-btn" onclick="logoutSession()" title="Sign Out">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+              <polyline points="16 17 21 12 16 7"/>
+              <line x1="21" y1="12" x2="9" y2="12"/>
+            </svg>
+          </button>
+        </div>
       </div>
 
-      <!-- If Logged Out -->
+      <!-- If Logged Out: Clean Modern Buttons -->
       <div id="authNavGuestArea" style="display: flex; align-items: center; gap: 8px;">
         <button class="btn btn-secondary btn-sm" onclick="showPublicLoginView()">Sign In</button>
         <button class="btn btn-primary btn-sm" onclick="openHostedCheckout('plan_growth')">Get Started</button>
@@ -538,14 +812,30 @@
 
       <!-- Hero Section -->
       <div class="hero-section">
-        <div class="hero-badge">Recurring Billing Platform</div>
-        <h1 class="hero-title">Automate your subscription revenue from quote to payment.</h1>
+        <div class="hero-badge">Multi-Vendor Subscription Hub &amp; Billing Engine</div>
+        <h1 class="hero-title">One unified platform for all your recurring subscriptions.</h1>
         <p class="hero-subtitle">
-          BrightLoop Subscriptions provides multi-currency billing across 10 global currencies, pluggable payment gateways, automated tax calculation, usage metering, and intelligent customer lifecycle policies.
+          BrightLoop connects customers with multi-vendor subscriptions in a single clutter-free dashboard, while providing companies with global multi-currency billing, pluggable payment gateways, usage metering, and automated lifecycle intelligence.
         </p>
-        <div style="display: flex; justify-content: center; gap: 12px;">
+        <div style="display: flex; justify-content: center; gap: 12px; margin-bottom: 24px;">
           <button class="btn btn-primary" onclick="showPublicLoginView()">Customer Account Sign In</button>
-          <button class="btn btn-secondary" onclick="document.getElementById('publicPricingSection').scrollIntoView({behavior: 'smooth'})">View Plans & Pricing</button>
+          <button class="btn btn-secondary" onclick="document.getElementById('publicPricingSection').scrollIntoView({behavior: 'smooth'})">Explore Plans &amp; Pricing</button>
+        </div>
+
+        <!-- 3 Feature Pillars -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; text-align: left; margin-top: 36px;">
+          <div style="background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px;">
+            <strong style="font-size: 13px; color: var(--text);">Clutter-Free Hub</strong>
+            <p style="font-size: 12px; color: var(--muted); margin-top: 4px;">Unified visibility across multiple software providers. View active services, health scores, and upcoming charges in one place.</p>
+          </div>
+          <div style="background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px;">
+            <strong style="font-size: 13px; color: var(--text);">Multi-Currency Engine</strong>
+            <p style="font-size: 12px; color: var(--muted); margin-top: 4px;">Native multi-currency support across 10 currencies (INR, USD, EUR, etc.) with locked exchange rates and regional tax compliance.</p>
+          </div>
+          <div style="background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px;">
+            <strong style="font-size: 13px; color: var(--text);">Enterprise Gateway</strong>
+            <p style="font-size: 12px; color: var(--muted); margin-top: 4px;">Provider APIs for metered telemetry, signed HMAC webhooks, dry-run billing, and automated dunning protection.</p>
+          </div>
         </div>
       </div>
 
@@ -700,6 +990,7 @@
             <h2 id="subsHeaderTitle">Subscriptions</h2>
             <p style="color: var(--muted); font-size: 13px;">Lifecycle tracking: Draft, Quotation, Confirmed, Active, Paused, Closed.</p>
           </div>
+          <button class="btn btn-secondary btn-sm" onclick="openRenewalHistoryModal()">Renewal History (REN-6)</button>
         </div>
 
         <div class="card table-container">
@@ -708,9 +999,9 @@
               <tr>
                 <th>Number</th>
                 <th>Customer</th>
-                <th>Plan & Variant</th>
+                <th>Plan &amp; Variant</th>
                 <th>Status</th>
-                <th>Currency & Price</th>
+                <th>Currency &amp; Price</th>
                 <th>Health / Usage</th>
                 <th>Actions</th>
               </tr>
@@ -726,8 +1017,8 @@
       <section id="tab-invoices" class="tab-pane" style="display: none;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px;">
           <div>
-            <h2>Invoices & Billing History</h2>
-            <p style="color: var(--muted); font-size: 13px;">Multi-currency invoices, locked exchange rates, tax lines, and payment status.</p>
+            <h2>Invoices &amp; Billing History</h2>
+            <p style="color: var(--muted); font-size: 13px;">Multi-currency invoices, locked exchange rates, tax lines, partial payments, and cancellations.</p>
           </div>
         </div>
 
@@ -740,8 +1031,10 @@
                 <th>Period</th>
                 <th>Status</th>
                 <th>Due Date</th>
-                <th>Total Amount</th>
-                <th>Payment & PDF</th>
+                <th>Paid</th>
+                <th>Due</th>
+                <th>Total</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody id="invoicesTableBody">
@@ -909,9 +1202,14 @@
           </div>
         </div>
 
-        <!-- Audit Log Table -->
+        <!-- Audit Log Table & CSV Export (AUD-4) -->
         <div class="card table-container">
-          <h3 style="margin-bottom: 14px;">Append-Only Audit Log</h3>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+            <h3>Append-Only Audit Log</h3>
+            <a href="/api/v1/audit-log/export-csv" class="btn btn-secondary btn-sm" download="brightloop_audit_logs.csv">
+              Export Audit Log (CSV)
+            </a>
+          </div>
           <table>
             <thead>
               <tr>
@@ -1122,6 +1420,124 @@
     </div>
   </div>
 
+  <!-- CANCEL INVOICE MODAL (INVC-1 to INVC-6) -->
+  <div id="cancelInvoiceModal" class="modal-backdrop">
+    <div class="modal" style="max-width: 480px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+        <h3 id="cancelInvModalTitle">Cancel Invoice</h3>
+        <button onclick="closeCancelInvoiceModal()" style="background: none; border: none; font-size: 20px; cursor: pointer; color: var(--muted);">&times;</button>
+      </div>
+      <p style="font-size: 13px; color: var(--muted); margin-bottom: 16px;">
+        Rule INVC-2: Cancelling requires an explicit reason and records who cancelled and when. Cancelled invoices are excluded from totals and their period can be re-billed.
+      </p>
+      <div id="cancelInvErrorAlert" class="alert-banner alert-danger" style="display: none; padding: 10px 14px; font-size: 12px; margin-bottom: 14px;"></div>
+      <div class="form-group">
+        <label class="form-label">Cancellation Reason (Required)</label>
+        <textarea id="cancelInvoiceReasonInput" class="form-input" style="height: 80px; resize: vertical;" placeholder="e.g. Billing error in tax computation; customer requested contract reissue"></textarea>
+      </div>
+      <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 18px;">
+        <button class="btn btn-secondary" onclick="closeCancelInvoiceModal()">Dismiss</button>
+        <button class="btn btn-danger" onclick="submitInvoiceCancellation()">Confirm Invoice Cancellation</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PARTIAL & FULL PAYMENT MODAL (PAYX-1 to PAYX-4) -->
+  <div id="partialPayModal" class="modal-backdrop">
+    <div class="modal" style="max-width: 500px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+        <h3 id="payModalTitle">Settle Invoice Payment</h3>
+        <button onclick="closePartialPayModal()" style="background: none; border: none; font-size: 20px; cursor: pointer; color: var(--muted);">&times;</button>
+      </div>
+      <div id="payModalSummaryBox" style="background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 14px; margin-bottom: 16px; font-size: 13px;">
+        <!-- Filled dynamically -->
+      </div>
+      <div class="form-group">
+        <label class="form-label">Payment Scope</label>
+        <div style="display: flex; gap: 14px; margin-bottom: 10px;">
+          <label style="display: flex; align-items: center; gap: 6px; font-size: 13px; cursor: pointer;">
+            <input type="radio" name="payTypeRadio" value="full" checked onchange="togglePayTypeInput()">
+            <span>Pay Full Balance</span>
+          </label>
+          <label style="display: flex; align-items: center; gap: 6px; font-size: 13px; cursor: pointer;">
+            <input type="radio" name="payTypeRadio" value="partial" onchange="togglePayTypeInput()">
+            <span>Custom Installment / Partial (PAYX-1)</span>
+          </label>
+        </div>
+      </div>
+      <div class="form-group" id="customPayAmountGroup" style="display: none;">
+        <label class="form-label">Custom Payment Amount</label>
+        <input type="number" id="customPayAmountInput" class="form-input" placeholder="Amount" step="0.01">
+        <small style="color: var(--muted); font-size: 11px;">Overpayments above due amount are safely credited to customer balance (PAYX-4).</small>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Payment Instrument</label>
+        <select id="payInstrumentSelect" class="form-select">
+          <option value="Sandbox Corporate Card">Sandbox Corporate Card (•••• 4242)</option>
+          <option value="Direct Bank Transfer">Direct Bank Transfer (RTGS / NEFT / ACH)</option>
+          <option value="Automated UPI Clearing">UPI Clearing Instant</option>
+        </select>
+      </div>
+      <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+        <button class="btn btn-secondary" onclick="closePartialPayModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="submitInvoicePayment()">Authorize &amp; Settle Payment</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RENEWAL HISTORY MODAL (REN-6) -->
+  <div id="renewalHistoryModal" class="modal-backdrop">
+    <div class="modal" style="max-width: 640px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+        <h3>Subscription Renewal History (REN-6)</h3>
+        <button onclick="closeRenewalHistoryModal()" style="background: none; border: none; font-size: 20px; cursor: pointer; color: var(--muted);">&times;</button>
+      </div>
+      <p style="font-size: 13px; color: var(--muted); margin-bottom: 14px;">
+        Rule REN-1: Renewal extends the existing subscription term and preserves the same subscription number.
+      </p>
+      <div class="table-container" style="max-height: 320px; overflow-y: auto;">
+        <table>
+          <thead>
+            <tr>
+              <th>Subscription</th>
+              <th>Old Expiry</th>
+              <th>New Expiry</th>
+              <th>Trigger &amp; By</th>
+              <th>Recorded Date</th>
+            </tr>
+          </thead>
+          <tbody id="renewalHistoryTableBody">
+            <!-- Filled dynamically -->
+          </tbody>
+        </table>
+      </div>
+      <div style="display: flex; justify-content: flex-end; margin-top: 18px;">
+        <button class="btn btn-secondary" onclick="closeRenewalHistoryModal()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAYMENT REVERSAL MODAL (PAYX-5) -->
+  <div id="reversePaymentModal" class="modal-backdrop">
+    <div class="modal" style="max-width: 480px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+        <h3 id="reversePayTitle">Reverse Payment (PAYX-5)</h3>
+        <button onclick="closeReversePaymentModal()" style="background: none; border: none; font-size: 20px; cursor: pointer; color: var(--muted);">&times;</button>
+      </div>
+      <p style="font-size: 13px; color: var(--muted); margin-bottom: 14px;">
+        Reversals create an immutable negative payment row. The target invoice amount due and status will recompute automatically.
+      </p>
+      <div class="form-group">
+        <label class="form-label">Reversal Reason (Required)</label>
+        <textarea id="reversalReasonInput" class="form-input" style="height: 70px; resize: vertical;" placeholder="e.g. Chargeback disputed, duplicate transaction settlement, banking clearance return"></textarea>
+      </div>
+      <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 18px;">
+        <button class="btn btn-secondary" onclick="closeReversePaymentModal()">Cancel</button>
+        <button class="btn btn-danger" onclick="submitPaymentReversal()">Confirm Reversal</button>
+      </div>
+    </div>
+  </div>
+
   <!-- REAL-WORLD PUBLIC FOOTER -->
   <footer>
     <div class="footer-grid">
@@ -1185,9 +1601,16 @@
     let checkoutPlanTarget = null;
 
     async function init() {
+      const savedTheme = localStorage.getItem('bl_theme');
+      if (savedTheme) {
+        document.body.setAttribute('data-theme', savedTheme);
+      }
       await loadSession();
       await loadCatalog();
       renderPricingCards();
+      checkUrlHash();
+
+      window.addEventListener('hashchange', checkUrlHash);
 
       // Keyboard shortcut Ctrl+K
       document.addEventListener('keydown', (e) => {
@@ -1196,6 +1619,17 @@
           toggleAssistant();
         }
       });
+    }
+
+    function checkUrlHash() {
+      const hash = window.location.hash;
+      if (hash === '#staff-portal' || hash === '#admin') {
+        openAdminLoginModal();
+      } else if (hash === '#service-portal' || hash === '#service') {
+        openServiceLoginModal();
+      } else if (hash === '#login' || hash === '#signin') {
+        showPublicLoginView();
+      }
     }
 
     // Session Management
@@ -1226,7 +1660,19 @@
       document.getElementById('navTabsContainer').style.display = 'flex';
       document.getElementById('authNavGuestArea').style.display = 'none';
       document.getElementById('authNavUserArea').style.display = 'flex';
-      document.getElementById('currentUserNameDisplay').textContent = `${data.user.name} (${data.user.role.toUpperCase()})`;
+
+      // Compute sleek monogram initials and role label
+      const nameParts = (data.user.name || 'User').split(' ');
+      const initials = nameParts.length > 1 ? (nameParts[0][0] + nameParts[1][0]).toUpperCase() : nameParts[0].substring(0, 2).toUpperCase();
+      document.getElementById('userAvatarBadge').textContent = initials;
+      document.getElementById('currentUserNameDisplay').textContent = data.user.name;
+
+      let roleLabel = data.user.role.toUpperCase();
+      if (data.customer) roleLabel = `Customer · ${data.customer.company || data.customer.name}`;
+      else if (data.service) roleLabel = `Partner · ${data.service.serviceName}`;
+      else if (data.user.role === 'admin') roleLabel = 'Super Administrator';
+      else if (data.user.role === 'staff') roleLabel = 'Finance Staff';
+      document.getElementById('currentUserRoleDisplay').textContent = roleLabel;
 
       const role = data.user.role;
       const nav = document.getElementById('navTabsContainer');
@@ -1485,10 +1931,15 @@
     }
 
     // Subscriptions Table
+    let activeInvoiceForPay = null;
+    let activeInvoiceForCancel = null;
+
+    // Subscriptions Table (with Renewal REN-1 to REN-6, Pause SUBST-3, Resume SUBST-4)
     async function loadSubscriptions() {
       const res = await fetch('/api/v1/subscriptions');
       const subs = await res.json();
       const tbody = document.getElementById('subscriptionsTableBody');
+      const isStaffOrAdmin = currentSession && (currentSession.user.role === 'admin' || currentSession.user.role === 'staff');
 
       tbody.innerHTML = subs.map(sub => `
         <tr>
@@ -1496,17 +1947,22 @@
           <td>${sub.customer ? sub.customer.name : sub.customerId}</td>
           <td>${sub.plan ? sub.plan.name : sub.planId}</td>
           <td><span class="chip chip-${sub.status}">${sub.status}</span></td>
-          <td class="tabular font-medium">${formatCurrency(sub.unitPriceMinor, sub.currency)}/mo</td>
+          <td class="tabular font-medium">
+            ${formatCurrency(sub.unitPriceMinor, sub.currency)}/mo
+            <div style="font-size: 11px; color: var(--muted);">Expires: ${sub.expiryDate || 'N/A'}</div>
+          </td>
           <td>
             <div style="font-size: 12px; font-weight: 600;">Score: ${sub.healthScore || 'N/A'}/100</div>
             <div style="font-size: 11px; color: var(--muted);">${sub.healthReason || 'Regular activity'}</div>
           </td>
           <td>
-            <div style="display: flex; gap: 6px;">
+            <div style="display: flex; gap: 6px; flex-wrap: wrap;">
               ${sub.status === 'idle' ? `<button class="btn btn-primary btn-sm" onclick="subAction('${sub.id}', 'keep')">Keep</button>` : ''}
               ${sub.status === 'active' ? `<button class="btn btn-secondary btn-sm" onclick="subAction('${sub.id}', 'pause')">Pause</button>` : ''}
               ${sub.status === 'paused' ? `<button class="btn btn-primary btn-sm" onclick="subAction('${sub.id}', 'resume')">Resume</button>` : ''}
+              ${(sub.status === 'active' || sub.status === 'paused') ? `<button class="btn btn-secondary btn-sm" onclick="renewSubscription('${sub.id}')">Renew</button>` : ''}
               <button class="btn btn-secondary btn-sm" onclick="openProrationModal('${sub.id}')">Change Plan</button>
+              ${(isStaffOrAdmin && sub.status !== 'closed') ? `<button class="btn btn-danger btn-sm" onclick="cancelSubscriptionPrompt('${sub.id}')">Close</button>` : ''}
             </div>
           </td>
         </tr>
@@ -1516,54 +1972,280 @@
     async function subAction(subId, action) {
       const res = await fetch(`/api/v1/subscriptions/${subId}/${action}`, { method: 'POST' });
       const data = await res.json();
+      if (!res.ok) {
+        alert('Action Blocked: ' + (data.error || 'Failed to update subscription'));
+        return;
+      }
+      alert(`Subscription updated successfully: status is now '${data.subscription.status}'`);
+      await loadSubscriptions();
+      if (currentSession.user.role !== 'customer') await loadDashboard();
+      await renderCustomerBanner();
+    }
+
+    async function renewSubscription(subId) {
+      const res = await fetch(`/api/v1/subscriptions/${subId}/renew`, { method: 'POST' });
+      const data = await res.json();
+      if (!res.ok) {
+        alert('Renewal error: ' + (data.error || 'Unable to renew subscription'));
+        return;
+      }
+      alert(`Subscription ${data.subscription.number} renewed! New expiry date: ${data.subscription.expiryDate}. Same subscription number maintained (REN-1).`);
+      await loadSubscriptions();
+    }
+
+    async function cancelSubscriptionPrompt(subId) {
+      const reason = prompt('Please enter cancellation reason for subscription:');
+      if (!reason || !reason.trim()) return;
+      const res = await fetch(`/api/v1/subscriptions/${subId}/cancel`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ reason })
+      });
+      const data = await res.json();
       if (data.success) {
-        alert(`Subscription updated: ${data.subscription.status}`);
+        alert('Subscription has been closed.');
         await loadSubscriptions();
         if (currentSession.user.role !== 'customer') await loadDashboard();
-        await renderCustomerBanner();
       }
     }
 
-    // Invoices Table
+    // Invoices Table (INVC-1 to INVC-6, PAYX-1 to PAYX-7)
     async function loadInvoices() {
       const res = await fetch('/api/v1/invoices');
       const invoices = await res.json();
       const tbody = document.getElementById('invoicesTableBody');
+      const isStaffOrAdmin = currentSession && (currentSession.user.role === 'admin' || currentSession.user.role === 'staff');
 
-      tbody.innerHTML = invoices.map(inv => `
-        <tr>
-          <td><strong>${inv.number}</strong></td>
-          <td>${inv.customer ? inv.customer.name : inv.customerId}</td>
-          <td>${inv.period}</td>
-          <td>
-            <span class="chip chip-${inv.status}">${inv.status}</span>
-            ${inv.paymentFailedFlag ? '<span class="chip chip-overdue" style="margin-left: 4px;">Dunning #1</span>' : ''}
-          </td>
-          <td>${inv.dueDate}</td>
-          <td class="tabular font-medium">${formatCurrency(inv.totalMinor, inv.currency)}</td>
-          <td>
-            <div style="display: flex; gap: 6px;">
-              <a href="/invoices/${inv.id}/print" target="_blank" class="btn btn-secondary btn-sm">PDF View</a>
-              ${inv.status !== 'paid' ? `<button class="btn btn-primary btn-sm" onclick="payInvoice('${inv.id}')">Pay (Sandbox)</button>` : ''}
-            </div>
-          </td>
-        </tr>
-      `).join('');
+      tbody.innerHTML = invoices.map(inv => {
+        const paidMinor = inv.amountPaidMinor || 0;
+        const dueMinor = inv.amountDueMinor !== undefined ? inv.amountDueMinor : (inv.status === 'paid' ? 0 : inv.totalMinor);
+        const isCancelled = inv.status === 'cancelled';
+        const isPaid = inv.status === 'paid';
+
+        return `
+          <tr>
+            <td><strong>${inv.number}</strong></td>
+            <td>${inv.customer ? inv.customer.name : inv.customerId}</td>
+            <td>${inv.period}</td>
+            <td>
+              <span class="chip chip-${inv.status}">${inv.status}</span>
+              ${inv.partiallyPaid ? '<span class="chip chip-confirm" style="margin-left: 4px;">Partially paid</span>' : ''}
+              ${inv.paymentFailedFlag ? '<span class="chip chip-overdue" style="margin-left: 4px;">Dunning #1</span>' : ''}
+              ${inv.needsFollowUp ? '<span class="chip chip-overdue" style="margin-left: 4px;">Needs Follow-Up</span>' : ''}
+            </td>
+            <td>${inv.dueDate}</td>
+            <td class="tabular font-medium" style="color: #166534;">${formatCurrency(paidMinor, inv.currency)}</td>
+            <td class="tabular font-medium" style="color: ${dueMinor > 0 ? '#DC2626' : 'var(--muted)'};">${formatCurrency(dueMinor, inv.currency)}</td>
+            <td class="tabular font-medium">${formatCurrency(inv.totalMinor, inv.currency)}</td>
+            <td>
+              <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                <a href="/invoices/${inv.id}/print" target="_blank" class="btn btn-secondary btn-sm">PDF</a>
+                ${(!isPaid && !isCancelled) ? `<button class="btn btn-primary btn-sm" onclick="openPartialPayModal('${inv.id}')">Pay</button>` : ''}
+                ${(isStaffOrAdmin && !isPaid && !isCancelled) ? `<button class="btn btn-danger btn-sm" onclick="openCancelInvoiceModal('${inv.id}')">Cancel</button>` : ''}
+                ${(isCancelled && isStaffOrAdmin) ? `<button class="btn btn-secondary btn-sm" onclick="regenerateCancelledInvoice('${inv.subscriptionId}', '${inv.period}')">Regenerate Draft</button>` : ''}
+                ${(isStaffOrAdmin && !isPaid && !isCancelled && (inv.paymentFailedFlag || dueMinor > 0)) ? `<button class="btn btn-secondary btn-sm" onclick="triggerDunningNotice('${inv.id}')">Remind</button>` : ''}
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
     }
 
-    async function payInvoice(invId) {
-      const res = await fetch(`/api/v1/invoices/${invId}/pay`, {
+    // Modal: Partial & Full Payment (PAYX-1 to PAYX-4)
+    async function openPartialPayModal(invId) {
+      const res = await fetch('/api/v1/invoices');
+      const invoices = await res.json();
+      const inv = invoices.find(i => i.id === invId);
+      if (!inv) return;
+
+      activeInvoiceForPay = inv;
+      const paidMinor = inv.amountPaidMinor || 0;
+      const dueMinor = inv.amountDueMinor !== undefined ? inv.amountDueMinor : inv.totalMinor;
+
+      document.getElementById('payModalTitle').textContent = `Settle Invoice ${inv.number}`;
+      document.getElementById('payModalSummaryBox').innerHTML = `
+        <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+          <span>Invoice Total:</span>
+          <strong>${formatCurrency(inv.totalMinor, inv.currency)}</strong>
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 6px; color: #166534;">
+          <span>Amount Already Paid:</span>
+          <span>${formatCurrency(paidMinor, inv.currency)}</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-weight: 700; border-top: 1px solid var(--border); padding-top: 6px; color: #DC2626;">
+          <span>Outstanding Amount Due:</span>
+          <span>${formatCurrency(dueMinor, inv.currency)}</span>
+        </div>
+      `;
+
+      document.querySelector('input[name="payTypeRadio"][value="full"]').checked = true;
+      document.getElementById('customPayAmountGroup').style.display = 'none';
+      document.getElementById('customPayAmountInput').value = (dueMinor / 100).toFixed(2);
+      document.getElementById('partialPayModal').style.display = 'flex';
+    }
+
+    function closePartialPayModal() {
+      document.getElementById('partialPayModal').style.display = 'none';
+      activeInvoiceForPay = null;
+    }
+
+    function togglePayTypeInput() {
+      const isPartial = document.querySelector('input[name="payTypeRadio"]:checked').value === 'partial';
+      document.getElementById('customPayAmountGroup').style.display = isPartial ? 'block' : 'none';
+    }
+
+    async function submitInvoicePayment() {
+      if (!activeInvoiceForPay) return;
+      const isPartial = document.querySelector('input[name="payTypeRadio"]:checked').value === 'partial';
+      const dueMinor = activeInvoiceForPay.amountDueMinor !== undefined ? activeInvoiceForPay.amountDueMinor : activeInvoiceForPay.totalMinor;
+
+      let amountMinor = dueMinor;
+      if (isPartial) {
+        const val = parseFloat(document.getElementById('customPayAmountInput').value);
+        if (isNaN(val) || val <= 0) {
+          alert('Please enter a valid payment amount greater than zero.');
+          return;
+        }
+        amountMinor = Math.round(val * 100);
+      }
+
+      const method = document.getElementById('payInstrumentSelect').value;
+      const res = await fetch(`/api/v1/invoices/${activeInvoiceForPay.id}/pay`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ method: 'Sandbox Instant Payment' })
+        body: JSON.stringify({ amountMinor, method })
       });
       const data = await res.json();
-      if (data.success) {
-        alert(`Invoice ${data.invoice.number} marked PAID via Sandbox Gateway!`);
-        await loadInvoices();
-        await loadSubscriptions();
-        await renderCustomerBanner();
+
+      if (!res.ok) {
+        alert('Payment processing error: ' + (data.error || 'Failed to record payment'));
+        return;
       }
+
+      closePartialPayModal();
+      if (data.overpaymentCredit > 0) {
+        alert(`Payment processed! Outstanding invoice settled in full. Overpayment of ${formatCurrency(data.overpaymentCredit, data.invoice.currency)} has been converted into Customer Credit (PAYX-4).`);
+      } else if (data.invoice.status === 'paid') {
+        alert(`Invoice ${data.invoice.number} paid in full!`);
+      } else {
+        alert(`Partial payment of ${formatCurrency(amountMinor, data.invoice.currency)} recorded. Remaining due: ${formatCurrency(data.invoice.amountDueMinor, data.invoice.currency)} (PAYX-1).`);
+      }
+
+      await loadInvoices();
+      await loadSubscriptions();
+      if (currentSession.user.role !== 'customer') await loadDashboard();
+      await renderCustomerBanner();
+    }
+
+    // Modal: Cancel Invoice (INVC-1 to INVC-6)
+    async function openCancelInvoiceModal(invId) {
+      const res = await fetch('/api/v1/invoices');
+      const invoices = await res.json();
+      const inv = invoices.find(i => i.id === invId);
+      if (!inv) return;
+
+      if (inv.status === 'paid') {
+        alert('Paid to Cancelled transition is not allowed (INVC-1).');
+        return;
+      }
+      if (inv.amountPaidMinor && inv.amountPaidMinor > 0) {
+        alert('Cancelling a Confirmed invoice with a part payment is blocked. Please reverse payments first (INVC-4).');
+        return;
+      }
+
+      activeInvoiceForCancel = inv;
+      document.getElementById('cancelInvModalTitle').textContent = `Cancel Invoice ${inv.number}`;
+      document.getElementById('cancelInvoiceReasonInput').value = '';
+      document.getElementById('cancelInvErrorAlert').style.display = 'none';
+      document.getElementById('cancelInvoiceModal').style.display = 'flex';
+    }
+
+    function closeCancelInvoiceModal() {
+      document.getElementById('cancelInvoiceModal').style.display = 'none';
+      activeInvoiceForCancel = null;
+    }
+
+    async function submitInvoiceCancellation() {
+      if (!activeInvoiceForCancel) return;
+      const reason = document.getElementById('cancelInvoiceReasonInput').value.trim();
+      if (!reason) {
+        const errEl = document.getElementById('cancelInvErrorAlert');
+        errEl.textContent = 'Cancellation reason is required (free text) (INVC-2).';
+        errEl.style.display = 'block';
+        return;
+      }
+
+      const res = await fetch(`/api/v1/invoices/${activeInvoiceForCancel.id}/cancel`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ reason })
+      });
+      const data = await res.json();
+
+      if (!res.ok) {
+        alert('Cancellation blocked: ' + (data.error || 'Failed to cancel invoice'));
+        return;
+      }
+
+      closeCancelInvoiceModal();
+      alert(`Invoice ${data.invoice.number} cancelled. Reason recorded: "${data.invoice.cancelReason}". Excluded from outstanding totals (INVC-3).`);
+      await loadInvoices();
+      if (currentSession.user.role !== 'customer') await loadDashboard();
+    }
+
+    // Regenerate Cancelled Invoice (INVC-6)
+    async function regenerateCancelledInvoice(subscriptionId, period) {
+      const res = await fetch('/api/v1/invoices/regenerate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ subscriptionId, period })
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        alert('Regeneration blocked: ' + (data.error || 'Unable to regenerate'));
+        return;
+      }
+      alert(`New Draft invoice ${data.invoice.number} generated for period ${period} without duplicate error (INVC-6)!`);
+      await loadInvoices();
+      if (currentSession.user.role !== 'customer') await loadDashboard();
+    }
+
+    // Dunning Follow-Up Notice (DUN-1 to DUN-5)
+    async function triggerDunningNotice(invId) {
+      const res = await fetch(`/api/v1/invoices/${invId}/dunning-retry`, { method: 'POST' });
+      const data = await res.json();
+      if (data.message && data.message.includes('idempotent')) {
+        alert('Idempotency notice: Reminder has already been dispatched today for this invoice (DUN-5).');
+      } else {
+        alert(`Dunning reminder delivered to registered email (Step: ${data.reminder.step}). Logged to audit trail (DUN-3).`);
+      }
+      await loadInvoices();
+    }
+
+    // Renewal History Modal (REN-6)
+    async function openRenewalHistoryModal() {
+      const res = await fetch('/api/v1/renewals/history');
+      const list = await res.json();
+      const tbody = document.getElementById('renewalHistoryTableBody');
+
+      if (!list || list.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: var(--muted); padding: 20px;">No renewal records found yet.</td></tr>';
+      } else {
+        tbody.innerHTML = list.map(r => `
+          <tr>
+            <td><strong>${r.subscriptionNumber || r.subscriptionId}</strong></td>
+            <td>${r.oldExpiry || 'N/A'}</td>
+            <td><strong style="color: #166534;">${r.newExpiry}</strong></td>
+            <td><span class="chip chip-confirm">${r.trigger}</span> (${r.triggeredBy})</td>
+            <td><small>${new Date(r.date).toLocaleString()}</small></td>
+          </tr>
+        `).join('');
+      }
+      document.getElementById('renewalHistoryModal').style.display = 'flex';
+    }
+
+    function closeRenewalHistoryModal() {
+      document.getElementById('renewalHistoryModal').style.display = 'none';
     }
 
     // Bill-Runs (Dry Run NEW-8)
@@ -2051,12 +2733,13 @@
       if (tabBtn) tabBtn.classList.add('active');
     }
 
-    // Theme Toggle
+    // Theme Toggle (Single Sliding Switch)
     function toggleTheme() {
       const body = document.body;
       const isDark = body.getAttribute('data-theme') === 'dark';
-      body.setAttribute('data-theme', isDark ? 'light' : 'dark');
-      document.getElementById('themeIcon').textContent = isDark ? 'Light' : 'Dark';
+      const newTheme = isDark ? 'light' : 'dark';
+      body.setAttribute('data-theme', newTheme);
+      localStorage.setItem('bl_theme', newTheme);
     }
 
     // Currency Formatter

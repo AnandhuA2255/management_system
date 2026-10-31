@@ -239,7 +239,19 @@
         {
           "id": "var_odoo",
           "name": "Odoo Integrated Edition",
-          "extraPrice": 56000
+          "extraPrice": 56000,
+          "prices": {
+            "INR": 56000,
+            "USD": 700,
+            "EUR": 650,
+            "GBP": 550,
+            "AED": 2500,
+            "SGD": 900,
+            "AUD": 1050,
+            "CAD": 950,
+            "JPY": 1050,
+            "CHF": 650
+          }
         }
       ]
     },
@@ -301,7 +313,11 @@
         "CAD": 8000,
         "JPY": 9000,
         "CHF": 5800
-      }
+      },
+      "availableFrom": "2026-01-01",
+      "availableTo": "2027-12-31",
+      "autoRenew": true,
+      "downgradeTiming": "end_of_period"
     },
     {
       "id": "plan_growth",
@@ -339,7 +355,11 @@
         "CAD": 20000,
         "JPY": 22500,
         "CHF": 14500
-      }
+      },
+      "availableFrom": "2026-01-01",
+      "availableTo": "2027-12-31",
+      "autoRenew": true,
+      "downgradeTiming": "end_of_period"
     },
     {
       "id": "plan_enterprise",
@@ -377,7 +397,11 @@
         "CAD": 56500,
         "JPY": 63000,
         "CHF": 40500
-      }
+      },
+      "availableFrom": "2026-01-01",
+      "availableTo": "2027-12-31",
+      "autoRenew": true,
+      "downgradeTiming": "end_of_period"
     }
   ],
   "discounts": [
@@ -496,7 +520,7 @@
       "status": "active",
       "currency": "INR",
       "startDate": "2026-08-01",
-      "expiryDate": "2027-08-01",
+      "expiryDate": "2028-08-01",
       "billingDay": 1,
       "paymentTerms": "Due on receipt",
       "unitPriceMinor": 3555900,
@@ -522,8 +546,8 @@
       "unitPriceMinor": 14900,
       "quantity": 1,
       "spendCapMinor": 2500000,
-      "healthScore": 48,
-      "healthReason": "At risk. Invoice INV-2026-012 payment failed 3 days ago. Dunning reminder 1 sent.",
+      "healthScore": 92,
+      "healthReason": "Healthy. Overdue invoice settled via sandbox payment.",
       "usageEventsCount": 1820,
       "lastUsageAt": "2026-10-28T14:20:00Z"
     },
@@ -551,6 +575,40 @@
     }
   ],
   "invoices": [
+    {
+      "id": "inv_90a00516",
+      "number": "INV-2026-324",
+      "subscriptionId": "sub_apex_103",
+      "customerId": "cust_apex_03",
+      "period": "2026-10",
+      "status": "draft",
+      "currency": "EUR",
+      "lockedRateToBase": 1,
+      "subtotalMinor": 13900,
+      "discountMinor": 0,
+      "taxMinor": 2502,
+      "totalMinor": 16402,
+      "amountPaidMinor": 0,
+      "amountDueMinor": 16402,
+      "partiallyPaid": false,
+      "dueDate": "2026-11-14",
+      "paidAt": null,
+      "paymentFailedFlag": false,
+      "lines": [
+        {
+          "description": "Subscription Service (SUB-2026-103) - Period 2026-10",
+          "quantity": 1,
+          "unitPriceMinor": 13900,
+          "amountMinor": 13900
+        },
+        {
+          "description": "Goods & Services Tax (18%)",
+          "quantity": 1,
+          "unitPriceMinor": 2502,
+          "amountMinor": 2502
+        }
+      ]
+    },
     {
       "id": "inv_2026_001",
       "number": "INV-2026-001",
@@ -586,7 +644,9 @@
           "unitPriceMinor": 640062,
           "amountMinor": 640062
         }
-      ]
+      ],
+      "amountPaidMinor": 4195962,
+      "amountDueMinor": 0
     },
     {
       "id": "inv_2026_008",
@@ -629,7 +689,9 @@
           "unitPriceMinor": 640062,
           "amountMinor": 640062
         }
-      ]
+      ],
+      "amountPaidMinor": 3484782,
+      "amountDueMinor": 0
     },
     {
       "id": "inv_2026_015",
@@ -637,7 +699,7 @@
       "subscriptionId": "sub_acme_101",
       "customerId": "cust_acme_01",
       "period": "2026-10",
-      "status": "confirmed",
+      "status": "paid",
       "currency": "INR",
       "lockedRateToBase": 1,
       "subtotalMinor": 3555900,
@@ -645,7 +707,7 @@
       "discountMinor": 0,
       "totalMinor": 4195962,
       "dueDate": "2026-11-05",
-      "paidAt": null,
+      "paidAt": "2026-10-31T07:37:27.275Z",
       "paymentFailedFlag": false,
       "lines": [
         {
@@ -666,7 +728,11 @@
           "unitPriceMinor": 640062,
           "amountMinor": 640062
         }
-      ]
+      ],
+      "amountPaidMinor": 4195962,
+      "amountDueMinor": 0,
+      "reminderCount": 1,
+      "partiallyPaid": false
     },
     {
       "id": "inv_2026_004",
@@ -691,7 +757,9 @@
           "unitPriceMinor": 14900,
           "amountMinor": 14900
         }
-      ]
+      ],
+      "amountPaidMinor": 14900,
+      "amountDueMinor": 0
     },
     {
       "id": "inv_2026_012",
@@ -717,7 +785,9 @@
           "unitPriceMinor": 14900,
           "amountMinor": 14900
         }
-      ]
+      ],
+      "amountPaidMinor": 0,
+      "amountDueMinor": 14900
     },
     {
       "id": "inv_2026_009",
@@ -748,10 +818,101 @@
           "unitPriceMinor": 2641,
           "amountMinor": 2641
         }
+      ],
+      "amountPaidMinor": 16541,
+      "amountDueMinor": 0
+    },
+    {
+      "id": "inv_2026_016",
+      "number": "INV-2026-016",
+      "subscriptionId": "sub_nova_102",
+      "customerId": "cust_nova_02",
+      "period": "2026-11",
+      "status": "confirmed",
+      "partiallyPaid": true,
+      "currency": "USD",
+      "lockedRateToBase": 84.5,
+      "subtotalMinor": 14900,
+      "taxMinor": 0,
+      "discountMinor": 0,
+      "totalMinor": 14900,
+      "amountPaidMinor": 9900,
+      "amountDueMinor": 5000,
+      "dueDate": "2026-11-25",
+      "paidAt": null,
+      "paymentFailedFlag": false,
+      "lines": [
+        {
+          "description": "Growth Pro Plan (Monthly)",
+          "quantity": 1,
+          "unitPriceMinor": 14900,
+          "amountMinor": 14900
+        }
+      ]
+    },
+    {
+      "id": "inv_2026_017",
+      "number": "INV-2026-017",
+      "subscriptionId": "sub_apex_103",
+      "customerId": "cust_apex_03",
+      "period": "2026-08",
+      "status": "cancelled",
+      "currency": "EUR",
+      "lockedRateToBase": 91.2,
+      "subtotalMinor": 13900,
+      "taxMinor": 2641,
+      "discountMinor": 0,
+      "totalMinor": 16541,
+      "amountPaidMinor": 0,
+      "amountDueMinor": 0,
+      "cancelReason": "Duplicate billing draft generated in error during setup",
+      "cancelledBy": "staff@brightloop.io",
+      "cancelledAt": "2026-08-05T12:00:00Z",
+      "lines": [
+        {
+          "description": "Growth Pro Plan (Monthly)",
+          "quantity": 1,
+          "unitPriceMinor": 13900,
+          "amountMinor": 13900
+        }
       ]
     }
   ],
   "payments": [
+    {
+      "id": "pay_gw_9e9ad576",
+      "invoiceId": "inv_2026_015",
+      "method": "Hosted Checkout Gateway (Test Mode)",
+      "amountMinor": 250000,
+      "currency": "INR",
+      "provider": "sandbox_gateway",
+      "gatewayReference": "gw_ref_39f028bee6e6",
+      "date": "2026-10-31T07:37:27.276Z",
+      "note": "Settled via gateway test mode webhook (GW-2)"
+    },
+    {
+      "id": "pay_rev_dec2d083",
+      "invoiceId": "inv_2026_016",
+      "method": "Reversal of pay_sandbox_016",
+      "amountMinor": -5000,
+      "currency": "USD",
+      "provider": "sandbox",
+      "reversalOfPaymentId": "pay_sandbox_016",
+      "reason": "Test customer requested settlement refund",
+      "date": "2026-10-31T07:37:27.263Z",
+      "note": "Payment reversed: Test customer requested settlement refund"
+    },
+    {
+      "id": "pay_sbx_f73fbcdd",
+      "invoiceId": "inv_2026_016",
+      "method": "Test Partial",
+      "amountMinor": 9900,
+      "currency": "USD",
+      "provider": "sandbox",
+      "gatewayReference": "sbx_tx_b5ae9e28799b",
+      "date": "2026-10-31T07:36:11.849Z",
+      "note": "Full invoice payment settled"
+    },
     {
       "id": "pay_sandbox_001",
       "invoiceId": "inv_2026_001",
@@ -795,6 +956,17 @@
       "gatewayReference": "pay_sbx_sepa_88192301",
       "date": "2026-09-26T08:11:00Z",
       "note": "SEPA Direct Debit confirmed"
+    },
+    {
+      "id": "pay_sandbox_016",
+      "invoiceId": "inv_2026_016",
+      "method": "Corporate Card (Partial)",
+      "amountMinor": 5000,
+      "currency": "USD",
+      "provider": "sandbox",
+      "gatewayReference": "pay_sbx_part_99120",
+      "date": "2026-10-30T10:00:00Z",
+      "note": "Partial initial payment installment"
     }
   ],
   "billRuns": [
@@ -823,6 +995,78 @@
     }
   ],
   "auditLogs": [
+    {
+      "timestamp": "2026-10-31T07:37:27.276Z",
+      "actor": "system",
+      "action": "GATEWAY_WEBHOOK_PROCESSED",
+      "entity": "evt_test_1793432247275",
+      "before": "null",
+      "after": "{\"id\":\"wevt_918db1a0\",\"eventId\":\"evt_test_1793432247275\",\"eventType\":\"invoice.payment_succeeded\",\"provider\":\"sandbox_gateway\",\"processedAt\":\"2026-10-31T07:37:27.276Z\"}"
+    },
+    {
+      "timestamp": "2026-10-31T07:37:27.271Z",
+      "actor": "admin@brightloop.io",
+      "action": "INVOICE_REGENERATED",
+      "entity": "INV-2026-324",
+      "before": "null",
+      "after": "{\"subscriptionId\":\"sub_apex_103\",\"period\":\"2026-10\"}"
+    },
+    {
+      "timestamp": "2026-10-31T07:37:27.267Z",
+      "actor": "admin@brightloop.io",
+      "action": "DUNNING_REMINDER_SENT",
+      "entity": "INV-2026-015",
+      "before": "null",
+      "after": "{\"id\":\"rem_3376bd4f\",\"invoiceId\":\"inv_2026_015\",\"invoiceNumber\":\"INV-2026-015\",\"step\":\"Dunning Notice #1\",\"sentAt\":\"2026-10-31T07:37:27.267Z\",\"channel\":\"email\",\"result\":\"delivered\"}"
+    },
+    {
+      "timestamp": "2026-10-31T07:37:27.263Z",
+      "actor": "admin@brightloop.io",
+      "action": "PAYMENT_REVERSED",
+      "entity": "pay_sandbox_016",
+      "before": "5000",
+      "after": "{\"reversalId\":\"pay_rev_dec2d083\",\"reason\":\"Test customer requested settlement refund\"}"
+    },
+    {
+      "timestamp": "2026-10-31T07:37:27.254Z",
+      "actor": "admin@brightloop.io",
+      "action": "USER_LOGIN",
+      "entity": "session",
+      "before": "null",
+      "after": "admin"
+    },
+    {
+      "timestamp": "2026-10-31T07:36:11.849Z",
+      "actor": "admin@brightloop.io",
+      "action": "PAYMENT_RECORDED",
+      "entity": "INV-2026-016",
+      "before": "null",
+      "after": "{\"id\":\"pay_sbx_f73fbcdd\",\"invoiceId\":\"inv_2026_016\",\"method\":\"Test Partial\",\"amountMinor\":9900,\"currency\":\"USD\",\"provider\":\"sandbox\",\"gatewayReference\":\"sbx_tx_b5ae9e28799b\",\"date\":\"2026-10-31T07:36:11.849Z\",\"note\":\"Full invoice payment settled\"}"
+    },
+    {
+      "timestamp": "2026-10-31T07:36:11.842Z",
+      "actor": "admin@brightloop.io",
+      "action": "SUBSCRIPTION_RENEWED",
+      "entity": "SUB-2026-101",
+      "before": "{\"oldExpiry\":\"2027-08-01\"}",
+      "after": "{\"newExpiry\":\"2028-08-01\"}"
+    },
+    {
+      "timestamp": "2026-10-31T07:36:11.833Z",
+      "actor": "admin@brightloop.io",
+      "action": "USER_LOGIN",
+      "entity": "session",
+      "before": "null",
+      "after": "admin"
+    },
+    {
+      "timestamp": "2026-10-31T06:46:19.363Z",
+      "actor": "admin@brightloop.io",
+      "action": "USER_LOGIN",
+      "entity": "session",
+      "before": "null",
+      "after": "admin"
+    },
     {
       "timestamp": "2026-10-31T06:14:17.426Z",
       "actor": "david@novaglobal.com",
@@ -954,6 +1198,94 @@
       "message": "You are utilizing only 1,820 of 2,500 monthly units. Switching to Starter Plan could save you $90.00/month.",
       "type": "savings_opportunity",
       "potentialSavings": "$90.00/mo"
+    }
+  ],
+  "renewalHistory": [
+    {
+      "id": "ren_d365a330",
+      "subscriptionId": "sub_acme_101",
+      "subscriptionNumber": "SUB-2026-101",
+      "oldExpiry": "2027-08-01",
+      "newExpiry": "2028-08-01",
+      "trigger": "manual_renew",
+      "triggeredBy": "admin@brightloop.io",
+      "date": "2026-10-31T07:36:11.842Z"
+    },
+    {
+      "id": "ren_2026_001",
+      "subscriptionId": "sub_acme_101",
+      "subscriptionNumber": "SUB-2026-101",
+      "oldExpiry": "2026-08-01",
+      "newExpiry": "2027-08-01",
+      "trigger": "auto_renew",
+      "triggeredBy": "system",
+      "date": "2026-08-01T00:00:00Z"
+    }
+  ],
+  "discountUsage": [
+    {
+      "id": "duse_2026_001",
+      "discountId": "disc_launch",
+      "discountCode": "LAUNCH20",
+      "invoiceId": "inv_2026_008",
+      "subscriptionId": "sub_acme_101",
+      "customerId": "cust_acme_01",
+      "amountMinor": 711180,
+      "date": "2026-09-01T10:15:00Z"
+    }
+  ],
+  "customerCredits": [
+    {
+      "id": "crd_2026_001",
+      "customerId": "cust_nova_02",
+      "currency": "USD",
+      "amountMinor": 2500,
+      "source": "proration_credit",
+      "usedOnInvoice": null,
+      "createdAt": "2026-10-15T00:00:00Z"
+    },
+    {
+      "id": "crd_9ec56287",
+      "customerId": "cust_nova_02",
+      "currency": "USD",
+      "amountMinor": 190100,
+      "source": "overpayment_credit",
+      "usedOnInvoice": null,
+      "createdAt": "2026-10-31T07:36:11.849Z"
+    }
+  ],
+  "reminderLogs": [
+    {
+      "id": "rem_3376bd4f",
+      "invoiceId": "inv_2026_015",
+      "invoiceNumber": "INV-2026-015",
+      "step": "Dunning Notice #1",
+      "sentAt": "2026-10-31T07:37:27.267Z",
+      "channel": "email",
+      "result": "delivered"
+    },
+    {
+      "id": "rem_2026_001",
+      "invoiceId": "inv_2026_012",
+      "step": "day_3_overdue",
+      "sentAt": "2026-10-28T09:00:00Z",
+      "channel": "email",
+      "result": "delivered"
+    }
+  ],
+  "webhookEvents": [
+    {
+      "id": "wevt_918db1a0",
+      "eventId": "evt_test_1793432247275",
+      "eventType": "invoice.payment_succeeded",
+      "provider": "sandbox_gateway",
+      "processedAt": "2026-10-31T07:37:27.276Z"
+    },
+    {
+      "eventId": "evt_hook_981240",
+      "provider": "sandbox",
+      "event": "invoice.paid",
+      "processedAt": "2026-09-01T10:15:01Z"
     }
   ]
 }
